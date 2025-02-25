@@ -22,9 +22,9 @@ jobs:
 
       - name: Build Docker image (using webserver folder)
         run: |
-          docker build -t your-dockerhub-username/django-docker:latest \
+          docker build -t justyolo912/django-docker:latest \
           -f webserver/Dockerfile webserver
 
       - name: Push Docker image to Docker Hub
         run: |
-          docker push your-dockerhub-username/django-docker:latest
+          docker push justyolo912/django-docker:latest
