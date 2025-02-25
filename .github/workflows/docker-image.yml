@@ -20,9 +20,10 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build Docker image
+      - name: Build Docker image (using webserver folder)
         run: |
-          docker build -t your-dockerhub-username/django-docker:latest .
+          docker build -t your-dockerhub-username/django-docker:latest \
+          -f webserver/Dockerfile webserver
 
       - name: Push Docker image to Docker Hub
         run: |
