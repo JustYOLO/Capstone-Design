@@ -12,7 +12,7 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1 
  
 # Upgrade pip and install dependencies
-RUN pip install --upgrade pip 
+RUN pip install --upgrade pip
  
 # Copy the requirements file first (better caching)
 COPY requirements.txt /app/
@@ -49,4 +49,8 @@ EXPOSE 8000
  
 # Start the application using Gunicorn
 
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "3", "webserver.wsgi:application"]
+COPY --chown=appuser:appuser entrypoint.sh /app/
+RUN chmod +x /app/entrypoint.sh
+ENTRYPOINT ["/app/entrypoint.sh"]
+
+# CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "3", "webserver.wsgi:application"]
