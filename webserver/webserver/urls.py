@@ -14,8 +14,11 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+import os
+from pathlib import Path
+BASE_DIR = Path(__file__).resolve().parent.parent
 from django.contrib import admin
-from django.urls import include, path
+from django.urls import include, path, re_path
 from django.conf.urls.static import static
 from django.conf import settings
 
@@ -25,7 +28,7 @@ urlpatterns = [
     path('api/v1/auth/', include("dj_rest_auth.urls")),
     path('api/v1/auth/registration/', include('dj_rest_auth.registration.urls')),
     path('', include('frontend.urls')),
+    re_path(r'^(?!static/).*$' , include('frontend.urls')),
 ]
 
-urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-
+urlpatterns += static(settings.STATIC_URL, document_root=os.path.join(BASE_DIR, 'webserver/static/build/static'))
