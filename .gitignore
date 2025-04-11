@@ -1,0 +1,15 @@
+*.gguf
+ai/ollama_directory/*.gguf
+
+ai/chromadb_storage_en/*
+ai/chromadb_storage_ko/*
+
+# 압축 파일
+*.tar.gz
+*.zip
+
+# Python 관련
+__pycache__/
+*.pyc
+
+.DS_Store

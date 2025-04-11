@@ -1,0 +1,22 @@
+version: "3.8"
+services:
+
+  main_test:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8111:8111"
+    networks:
+      - my_network
+    environment:
+      - PYTHONUNBUFFERED=1
+      - OLLAMA_API_BASE_URL=http://host.docker.internal:11434
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+    - ./chromadb_storage_ko:/app/chromadb_storage_ko
+
+networks:
+  my_network:
+    external: true
