@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import ReactMarkdown from "react-markdown";
 
 const ChatGPTWidget = () => {
   const [input, setInput] = useState("");
@@ -53,8 +54,8 @@ const ChatGPTWidget = () => {
       </button>
 
       {response && (
-        <div className="mt-6 w-full bg-gray-50 border border-gray-200 p-4 rounded-lg shadow-sm">
-          <p className="text-gray-800 whitespace-pre-wrap">{response}</p>
+        <div className="mt-6 w-full bg-gray-50 border border-gray-200 p-4 rounded-lg shadow-sm prose">
+          <ReactMarkdown>{response}</ReactMarkdown>
         </div>
       )}
     </div>

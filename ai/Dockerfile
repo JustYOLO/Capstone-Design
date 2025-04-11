@@ -10,6 +10,6 @@ RUN pip install --no-cache-dir chromadb ollama flask translate httpx==0.28.1 red
 
 WORKDIR /app
 
-COPY main_test.py main.py
+COPY main.py main.py
 
-CMD ["python", "main_test.py"]
+CMD ["python", "main.py"]
