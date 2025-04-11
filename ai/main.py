@@ -15,8 +15,8 @@ rd = redis.StrictRedis(host='chat_log', port=6666, db=0)
 
 client = ollama.Client(host='http://host.docker.internal:11434')
 
-client_en = chromadb.PersistentClient(path="./chromadb_storage_en")
-collection_en = client_en.get_or_create_collection(name="flowers_en")
+#client_en = chromadb.PersistentClient(path="./chromadb_storage_en")
+#collection_en = client_en.get_or_create_collection(name="flowers_en")
 
 # client_ko = chromadb.PersistentClient(path="./chromadb_storage_ko")
 client_ko = chromadb.PersistentClient(path="/app/chromadb_storage_ko")
@@ -102,7 +102,7 @@ def generate_flower_recommendation_ko(situation, recommended_flowers):
     """추천된 꽃 목록을 바탕으로 Ollama를 이용해 자연스러운 추천 문장 생성"""
     if not recommended_flowers:
         return "죄송합니다. 적절한 꽃을 찾을 수 없습니다."
-
+    
     flowers_info = ", ".join([f"{f}({m})" for f, m in recommended_flowers])
     #print(flowers_info)
     prompt_text = f"""
@@ -198,7 +198,11 @@ def recommend():
             content_type='application/json'
         ), 400
 
+    print("DEBUG:", situation)
+    
     flowers = search_flower_ko(situation)
+    print("DEBUG:", flowers)
+
     result = generate_flower_recommendation_ko(situation, flowers)
 
     return Response(
