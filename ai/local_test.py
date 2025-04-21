@@ -92,19 +92,38 @@ def generate_flower_recommendation_ko(situation, recommended_flowers):
 
     flowers_info = ", ".join([f"{f}({m})" for f, m in recommended_flowers])
     #print(flowers_info)
-    prompt_text = f"""
-        You are a flower expert. Recommend a flower that suits the user's situation and logically explain its meaning and the reason for your recommendation.
-        The user has requested a flower recommendation for the following situation:
+    # prompt_text = f"""
+    #     You are a flower expert. Recommend a flower that suits the user's situation and logically explain its meaning and the reason for your recommendation.
+    #     The user has requested a flower recommendation for the following situation:
 
+    #     Situation: {situation}
+
+    #     Recommended flowers and their meanings: {flowers_info}
+
+    #     Please provide a kind yet logical response following the format below.
+    #     And you must use Korean language.
+
+    #     ## Output Format (Explain logically why you recommended these flowers)
+    #     - Reason for Recommendation: [Logically explain how the flower meaning connects to the user's situation]
+    # """
+    prompt_text = f"""
+        You are a flower expert. The user has requested a flower recommendation for the following situation:
         Situation: {situation}
 
-        Recommended flowers and their meanings: {flowers_info}
+        Here are the recommended flowers and their meanings:
+        {flowers_info}
 
-        Please provide a kind yet logical response following the format below.
-        And you must use Korean language.
+        Please write a kind, heartfelt, and logically clear recommendation that explains how the meanings of these flowers relate to the user's situation.
 
-        ## Output Format (Explain logically why you recommended these flowers)
-        - Reason for Recommendation: [Logically explain how the flower meaning connects to the user's situation]
+        ## Output Format
+        
+        - 종합 추천 이유:
+        [Explain logically and kindly how the combined meanings of the recommended flowers connect specifically to the user's situation]
+
+        Important Instructions:
+        - Provide ONLY the '종합 추천 이유' section.
+        - Do NOT include any other sections or titles.
+        - Respond strictly in Korean.
     """
     
     # 응답 생성

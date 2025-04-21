@@ -1,11 +1,11 @@
 import ollama
 import chromadb
 
-# ✅ ChromaDB 클라이언트 생성 (데이터 저장 폴더 설정)
+# ChromaDB 클라이언트 생성 (데이터 저장 폴더 설정)
 client = chromadb.PersistentClient(path="./chromadb_storage_ko")
 collection = client.get_or_create_collection(name="flowers_ko")
 
-# ✅ 꽃과 꽃말 데이터
+# 꽃과 꽃말 데이터
 doc_flowers = [
     ("가문비나무", "성실, 정직"),
     ("가지", "진실"),
@@ -876,34 +876,13 @@ doc_flowers = [
     ("히어리", "봄의 노래"),
 ]
 
-
-
-# # ✅ 변환된 문서 리스트
-# documents_ko = [f"{flower}: {meaning}" for flower, meaning in doc_flowers]
-
-# # ✅ 기존 데이터가 없을 경우에만 저장
-# if collection.count() == 0:
-#     print("✅ ChromaDB에 꽃 데이터를 저장합니다...")
-    
-#     embeddings, ids, docs = [], [], []
-#     for i, d in enumerate(documents_ko):
-#         response = ollama.embeddings(model="llama3:8b", prompt=d)
-#         embeddings.append(response["embedding"])
-#         ids.append(str(i))
-#         docs.append(d)
-
-#     collection.add(ids=ids, embeddings=embeddings, documents=docs)
-#     print(f"✅ {len(documents_ko)}개 꽃 데이터를 ChromaDB에 저장 완료!")
-# else:
-#     print(f"✅ ChromaDB에 이미 {collection.count()}개의 데이터가 존재합니다.")
-    
     
 # 변환된 문서 리스트
 documents_ko = [f"{flower}: {meaning}" for flower, meaning in doc_flowers]
 
-# ✅ 기존 데이터가 있는지 확인 (중복 저장 방지)
+# 기존 데이터가 있는지 확인 (중복 저장 방지)
 if collection.count() == 0:
-    print("✅ ChromaDB에 꽃 데이터를 처음 저장합니다...")
+    print("ChromaDB에 꽃 데이터를 처음 저장합니다...")
     
     for i, d in enumerate(documents_ko):
         response = ollama.embeddings(model="llama3-ko:latest", prompt=d)  # 한국어 모델 사용
