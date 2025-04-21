@@ -24,7 +24,11 @@ const ChatGPTWidget = () => {
       });
 
       const data = await res.json();
-      setResponse(data.recommendation && data.flowers || "응답 없음");
+      if (data.recommendation && data.flowers) {
+        setResponse(`${data.recommendation}\n\n추천된 꽃들:\n${data.flowers.join(", ")}`);
+      } else {
+        setResponse("응답 없음");
+      }
     } catch (err) {
       console.error("통신 오류:", err);
       setResponse("서버와 통신 중 오류가 발생했습니다.");

@@ -84,10 +84,11 @@ def generate_flower_recommendation_ko(situation, recommended_flowers):
 
 def format_recommended_flowers(recommended_flowers_ko):
     """주어진 recommended_flowers_ko 데이터를 원하는 형식으로 변환"""
-    formatted_flowers = []
+    formatted_lines = ["추천하는 꽃과 꽃말:"]
     for flower, reason in recommended_flowers_ko:
-        formatted_flowers.append(f"추천하는 꽃: {flower}\n추천하는 이유: {reason}\n")
-    return "\n".join(formatted_flowers)
+        formatted_lines.append(f"{flower}: {reason}")
+    return "\n\n".join(formatted_lines)
+
 
 
 

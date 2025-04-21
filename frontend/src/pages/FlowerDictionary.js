@@ -4,7 +4,7 @@ const FlowerDictionary = () => {
   const [searchTerm, setSearchTerm] = useState(""); // 검색어 상태
   const [flowerData, setFlowerData] = useState([]); // 꽃말 데이터
 
-  // 🌸 JSON 파일에서 꽃말 데이터 불러오기
+  // JSON 파일에서 꽃말 데이터 불러오기
   useEffect(() => {
     fetch("flowers.json") // `public/flowers.json`에서 데이터 가져옴
       .then((response) => response.json())
@@ -12,18 +12,18 @@ const FlowerDictionary = () => {
       .catch((error) => console.error("Error loading flowers:", error));
   }, []);
 
-  // 🌼 검색 기능 (입력한 검색어가 포함된 꽃만 필터링)
+  // 검색 기능 (입력한 검색어가 포함된 꽃만 필터링)
   const filteredFlowers = flowerData.filter((flower) =>
     flower.name.includes(searchTerm)
   );
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 px-4 pt-20">
-      {/* ✅ Navbar에 가리지 않도록 pt-20 추가 */}
+      {/* Navbar에 가리지 않도록 pt-20 추가 */}
       <h1 className="text-4xl font-bold text-gray-900 mb-4">🌺 꽃말 사전</h1>
       <p className="text-gray-600 mb-6">꽃의 이름을 검색하고 꽃말을 알아보세요!</p>
 
-      {/* 🔎 검색창 */}
+      {/* 검색창 */}
       <input
         type="text"
         placeholder="🌿 꽃 이름 검색..."
@@ -32,7 +32,7 @@ const FlowerDictionary = () => {
         onChange={(e) => setSearchTerm(e.target.value)}
       />
 
-      {/* 🌸 검색 결과 (고정된 높이 설정 ✅) */}
+      {/* 검색 결과 (고정된 높이 설정) */}
       <div className="mt-6 w-full max-w-md h-[600px] overflow-y-auto bg-white shadow-lg rounded-lg p-4">
         {filteredFlowers.length > 0 ? (
           filteredFlowers.map((flower, index) => (
