@@ -15,6 +15,8 @@ import SignupCustomer from "./pages/SignupCustomer";
 import SignupFlorist from "./pages/SignupFlorist";
 import FlowerDictionary from "./pages/FlowerDictionary";
 import FlowerMBTI from "./pages/FlowerMBTI";
+import Voc from "./pages/Voc";
+import Profile from "./pages/Profile";
 
 function AppContent() {
   const location = useLocation(); // 현재 페이지의 경로 가져오기
