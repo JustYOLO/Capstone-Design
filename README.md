@@ -42,4 +42,3 @@ docker build -f Dockerfile.nginx -t my_nginx .
 
 docker run -d --name nginx_container --network your_network_name -p 80:80 -p 443:443 my_nginx
 ```
-
