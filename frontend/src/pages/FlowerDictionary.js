@@ -6,7 +6,7 @@ const FlowerDictionary = () => {
 
   // 🌸 JSON 파일에서 꽃말 데이터 불러오기
   useEffect(() => {
-    fetch("/flowers.json") // `public/flowers.json`에서 데이터 가져옴
+    fetch("flowers.json") // `public/flowers.json`에서 데이터 가져옴
       .then((response) => response.json())
       .then((data) => setFlowerData(data))
       .catch((error) => console.error("Error loading flowers:", error));

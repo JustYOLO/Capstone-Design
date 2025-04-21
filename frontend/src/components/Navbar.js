@@ -9,6 +9,7 @@ const Navbar = () => {
   const [userInfo, setUserInfo] = useState(null); // 사용자 정보 저장
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const [showDropdown, setShowDropdown] = useState(false);
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
