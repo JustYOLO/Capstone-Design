@@ -21,12 +21,34 @@ from django.contrib import admin
 from django.urls import include, path, re_path
 from django.conf.urls.static import static
 from django.conf import settings
+from django.views.static import serve
 
+BUILD_DIR = os.path.join(settings.BASE_DIR, 'webserver', 'static', 'build')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/auth/', include("dj_rest_auth.urls")),
     path('api/v1/auth/registration/', include('dj_rest_auth.registration.urls')),
+
+    path(
+        'flowers.json',
+        serve,
+        {
+            'path': 'flowers.json',
+            'document_root': BUILD_DIR,
+        },
+        name='flowers-json'
+    ),
+    path(
+        'robots.txt',
+        serve,
+        {
+            'path': 'robots.txt',
+            'document_root': BUILD_DIR,
+        },
+        name='robots-txt'
+    ),
+
     path('', include('frontend.urls')),
     re_path(r'^(?!static/).*$' , include('frontend.urls')),
 ]
