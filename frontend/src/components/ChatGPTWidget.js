@@ -24,25 +24,14 @@ const ChatGPTWidget = () => {
       });
 
       const data = await res.json();
-      if (
-        data.recommendation &&
-        Array.isArray(data.flowers)
-      ) {
-        setResponse(`${data.recommendation}`);
-      } else if (typeof data.flowers === "string") {
-        setResponse(`${data.recommendation}`);
-      }
-      else {
-        console.warn("예상하지 못한 응답 형식:", data);
-        setResponse("응답 없음");
-      }
-    } catch (err) {
-      console.error("통신 오류:", err);
-      setResponse("서버와 통신 중 오류가 발생했습니다.");
-    } finally {
-      setLoading(false);
-    }
-  };
+       setResponse(data.recommendation || "응답 없음");
+     } catch (err) {
+       console.error("통신 오류:", err);
+       setResponse("서버와 통신 중 오류가 발생했습니다.");
+     } finally {
+       setLoading(false);
+     }
+   };
 
   return (
     <div className="flex flex-col items-center p-6 bg-white rounded-xl shadow-md w-full max-w-3xl mx-auto mt-10 border">
