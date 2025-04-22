@@ -24,9 +24,13 @@ const ChatGPTWidget = () => {
       });
 
       const data = await res.json();
-      if (data.recommendation && data.flowers) {
+      if (
+        data.recommendation &&
+        Array.isArray(data.flowers)
+      ) {
         setResponse(`${data.recommendation}\n\n추천된 꽃들:\n${data.flowers.join(", ")}`);
       } else {
+        console.warn("예상하지 못한 응답 형식:", data);
         setResponse("응답 없음");
       }
     } catch (err) {
