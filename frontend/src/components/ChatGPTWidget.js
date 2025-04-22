@@ -29,7 +29,10 @@ const ChatGPTWidget = () => {
         Array.isArray(data.flowers)
       ) {
         setResponse(`${data.recommendation}\n\n추천된 꽃들:\n${data.flowers.join(", ")}`);
-      } else {
+      } else if (typeof data.flowers === "string") {
+        setResponse(`${data.recommendation}\n\n추천된 꽃들:\n${data.flowers}`);
+      }
+      else {
         console.warn("예상하지 못한 응답 형식:", data);
         setResponse("응답 없음");
       }

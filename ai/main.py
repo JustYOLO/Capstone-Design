@@ -111,6 +111,7 @@ def recommend():
 
     result = generate_flower_recommendation_ko(situation, flowers)
     flowers = format_recommended_flowers(flowers)
+    flowers = flowers + "\n" + result 
     return Response(
         json.dumps({
             "recommendation": result,
