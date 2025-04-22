@@ -26,7 +26,7 @@ const HeroSection = () => {
   return (
     <section className={`w-full text-center py-20 sm:py-24 text-white ${getBackgroundColor()}`}>
       {/* 제목 */}
-      <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl font-spring mb-4 text-black mt-16 sm:mt-20 text-center max-w-3xl mx-auto">
+      <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-spring mb-4 text-black mt-16 sm:mt-20 text-center max-w-3xl mx-auto">
       🌷 꽃에 대한 모든 것을 검색하세요 🌷
       </h1>
 
