@@ -8,7 +8,7 @@ const SignupCustomer = () => {
 
   const handleSignup = async () => {
     try {
-      const response = await fetch("https://blossompick.duckdns.org:8011/api/v1/auth/registration/", {
+      const response = await fetch("https://blossompick.duckdns.org/api/v1/auth/registration/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

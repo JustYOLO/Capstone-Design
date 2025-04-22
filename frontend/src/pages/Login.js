@@ -8,7 +8,7 @@ const Login = () => {
 
   const handleLogin = async () => {
     try {
-      const response = await fetch("https://blossompick.duckdns.org:8011/api/v1/auth/login/", {
+      const response = await fetch("https://blossompick.duckdns.org/api/v1/auth/login/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
