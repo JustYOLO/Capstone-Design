@@ -28,6 +28,8 @@ jobs:
 
       - name: Build frontend
         working-directory: frontend
+        env:
+          CI: false # Disable React's CI mode
         run: npm run build
 
       # 3) Move the build output into your Django static dir
