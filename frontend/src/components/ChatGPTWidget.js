@@ -39,7 +39,7 @@ const ChatGPTWidget = () => {
 
   return (
     <div className="flex flex-col items-center p-6 bg-white rounded-xl shadow-md w-full max-w-3xl mx-auto mt-10 border">
-      <h2 className="text-2xl font-bold text-blue-700 mb-4">🌸 AI 꽃 추천 챗봇</h2>
+      <h2 className="text-2xl font-bold text-blue-700 mb-4">AI 챗봇에게 꽃을 추천받아보세요!</h2>
 
       <input
         type="text"
