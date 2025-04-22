@@ -12,12 +12,12 @@ const Profile = () => {
       return;
     }
 
-    const token = JSON.parse(storedUser)?.key; // 또는 access_token 등
+    const token = JSON.parse(storedUser)?.key;
 
     fetch("https://blossompick.duckdns.org//api/v1/user/profile/", {
       method: "GET",
       headers: {
-        "Authorization": `Token ${token}`, // 또는 Bearer ${token} 형식
+        "Authorization": `Token ${token}`,
         "Content-Type": "application/json"
       },
     })

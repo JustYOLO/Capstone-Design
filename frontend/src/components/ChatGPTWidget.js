@@ -23,14 +23,14 @@ const ChatGPTWidget = () => {
         }),
       });
 
-      const data = await res.json();
-       setResponse(data.recommendation || "응답 없음");
-     } catch (err) {
-       console.error("통신 오류:", err);
-       setResponse("서버와 통신 중 오류가 발생했습니다.");
-     } finally {
-       setLoading(false);
-     }
+        const data = await res.text();
+        setResponse(data || "응답 없음");
+      } catch (err) {
+        console.error("통신 오류:", err);
+        setResponse("서버와 통신 중 오류가 발생했습니다.");
+      } finally {
+        setLoading(false);
+      }
    };
 
   return (

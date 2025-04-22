@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-// 🌸 MBTI에 따른 꽃 매칭 데이터
+// MBTI에 따른 꽃 매칭 데이터
 const flowerResults = {
   ENFP: { name: "해바라기 🌻", meaning: "희망, 존경, 충성", description: "늘 주변을 밝히는 ENFP! 활발하고 따뜻한 성격과 희망을 잃지 않는 해바라기가 잘 어울려요." },
   ENTP: { name: "장미 🌹", meaning: "열정, 도전, 사랑", description: "도전을 즐기는 ENTP! 뜨거운 열정을 가진 장미처럼 매력적인 카리스마가 돋보이는 타입이에요." },

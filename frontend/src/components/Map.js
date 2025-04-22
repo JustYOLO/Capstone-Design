@@ -21,14 +21,14 @@ const Map = () => {
 
             const map = new window.naver.maps.Map(mapRef.current, mapOptions);
 
-            // 🔹 현재 위치 마커
+            // 현재 위치 마커
             new window.naver.maps.Marker({
               position: new window.naver.maps.LatLng(userLat, userLng),
               map,
               title: "내 위치",
             });
 
-            // 🔹 예시 꽃집 마커들 (임의 좌표)
+            // 예시 꽃집 마커들 (임의 좌표)
             const flowerShops = [
               { name: "로맨틱플라워", lat: userLat + 0.002, lng: userLng + 0.002 },
               { name: "블룸하우스", lat: userLat - 0.0015, lng: userLng - 0.001 },
