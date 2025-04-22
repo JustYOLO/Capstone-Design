@@ -1,30 +1,53 @@
-name: Build and Push Docker Image
+# .github/workflows/docker-image.yml
+name: Build & Push Docker Image
 
 on:
   push:
     branches:
-      - main  # Change to your default branch if needed
-  workflow_dispatch:  # Allows manual trigger
+      - main
+  workflow_dispatch:
 
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      # 1) Fetch your code
+      - name: Check out repo
         uses: actions/checkout@v4
 
+      # 2) Install & build your React frontend
+      - name: Set up Node.js v18.20.6
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.20.6'
+          cache: 'npm'
+
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: npm ci
+
+      - name: Build frontend
+        working-directory: frontend
+        run: npm run build
+
+      # 3) Move the build output into your Django static dir
+      - name: Overwrite static build
+        run: |
+          rm -rf webserver/webserver/static/build
+          mv frontend/build webserver/webserver/static/build
+
+      # 4) Log in, build & push Docker image
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build Docker image (using webserver folder)
+      - name: Build & push Docker image
         run: |
-          docker build -t justyolo912/django-docker:latest \
-          -f webserver/Dockerfile webserver
-
-      - name: Push Docker image to Docker Hub
-        run: |
+          docker build \
+            -t justyolo912/django-docker:latest \
+            -f webserver/Dockerfile webserver
           docker push justyolo912/django-docker:latest
+
