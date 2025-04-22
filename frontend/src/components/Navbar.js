@@ -51,7 +51,7 @@ const Navbar = () => {
         
         {isLoggedIn ? (
           <div className="relative">
-            {/* 🔽 프로필 버튼 클릭 시 드롭다운 토글 */}
+            {/* 프로필 버튼 클릭 시 드롭다운 토글 */}
             <button
               onClick={() => setShowDropdown(!showDropdown)}
               className="flex items-center space-x-2 px-4 py-2 border rounded-lg hover:bg-gray-100 transition"
@@ -63,7 +63,7 @@ const Navbar = () => {
             {showDropdown && (
               <div className="absolute right-0 mt-2 w-40 bg-white border rounded-lg shadow-lg">
                 <Link to="/profile" className="block px-4 py-2 hover:bg-gray-100">개인정보 설정</Link>
-                <Link to="/register-store" className="block px-4 py-2 hover:bg-gray-100">꽃집 등록하기</Link>
+                <Link to="/voc" className="block px-4 py-2 hover:bg-gray-100">문의사항</Link>
                 <button
                   onClick={handleLogout}
                   className="block w-full text-left px-4 py-2 text-red-500 hover:bg-gray-100"
