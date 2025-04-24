@@ -65,12 +65,13 @@ def generate_flower_recommendation_ko(situation, recommended_flowers):
         ## Output Format
         
         - 종합 추천 이유:
-        [Explain logically and kindly how the combined meanings of the recommended flowers connect specifically to the user's situation. And there should be a new line between flower descriptions.]
+        [Explain logically and kindly how the combined meanings of the recommended flowers connect specifically to the user's situation.]
 
         Important Instructions:
         - Provide ONLY the '종합 추천 이유' section.
         - Do NOT include any other sections or titles.
         - Respond strictly in Korean.
+        - And there must be a new line between flower descriptions.
     """
     
     # 응답 생성
@@ -110,14 +111,13 @@ def recommend():
     print("DEBUG:", flowers)
 
     result = generate_flower_recommendation_ko(situation, flowers)
+    print("DEBUG:", result)
     flowers = format_recommended_flowers(flowers)
-    flowers = flowers + "\n" + result 
+    flowers = flowers + "\n" + "\n" + result 
+    print("DEBUG:", flowers)
     return Response(
-        json.dumps({
-            "recommendation": result,
-            "flowers": flowers
-        }, ensure_ascii=False),
-        content_type='application/json'
+        flowers,
+        content_type='text/plain'
     ), 200
 
 

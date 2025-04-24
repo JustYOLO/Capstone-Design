@@ -40,6 +40,8 @@ function AppContent() {
         <Route path="/dictionary" element={<FlowerDictionary/>} />
         <Route path="/FlowerMBTI" element={<FlowerMBTI />} />
         <Route path="/map" element={<Map />} />
+        <Route path="/voc" element={<Voc />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
 
       {/* 홈 화면(`/`)에서만 GPT & 지도 표시 */}
