@@ -191,7 +191,7 @@ EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = "no-reply@blossompick.com" # email sending address
+EMAIL_HOST_USER = "blossompick0@gmail.com" # email sending address
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
 
 ACCOUNT_EMAIL_VERIFICATION = "mandatory" # Require email confirmation
