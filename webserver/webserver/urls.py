@@ -22,7 +22,7 @@ from django.urls import include, path, re_path
 from django.conf.urls.static import static
 from django.conf import settings
 from django.views.static import serve
-from dj_rest_auth.registration.views import VerifyEmailView
+from .views import JSAlertVerifyEmailView
 
 BUILD_DIR = os.path.join(settings.BASE_DIR, 'webserver', 'static', 'build')
 
@@ -30,11 +30,11 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/auth/', include("dj_rest_auth.urls")),
     path(
-        'api/v1/auth/registration/account-confirm-email/<slug:key>/',
-        VerifyEmailView.as_view(),
-        name='account_confirm_email',
-    ),
-     path('api/v1/auth/registration/', include('dj_rest_auth.registration.urls')),
+      "api/v1/auth/registration/account-confirm-email/<slug:key>/",
+      JSAlertVerifyEmailView.as_view(),
+      name="account_confirm_email",
+    ), 
+    path('api/v1/auth/registration/', include('dj_rest_auth.registration.urls')),
 
     path(
         'flowers.json',
