@@ -4,13 +4,29 @@ const SignupFlorist = () => {
   const [file, setFile] = useState(null);
   const [preview, setPreview] = useState(null);
 
-  // 🔹 파일 선택 시 실행되는 함수
-  const handleFileChange = (event) => {
-    const selectedFile = event.target.files[0];
-
-    if (selectedFile) {
-      setFile(selectedFile);
-      setPreview(URL.createObjectURL(selectedFile)); // 이미지 미리보기 설정
+  // 파일 선택 시 실행되는 함수
+  const handleFileChange = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+  
+    const formData = new FormData();
+    formData.append("file", file);
+  
+    try {
+      const response = await fetch("https://blossompick.duckdns.org/api/v1/upload-pdf/", {
+        method: "POST",
+        body: formData,
+      });
+  
+      if (!response.ok) throw new Error("파일 업로드 실패");
+  
+      const data = await response.json();
+      alert("파일 업로드 성공!");
+      console.log("서버 응답:", data);
+  
+    } catch (err) {
+      console.error("파일 업로드 오류:", err);
+      alert("파일 업로드 중 오류가 발생했습니다.");
     }
   };
 
@@ -34,12 +50,12 @@ const SignupFlorist = () => {
         <input type="password" placeholder="비밀번호 확인"
           className="w-full mt-3 px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" />
 
-        {/* 🔹 사업자등록증 업로드 */}
+        {/* 사업자등록증 업로드 */}
         <div className="mt-4">
-          <label className="block text-gray-700 font-medium">📄 사업자등록증 업로드</label>
+          <label className="block text-gray-700 font-medium">📄 사업자등록증 업로드 (pdf형태로 업로드 해주세요)</label>
           <input 
             type="file" 
-            accept="image/*" 
+            accept="application/pdf" 
             onChange={handleFileChange} 
             className="w-full mt-2 px-4 py-2 border rounded-lg cursor-pointer bg-white focus:ring-2 focus:ring-purple-500"
           />

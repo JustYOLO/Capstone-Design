@@ -187,13 +187,17 @@ def format_recommended_flowers(recommended_flowers_ko):
 
 
 
+
 # 테스트: 특정 상황에 어울리는 꽃 추천
 if __name__ == "__main__":
     # 한국어 입력 받기
     query_text_ko = input("현재 어떤 상태에서 꽃을 선물해주고 싶나요? : ")
     print("")
 
-    # 한국어 입력에 대해 꽃 검색
+
+    
+    
+    
     recommended_flowers_ko = search_flower_ko(query_text_ko)
 
     formatted_result = format_recommended_flowers(recommended_flowers_ko)
