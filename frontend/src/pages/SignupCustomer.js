@@ -24,7 +24,8 @@ const SignupCustomer = () => {
       const data = await response.json();
 
       if (response.ok) {
-        alert("회원가입 성공!");
+        alert("이메일로 전송된 링크를 눌러주세요!");
+        // 여기서 response ok 다시 뜨면 login 페이지로 이동하게 하면 됨
         window.location.href = "/login"; // 로그인 페이지로 이동
       } else {
         if (data.email) {

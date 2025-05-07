@@ -17,6 +17,7 @@ import FlowerDictionary from "./pages/FlowerDictionary";
 import FlowerMBTI from "./pages/FlowerMBTI";
 import Voc from "./pages/Voc";
 import Profile from "./pages/Profile";
+import AfterSingup from "./pages/AfterSignup";
 
 function AppContent() {
   const location = useLocation(); // 현재 페이지의 경로 가져오기
@@ -42,6 +43,7 @@ function AppContent() {
         <Route path="/map" element={<Map />} />
         <Route path="/voc" element={<Voc />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/aftersignup" element={<AfterSingup />} />
       </Routes>
 
       {/* 홈 화면(`/`)에서만 GPT & 지도 표시 */}
