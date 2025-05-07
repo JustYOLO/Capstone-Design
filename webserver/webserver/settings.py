@@ -48,15 +48,8 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'dj_rest_auth',
     'dj_rest_auth.registration',
+    'accounts',
 ]
-
-# django-allauth settings
-
-ACCOUNT_AUTHENTICATION_METHOD = "email"  # Use Email / Password authentication
-ACCOUNT_USERNAME_REQUIRED = False
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_EMAIL_VERIFICATION = "none" # Do not require email confirmation
-
 
 # django.contrib.sites
 SITE_ID = 1
@@ -134,7 +127,19 @@ REST_AUTH = {
     "JWT_AUTH_HTTPONLY": False,  # Makes sure refresh token is sent
 }
 
+REST_AUTH_REGISTER_SERIALIZERS = {
+        "REGISTER_SERIALIZER": "accounts.serializers.CustomRegisterSerializer",
 
+}
+
+AUTH_USER_MODEL = "accounts.CustomUser"
+
+# django-allauth settings
+
+ACCOUNT_AUTHENTICATION_METHOD = "email"  # Use Email / Password authentication
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_UNIQUE_EMAIL      = True
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
