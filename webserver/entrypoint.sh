@@ -1,6 +1,8 @@
 #!/bin/sh
 set -e
 
+python manage.py makemigrations accounts
+
 # 1) Fake the initial migration for your "accounts" app  
 python manage.py migrate accounts 0001_initial --fake
 
