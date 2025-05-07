@@ -89,23 +89,9 @@ def generate_flower_recommendation_ko(situation, recommended_flowers):
     """추천된 꽃 목록을 바탕으로 Ollama를 이용해 자연스러운 추천 문장 생성"""
     if not recommended_flowers:
         return "죄송합니다. 적절한 꽃을 찾을 수 없습니다."
-
+    
     flowers_info = ", ".join([f"{f}({m})" for f, m in recommended_flowers])
     #print(flowers_info)
-    # prompt_text = f"""
-    #     You are a flower expert. Recommend a flower that suits the user's situation and logically explain its meaning and the reason for your recommendation.
-    #     The user has requested a flower recommendation for the following situation:
-
-    #     Situation: {situation}
-
-    #     Recommended flowers and their meanings: {flowers_info}
-
-    #     Please provide a kind yet logical response following the format below.
-    #     And you must use Korean language.
-
-    #     ## Output Format (Explain logically why you recommended these flowers)
-    #     - Reason for Recommendation: [Logically explain how the flower meaning connects to the user's situation]
-    # """
     prompt_text = f"""
         You are a flower expert. The user has requested a flower recommendation for the following situation:
         Situation: {situation}
@@ -118,12 +104,13 @@ def generate_flower_recommendation_ko(situation, recommended_flowers):
         ## Output Format
         
         - 종합 추천 이유:
-        [Explain logically and kindly how the combined meanings of the recommended flowers connect specifically to the user's situation]
+        [Explain logically and kindly how the combined meanings of the recommended flowers connect specifically to the user's situation.]
 
         Important Instructions:
         - Provide ONLY the '종합 추천 이유' section.
         - Do NOT include any other sections or titles.
         - Respond strictly in Korean.
+        - And there must be a new line between flower descriptions.
     """
     
     # 응답 생성
