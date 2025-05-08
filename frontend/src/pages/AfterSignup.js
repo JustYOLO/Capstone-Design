@@ -5,7 +5,7 @@ const AfterSingup = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 text-center px-4">
       <h1 className="text-3xl sm:text-4xl font-bold text-green-600 mb-4">
-        ✅ 이메일 인증이 완료되었습니다!
+        ✅ 이메일로 링크가 전송되었습니다!
       </h1>
       <p className="text-gray-700 mb-6">
         이제 모든 기능을 이용하실 수 있습니다. <br />

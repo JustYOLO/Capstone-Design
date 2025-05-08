@@ -25,7 +25,7 @@ const SignupCustomer = () => {
 
       if (response.ok) {
         alert("이메일로 전송된 링크를 눌러주세요!");
-        // 여기서 response ok 다시 뜨면 login 페이지로 이동하게 하면 됨
+        // 여기서 response ok 다시 뜨면 aftersignup 페이지로 이동하게 하면 됨
         window.location.href = "/aftersignup"; // 로그인 페이지로 이동
       } else {
         if (data.email) {
@@ -36,7 +36,7 @@ const SignupCustomer = () => {
           alert("오류: " + data.non_field_errors.join(" "));
         } else {
           alert("회원가입 실패: " + JSON.stringify(data));
-        }
+        } 
       }
     } catch (error) {
       console.error("에러:", error);
