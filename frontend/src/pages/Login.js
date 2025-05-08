@@ -23,7 +23,7 @@ const Login = () => {
   
       if (response.ok) {
         // 관리자 이메일 판별
-        const isAdmin = data.email === "wida10@dankook.ac.kr";
+        const isAdmin = data.email?.trim().toLowerCase() === "wida10@dankook.ac.kr";
         const userData = { ...data, isAdmin };
   
         localStorage.setItem("user", JSON.stringify(userData));
