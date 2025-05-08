@@ -18,13 +18,22 @@ const Login = () => {
           password,
         }),
       });
-
+  
       const data = await response.json();
-
+  
       if (response.ok) {
-        localStorage.setItem("user", JSON.stringify(data));
+        // 관리자 이메일 판별
+        const isAdmin = data.email === "wida10@dankook.ac.kr";
+        const userData = { ...data, isAdmin };
+  
+        localStorage.setItem("user", JSON.stringify(userData));
         alert("로그인 성공!");
-        navigate("/"); // 홈으로 이동
+  
+        if (isAdmin) {
+          navigate("/admin"); // 관리자 페이지로 이동
+        } else {
+          navigate("/"); // 일반 사용자: 홈으로 이동
+        }
       } else {
         alert(data.detail || "로그인 실패");
       }
