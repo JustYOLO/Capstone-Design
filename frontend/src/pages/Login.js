@@ -22,12 +22,12 @@ const Login = () => {
         const isAdmin = data.email?.trim().toLowerCase() === "sslabplusai@gmail.com";
         const userData = { ...data, isAdmin };
         localStorage.setItem("user", JSON.stringify(userData));
-      
-        // navigate 먼저 → alert은 navigate 완료 이후 발생 (100ms 정도 지연)
+
         setTimeout(() => {
-          navigate(isAdmin ? "/admin" : "/profile");
-          setTimeout(() => alert("로그인 성공!"), 100);
+          navigate(isAdmin ? "/admin" : "/");
         }, 0);
+
+        alert("로그인 성공!");
       } else {
         alert(data.detail || "로그인 실패");
       }
