@@ -13,27 +13,21 @@ const Login = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          email,
-          password,
-        }),
+        body: JSON.stringify({ email, password }),
       });
-  
+
       const data = await response.json();
-  
+
       if (response.ok) {
-        // 관리자 이메일 판별
         const isAdmin = data.email?.trim().toLowerCase() === "sslabplusai@gmail.com";
         const userData = { ...data, isAdmin };
-  
         localStorage.setItem("user", JSON.stringify(userData));
+
+        setTimeout(() => {
+          navigate(isAdmin ? "/admin" : "/");
+        }, 0);
+
         alert("로그인 성공!");
-  
-        if (isAdmin) {
-          navigate("/admin"); // 관리자 페이지로 이동
-        } else {
-          navigate("/"); // 일반 사용자: 홈으로 이동
-        }
       } else {
         alert(data.detail || "로그인 실패");
       }
@@ -72,8 +66,8 @@ const Login = () => {
       </div>
 
       <div className="mt-4 flex justify-between w-80 text-sm text-gray-500">
-        <Link to="/Signup" className="hover:underline">회원가입</Link>
-        <Link to="/ResetPassword" className="hover:underline">비밀번호 재설정</Link>
+        <Link to="/signup" className="hover:underline">회원가입</Link>
+        <Link to="/resetpassword" className="hover:underline">비밀번호 재설정</Link>
       </div>
     </div>
   );
