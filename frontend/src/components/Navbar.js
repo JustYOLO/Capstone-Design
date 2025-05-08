@@ -1,30 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FiUser } from "react-icons/fi";
 import { MdLogout } from "react-icons/md";
 import { FaBars } from "react-icons/fa";
 
-const Navbar = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userInfo, setUserInfo] = useState(null); // 사용자 정보 저장
+const Navbar = ({ user }) => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const navigate = useNavigate();
   const [showDropdown, setShowDropdown] = useState(false);
-
-  useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      setIsLoggedIn(true);
-      setUserInfo(JSON.parse(storedUser)); // 유저 정보 추출
-    }
-  }, []);
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     localStorage.removeItem("user");
-    setIsLoggedIn(false);
-    setUserInfo(null); // 유저 정보 초기화
     navigate("/");
-    window.location.reload();
+    window.location.reload(); // 전체 상태 리셋 (또는 App에서 user 상태 관리할 경우 setUser(null) 방식 추천)
   };
 
   return (
@@ -47,17 +35,16 @@ const Navbar = () => {
           <Link to="/searchwhere" className="hover:text-blue-500 transition">꽃집 조회</Link>
           <Link to="/order" className="hover:text-blue-500 transition">꽃 주문</Link>
         </div>
+
         {/* 로그인 상태에 따라 UI 변경 */}
-        
-        {isLoggedIn ? (
+        {user ? (
           <div className="relative">
-            {/* 프로필 버튼 클릭 시 드롭다운 토글 */}
             <button
               onClick={() => setShowDropdown(!showDropdown)}
               className="flex items-center space-x-2 px-4 py-2 border rounded-lg hover:bg-gray-100 transition"
             >
               <FiUser className="text-gray-700 text-xl" />
-              <span className="text-gray-700">{userInfo?.name || userInfo?.email || "프로필"}</span>
+              <span className="text-gray-700">{user.name || user.email || "프로필"}</span>
             </button>
 
             {showDropdown && (
