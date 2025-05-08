@@ -18,6 +18,7 @@ import FlowerMBTI from "./pages/FlowerMBTI";
 import Voc from "./pages/Voc";
 import Profile from "./pages/Profile";
 import AfterSingup from "./pages/AfterSignup";
+import Admin from "./pages/Admin";
 
 function AppContent() {
   const location = useLocation(); // 현재 페이지의 경로 가져오기
@@ -44,6 +45,8 @@ function AppContent() {
         <Route path="/voc" element={<Voc />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/aftersignup" element={<AfterSingup />} />
+        <Route path="/admin" element={<Admin />} />
+        {/* 추가적인 페이지 라우트 */}
       </Routes>
 
       {/* 홈 화면(`/`)에서만 GPT & 지도 표시 */}
