@@ -71,9 +71,8 @@ ROOT_URLCONF = 'webserver.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'webserver/static/build/')],
+        'DIRS': [os.path.join(BASE_DIR, 'webserver/static/build/'), BASE_DIR / 'templates'],
         'APP_DIRS': True,
-        'DIRS': [BASE_DIR / 'templates'],
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
