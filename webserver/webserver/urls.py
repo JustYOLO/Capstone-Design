@@ -23,7 +23,7 @@ from django.conf.urls.static import static
 from django.conf import settings
 from django.views.static import serve
 from allauth.account.views import ConfirmEmailView
-from ..accounts.views import BusinessSignupView
+from accounts.views import BusinessSignupView
 
 BUILD_DIR = os.path.join(settings.BASE_DIR, 'webserver', 'static', 'build')
 
