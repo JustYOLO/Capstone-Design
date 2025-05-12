@@ -202,4 +202,4 @@ EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
 ACCOUNT_EMAIL_VERIFICATION = "mandatory" # Require email confirmation
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True  # No need to sent POST request to confirmation link
 LOGIN_URL = "/"  # Path, users will be redirected to after email verification
-
+ACCOUNT_EMAIL_SUBJECT_PREFIX = "[blossompick.duckdns.org] "

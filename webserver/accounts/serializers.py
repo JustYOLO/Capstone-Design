@@ -1,6 +1,10 @@
 from dj_rest_auth.registration.serializers import RegisterSerializer
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
+from rest_framework import serializers
+from .models import BusinessProfile
+from .verify import verify_pdf  # your existing function
+
 
 User = get_user_model()
 
@@ -23,4 +27,43 @@ class CustomRegisterSerializer(RegisterSerializer):
         data = super().get_cleaned_data()
         data["user_type"] = self.validated_data.get("user_type")
         return data
+
+
+User = get_user_model()
+
+class BusinessSignupSerializer(serializers.Serializer):
+    name     = serializers.CharField(max_length=150)
+    email    = serializers.EmailField()
+    password = serializers.CharField(write_only=True)
+    file     = serializers.FileField()
+
+    def validate_file(self, uploaded_file):
+        # runs your verify_pdf() on the incoming file object
+        if not verify_pdf(uploaded_file):
+            raise serializers.ValidationError("PDF verification failed")
+        return uploaded_file
+
+    def create(self, validated_data):
+        name     = validated_data.pop("name")
+        email    = validated_data.pop("email")
+        password = validated_data.pop("password")
+        pdf_file = validated_data.pop("file")
+
+        # 1) create the user
+        user = User.objects.create_user(
+            username=email,      # or however your User model is keyed
+            email=email,
+            password=password,
+            # if your User has a `name` field, set it here:
+            **({"name": name} if hasattr(User, "name") else {})
+        )
+
+        # 2) attach the PDF and mark as verified
+        BusinessProfile.objects.create(
+            user=user,
+            pdf=pdf_file,
+            is_verified=True,
+        )
+
+        return user
 
