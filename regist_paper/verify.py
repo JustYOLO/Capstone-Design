@@ -36,7 +36,7 @@ def extract_business_info_from_pdf(pdf_path):
 
 # -------- [2] API 검증 요청 함수 --------
 def verify_business_number(b_no: str):
-    service_key = "1Lg%2FSxEhGQ335UV3npo8pdNJqTdu6rbBSXMmfSPL2LilPhfDHRzQQvzGCfrFwxweu8aSmnPqNWhT%2BPye7EHVOQ%3D%3D"
+    service_key = ""
     url = f"https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey={service_key}"
     data = {"b_no": [b_no]}
 

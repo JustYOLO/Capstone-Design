@@ -114,7 +114,7 @@ def generate_flower_recommendation_ko(situation, recommended_flowers):
     """
     
     # 응답 생성
-    output = ollama.generate(model="gemma3:latest", prompt=prompt_text)
+    output = ollama.generate(model="gemma3:4b", prompt=prompt_text)
     return output["response"]
 
 
@@ -141,7 +141,7 @@ def generate_flower_recommendation_en_to_ko(situation, recommended_flowers):
     """
     
     # 응답 생성
-    output = ollama.generate(model="gemma:latest", prompt=prompt_text)
+    output = ollama.generate(model="gemma3:4b", prompt=prompt_text)
     return output["response"]
 
 
