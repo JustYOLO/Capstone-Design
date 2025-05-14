@@ -37,7 +37,7 @@ urlpatterns = [
     ),
     path('api/v1/auth/registration/', include('dj_rest_auth.registration.urls')),    
     path(
-      "api/v1/upload-pdf/",
+      "api/v1/florist/registration/",
       BusinessRegisterView.as_view(),
       name="business-register",
     ),
