@@ -15,34 +15,37 @@ const SignupFlorist = () => {
     }
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    if (!file || !name || !email || !password) {
+    const handleSignup = async () => {
+    if (!name || !email || !password1 || !password2 || !file) {
       alert("모든 항목을 입력해주세요.");
       return;
     }
 
     const formData = new FormData();
-    formData.append("file", file);
     formData.append("name", name);
     formData.append("email", email);
-    formData.append("password", password);
+    formData.append("password1", password1);
+    formData.append("password2", password2);
+    formData.append("file", file);  // PDF 파일 추가
 
     try {
-      const response = await fetch("https://blossompick.duckdns.org/api/v1/upload-pdf/", {
+      const response = await fetch("https://blossompick.duckdns.org/api/v1/florist/registration/", {
         method: "POST",
         body: formData,
       });
 
-      if (!response.ok) throw new Error("업로드 실패");
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(errorText);
+      }
 
       const data = await response.json();
-      alert("가입 및 파일 업로드 성공!");
-      console.log("서버 응답:", data);
+      alert("회원가입 성공!");
+      console.log("응답 결과:", data);
+
     } catch (err) {
-      console.error("업로드 오류:", err);
-      alert("업로드 중 오류 발생");
+      console.error("❌ 회원가입 오류:", err);
+      alert("회원가입 중 오류가 발생했습니다.");
     }
   };
 
