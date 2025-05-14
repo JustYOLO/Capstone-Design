@@ -1,18 +1,9 @@
-from rest_framework import generics, permissions
+from dj_rest_auth.registration.views import RegisterView
 from rest_framework.parsers import MultiPartParser, FormParser
-from .serializers import BusinessSignupSerializer
+from .serializers import BusinessRegisterSerializer
 
-class BusinessSignupView(generics.CreateAPIView):
-    """
-    POST /api/v1/upload-pdf/
-    {
-      "email": "...",
-      "password": "...",
-      "pdf": <binary PDF file>
-    }
-    """
-    serializer_class = BusinessSignupSerializer
-    permission_classes = [permissions.AllowAny]
+class BusinessRegisterView(RegisterView):
+    serializer_class = BusinessRegisterSerializer
     parser_classes = [MultiPartParser, FormParser]
 
 # Create your views here.

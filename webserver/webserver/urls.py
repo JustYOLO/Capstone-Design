@@ -23,7 +23,7 @@ from django.conf.urls.static import static
 from django.conf import settings
 from django.views.static import serve
 from allauth.account.views import ConfirmEmailView
-from accounts.views import BusinessSignupView
+from accounts.views import BusinessRegisterView
 
 BUILD_DIR = os.path.join(settings.BASE_DIR, 'webserver', 'static', 'build')
 
@@ -35,11 +35,11 @@ urlpatterns = [
         ConfirmEmailView.as_view(),
         name="account_confirm_email",
     ),
-    path('api/v1/auth/registration/', include('dj_rest_auth.registration.urls')),
+    path('api/v1/auth/registration/', include('dj_rest_auth.registration.urls')),    
     path(
-        "api/v1/upload-pdf/",
-        BusinessSignupView.as_view(),
-        name="business-signup",
+      "api/v1/upload-pdf/",
+      BusinessRegisterView.as_view(),
+      name="business-register",
     ),
     path(
         'flowers.json',
