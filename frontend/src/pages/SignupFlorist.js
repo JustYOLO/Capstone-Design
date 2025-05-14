@@ -5,7 +5,8 @@ const SignupFlorist = () => {
   const [preview, setPreview] = useState(null);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [password1, setPassword1] = useState("");
+  const [password2, setPassword2] = useState("");
 
   const handleFileChange = (event) => {
     const selected = event.target.files[0];
@@ -15,7 +16,7 @@ const SignupFlorist = () => {
     }
   };
 
-    const handleSignup = async () => {
+  const handleSignup = async () => {
     if (!name || !email || !password1 || !password2 || !file) {
       alert("모든 항목을 입력해주세요.");
       return;
@@ -26,7 +27,7 @@ const SignupFlorist = () => {
     formData.append("email", email);
     formData.append("password1", password1);
     formData.append("password2", password2);
-    formData.append("file", file);  // PDF 파일 추가
+    formData.append("file", file);
 
     try {
       const response = await fetch("https://blossompick.duckdns.org/api/v1/florist/registration/", {
@@ -61,10 +62,10 @@ const SignupFlorist = () => {
         <input type="email" placeholder="E-MAIL" value={email} onChange={(e) => setEmail(e.target.value)}
           className="w-full mt-3 px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" />
 
-        <input type="password" placeholder="비밀번호" value={password} onChange={(e) => setPassword(e.target.value)}
+        <input type="password" placeholder="비밀번호" value={password1} onChange={(e) => setPassword1(e.target.value)}
           className="w-full mt-3 px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" />
 
-        <input type="password" placeholder="비밀번호 확인"
+        <input type="password" placeholder="비밀번호 확인" value={password2} onChange={(e) => setPassword2(e.target.value)}
           className="w-full mt-3 px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" />
 
         <div className="mt-4">
@@ -83,7 +84,7 @@ const SignupFlorist = () => {
           )}
         </div>
 
-        <button onClick={handleSubmit} className="w-full mt-4 px-4 py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition">
+        <button onClick={handleSignup} className="w-full mt-4 px-4 py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition">
           가입하기
         </button>
       </div>
