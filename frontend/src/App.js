@@ -19,6 +19,7 @@ import Voc from "./pages/Voc";
 import Profile from "./pages/Profile";
 import AfterSingup from "./pages/AfterSignup";
 import Admin from "./pages/Admin";
+import AfterLoginFlorist from "./pages/AfterLoginFlorist";
 
 function AppContent() {
   const location = useLocation();
@@ -53,6 +54,7 @@ function AppContent() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/aftersignup" element={<AfterSingup />} />
         <Route path="/admin" element={<Admin />} />
+        <Route path="/afterloginflorist" element={<AfterLoginFlorist />} />
       </Routes>
 
       {isHome && (
