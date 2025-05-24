@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
-// base
+// common
 import Navbar from "./components/common/Navbar";
 import HeroSection from "./components/common/HeroSection";
 import Footer from "./components/common/Footer";
@@ -74,7 +74,7 @@ function AppContent() {
       {isHome && (
         <>
           <div className="flex justify-center py-16">
-            <ChatGPTWidget />
+            <ChatWidget />
           </div>
           <div className="flex justify-center py-16">
             <Map />
