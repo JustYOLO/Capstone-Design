@@ -1,5 +1,5 @@
 import React from "react";
-import Snowfall from "./effects/Snowfall";
+import Snowfall from "../effects/Snowfall";
 import CherryBlossom from "../effects/CherryBlossom";
 import GreenLeaves from "../effects/GreenLeaves";
 import AutumnLeaves from "../effects/AutumnLeaves";
