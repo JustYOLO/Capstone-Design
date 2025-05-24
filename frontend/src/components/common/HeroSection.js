@@ -24,16 +24,9 @@ const HeroSection = () => {
   }
 
   return (
-    <section className={`w-full text-center py-20 sm:py-24 text-white ${getBackgroundColor()}`}>
-      {/* 제목 */}
-      <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-spring mb-4 text-black mt-16 sm:mt-20 text-center max-w-3xl mx-auto">
-      🌷 꽃에 대한 모든 것을 검색하세요 🌷
-      </h1>
-
-      <p className="text-base sm:text-lg md:text-xl lg:text-2xl leading-relaxed text-black font-spring text-center max-w-3xl mx-auto">
-      꽃말 검색 · 꽃집 검색 · 꽃 추천 <br />
-      상황에 딱 맞는 꽃을 찾아보세요!
-      </p>
+    <section className={`hero-section ${getBackgroundColor()}`}>
+      <h1 className="hero-title">🌷 꽃에 대한 모든 것을 검색하세요 🌷</h1>
+      <p className="hero-description">꽃말 검색 · 꽃집 검색 · 꽃 추천 <br /> 상황에 딱 맞는 꽃을 찾아보세요!</p>
 
       {/* 계절별 효과 */}
       {dateNumber >= 301 && dateNumber <= 430 && <CherryBlossom />}
@@ -41,32 +34,12 @@ const HeroSection = () => {
       {dateNumber >= 916 && dateNumber <= 1114 && <AutumnLeaves />}
       {dateNumber >= 1115 || dateNumber <= 227 ? <Snowfall /> : null}
 
-      {/* 네비게이션 버튼 */}
+      {/* 버튼 */}
       <div className="flex flex-col md:flex-row justify-center gap-4 md:gap-6 mt-10">
-        <Link 
-          to="/dictionary" 
-          className="px-6 py-3 md:px-10 md:py-4 bg-white text-purple-600 rounded-lg shadow hover:bg-gray-100 transition text-sm md:text-lg"
-        >
-          꽃말 사전 📖
-        </Link>
-        <Link 
-          to="/order" 
-          className="px-6 py-3 md:px-10 md:py-4 bg-white text-purple-600 rounded-lg shadow hover:bg-gray-100 transition text-sm md:text-lg"
-        >
-          꽃집 주문 🛒
-        </Link>
-        <Link 
-          to="/searchwhere" 
-          className="px-6 py-3 md:px-10 md:py-4 bg-white text-purple-600 rounded-lg shadow hover:bg-gray-100 transition text-sm md:text-lg"
-        >
-          꽃집 조회 🗺️
-        </Link>
-        <Link 
-          to="/FlowerMBTI" 
-          className="px-6 py-3 md:px-10 md:py-4 bg-white text-purple-600 rounded-lg shadow hover:bg-gray-100 transition text-sm md:text-lg"
-        >
-          🌸 꽃BTI 테스트하기 💐
-        </Link>
+        <Link to="/dictionary" className="hero-button">꽃말 사전 📖</Link>
+        <Link to="/order" className="hero-button">꽃집 주문 🛒</Link>
+        <Link to="/searchwhere" className="hero-button">꽃집 조회 🗺️</Link>
+        <Link to="/FlowerMBTI" className="hero-button">🌸 꽃BTI 테스트하기 💐</Link>
       </div>
     </section>
   );

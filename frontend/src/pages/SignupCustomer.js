@@ -1,13 +1,17 @@
 import React, { useState } from "react";
 
+const [loading, setLoading] = useState(false); // 로딩
+
 const SignupCustomer = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password1, setPassword1] = useState("");
   const [password2, setPassword2] = useState("");
+  const [loading, setLoading] = useState(false); // 로딩
 
   const handleSignup = async () => {
     try {
+      setLoading(true);
       const response = await fetch("https://blossompick.duckdns.org/api/v1/auth/registration/", {
         method: "POST",
         headers: {
@@ -41,6 +45,8 @@ const SignupCustomer = () => {
     } catch (error) {
       console.error("에러:", error);
       alert("에러 발생!");
+    } finally {
+      setLoading(false);
     }
   };
 

@@ -5,15 +5,16 @@ import ChatButton from "./ChatButton";
 import ChatResponse from "./ChatResponse";
 
 const ChatWidget = () => {
-  const { input, setInput, response, loading, handleGenerate } = useChatGPT();
+  const { input, setInput, response, loading, handleGenerate } = UseChatGPT();
 
   return (
-    <div className="flex flex-col items-center p-6 bg-white rounded-xl shadow-md w-full max-w-3xl mx-auto mt-10 border">
-      <h2 className="text-2xl font-bold text-blue-700 mb-4">AI 챗봇에게 꽃을 추천받아보세요!</h2>
+    <div className="chat-container">
+      <h2 className="chat-title">
+        AI 챗봇에게 꽃을 추천받아보세요!
+      </h2>
 
       <ChatInput input={input} setInput={setInput} />
       <ChatButton loading={loading} onClick={handleGenerate} />
-
 
       {loading && (
         <div className="mt-6 flex justify-center items-center">

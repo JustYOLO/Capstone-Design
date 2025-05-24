@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 
+const [loading, setLoading] = useState(false); // 로딩
+
 const ResetPassword = () => {
   const [email, setEmail] = useState("");
 
   const handleReset = async () => {
     try {
+      setLoading(true);
       const response = await fetch("https://blossompick.duckdns.org/api/v1/auth/password/reset/", {
         method: "POST",
         headers: {
@@ -22,6 +25,8 @@ const ResetPassword = () => {
       }
     } catch (err) {
       alert("서버 오류");
+    } finally {
+      setLoading(false);
     }
   };
 

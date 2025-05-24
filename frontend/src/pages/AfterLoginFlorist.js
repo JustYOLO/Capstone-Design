@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 
+const [loading, setLoading] = useState(false); // 로딩
+
 const AfterLoginFlorist = () => {
   const [floristData, setFloristData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -9,6 +11,7 @@ const AfterLoginFlorist = () => {
     // 서버에서 사업자 등록정보 불러오기
     const fetchData = async () => {
       try {
+        setLoading(true);
         const res = await fetch("https://blossompick.duckdns.org/api/v1/florist/profile/", {
           credentials: "include",
         });
@@ -26,6 +29,7 @@ const AfterLoginFlorist = () => {
 
   const handleConfirm = async () => {
     try {
+      setLoading(true);
       const res = await fetch("https://blossompick.duckdns.org/api/v1/florist/confirm/", {
         method: "POST",
         credentials: "include",
@@ -39,6 +43,8 @@ const AfterLoginFlorist = () => {
       }
     } catch (err) {
       console.error("❌ 등록 실패:", err);
+    } finally {
+      setLoading(false);
     }
   };
 

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+const [loading, setLoading] = useState(false); // 로딩
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -8,6 +9,7 @@ const Login = () => {
 
   const handleLogin = async () => {
     try {
+      setLoading(true);
       const response = await fetch("https://blossompick.duckdns.org/api/v1/auth/login/", {
         method: "POST",
         headers: {
@@ -33,6 +35,8 @@ const Login = () => {
       }
     } catch (error) {
       alert("서버 오류: 로그인 실패");
+    } finally {
+      setLoading(false);
     }
   };
 

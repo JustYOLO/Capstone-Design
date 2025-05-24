@@ -7,6 +7,7 @@ const SignupFlorist = () => {
   const [email, setEmail] = useState("");
   const [password1, setPassword1] = useState("");
   const [password2, setPassword2] = useState("");
+  const [loading, setLoading] = useState(false); // 로딩
 
   const handleFileChange = (event) => {
     const selected = event.target.files[0];
@@ -30,6 +31,7 @@ const SignupFlorist = () => {
     formData.append("file", file);
 
     try {
+      setLoading(true); // 시작
       const response = await fetch("https://blossompick.duckdns.org/api/v1/florist/registration/", {
         method: "POST",
         body: formData,
@@ -47,6 +49,8 @@ const SignupFlorist = () => {
     } catch (err) {
       console.error("❌ 회원가입 오류:", err);
       alert("회원가입 중 오류가 발생했습니다.");
+    } finally {
+       setLoading(false); // 종료
     }
   };
 
