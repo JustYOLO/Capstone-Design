@@ -20,7 +20,6 @@ import UseChat from "./components/chatbot/UseChat";
 
 // pages
 import Login from "./pages/Login";
-import Lookup from "./pages/Lookup";
 import SearchWhere from "./pages/Search_Where";
 import Order from "./pages/Order";
 import ResetPassword from "./pages/ResetPassword";
