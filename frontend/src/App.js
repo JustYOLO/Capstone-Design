@@ -1,14 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
-import Navbar from "./components/Navbar";
-import HeroSection from "./components/HeroSection";
-import ChatGPTWidget from "./components/ChatGPTWidget";
-import Footer from "./components/Footer";
+// base
+import Navbar from "./components/common/Navbar";
+import HeroSection from "./components/common/HeroSection";
+import Footer from "./components/common/Footer";
+
+// Map
+import Map from "./components/map/Map";
+import NaverMapLoader from "./components/map/NaverMapLoader";
+import FlowerShopMarker from "./components/map/FlowerShopMarker";
+import UserLocationMap from "./components/map/UserLocationMap";
+
+// chatbot
+import ChatButton from "./components/chatbot/ChatButton";
+import ChatInput from "./components/chatbot/ChatInput";
+import ChatResponse from "./components/chatbot/ChatResponse";
+import ChatWidget from "./components/chatbot/ChatWidget";
+import UseChat from "./components/chatbot/UseChat";
+
+// pages
 import Login from "./pages/Login";
 import Lookup from "./pages/Lookup";
 import SearchWhere from "./pages/Search_Where";
 import Order from "./pages/Order";
-import Map from "./components/Map";
 import ResetPassword from "./pages/ResetPassword";
 import Signup from "./pages/Signup";
 import SignupCustomer from "./pages/SignupCustomer";
