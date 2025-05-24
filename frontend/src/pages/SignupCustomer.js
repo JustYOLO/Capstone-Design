@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 
-const [loading, setLoading] = useState(false); // 로딩
-
 const SignupCustomer = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
