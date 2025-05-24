@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from "react";
 
-const [loading, setLoading] = useState(false); // 로딩
-
 const AfterLoginFlorist = () => {
   const [floristData, setFloristData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [confirmed, setConfirmed] = useState(false);
 
   useEffect(() => {
-    // 서버에서 사업자 등록정보 불러오기
     const fetchData = async () => {
       try {
         setLoading(true);
@@ -48,9 +45,13 @@ const AfterLoginFlorist = () => {
     }
   };
 
-  if (loading) return <div className="p-8 text-center">로딩 중...</div>;
+  if (loading && !floristData) {
+    return <div className="p-8 text-center">로딩 중...</div>;
+  }
 
-  if (!floristData) return <div className="p-8 text-center">사업자 정보가 없습니다.</div>;
+  if (!floristData) {
+    return <div className="p-8 text-center">사업자 정보가 없습니다.</div>;
+  }
 
   return (
     <div className="p-8 max-w-2xl mx-auto bg-white rounded shadow border">
@@ -71,10 +72,18 @@ const AfterLoginFlorist = () => {
         <>
           <button
             onClick={handleConfirm}
+            disabled={loading}
             className="w-full py-3 bg-green-600 text-white font-bold rounded hover:bg-green-700 transition"
           >
-            ✅ 정보가 맞습니다. 등록하기
+            {loading ? "등록 처리 중..." : "✅ 정보가 맞습니다. 등록하기"}
           </button>
+
+          {/* 로딩 스피너 */}
+          {loading && (
+            <div className="flex justify-center mt-4">
+              <div className="w-8 h-8 border-4 border-green-200 border-t-green-600 rounded-full animate-spin" />
+            </div>
+          )}
 
           <p className="text-center text-sm text-gray-500 mt-4">
             정보가 잘못되었나요?{" "}

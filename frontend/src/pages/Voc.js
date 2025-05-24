@@ -5,23 +5,19 @@ const Voc = () => {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const payload = {
-      name,
-      email,
-      message
-    };
+    const payload = { name, email, message };
 
     try {
+      setLoading(true); 
       const response = await fetch("https://blossompick.duckdns.org:8011/api/v1/contact/", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(payload)
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
       });
 
       if (response.ok) {
@@ -34,6 +30,8 @@ const Voc = () => {
       }
     } catch (error) {
       alert("서버 오류 발생!");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -41,6 +39,7 @@ const Voc = () => {
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 pt-20">
       <div className="w-full max-w-md bg-white shadow-lg rounded-lg p-6">
         <h2 className="text-2xl font-bold mb-4 text-center text-purple-700">🌸 문의사항</h2>
+
         {submitted ? (
           <p className="text-green-600 font-semibold text-center">문의사항이 성공적으로 접수되었습니다!</p>
         ) : (
@@ -71,10 +70,18 @@ const Voc = () => {
             />
             <button
               type="submit"
+              disabled={loading}
               className="w-full bg-purple-600 text-white font-bold py-2 px-4 rounded hover:bg-purple-700 transition"
             >
-              문의사항 보내기
+              {loading ? "제출 중..." : "문의사항 보내기"}
             </button>
+
+            {/* 로딩 스피너 */}
+            {loading && (
+              <div className="mt-4 flex justify-center">
+                <div className="w-8 h-8 border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin" />
+              </div>
+            )}
           </form>
         )}
       </div>

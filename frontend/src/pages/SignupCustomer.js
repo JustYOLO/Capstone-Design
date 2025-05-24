@@ -1,105 +1,92 @@
 import React, { useState } from "react";
 
-const [loading, setLoading] = useState(false); // 로딩
-
-const SignupCustomer = () => {
+const Voc = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [password1, setPassword1] = useState("");
-  const [password2, setPassword2] = useState("");
-  const [loading, setLoading] = useState(false); // 로딩
+  const [message, setMessage] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleSignup = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const payload = { name, email, message };
+
     try {
       setLoading(true);
-      const response = await fetch("https://blossompick.duckdns.org/api/v1/auth/registration/", {
+      const response = await fetch("https://blossompick.duckdns.org:8011/api/v1/contact/", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: name,
-          email: email, // 기존에 존재하는 이메일에 대해서도 처리해줘야 함
-          password1: password1,
-          password2: password2,
-        }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
       });
 
-      const data = await response.json();
-
       if (response.ok) {
-        alert("이메일로 전송된 링크를 눌러주세요!");
-        // 여기서 response ok 다시 뜨면 aftersignup 페이지로 이동하게 하면 됨
-        window.location.href = "/aftersignup"; // 로그인 페이지로 이동
+        setSubmitted(true);
+        setName("");
+        setEmail("");
+        setMessage("");
       } else {
-        if (data.email) {
-          alert("이미 등록된 이메일입니다.");
-        } else if (data.password1) {
-          alert("비밀번호 오류: " + data.password1.join(" "));
-        } else if (data.non_field_errors) {
-          alert("오류: " + data.non_field_errors.join(" "));
-        } else {
-          alert("회원가입 실패: " + JSON.stringify(data));
-        } 
+        alert("문의사항 제출에 실패했습니다.");
       }
     } catch (error) {
-      console.error("에러:", error);
-      alert("에러 발생!");
+      alert("서버 오류 발생!");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 px-4">
-      <h1 className="text-4xl font-bold text-gray-900">회원가입</h1>
-      <p className="text-gray-600 mt-1">간단한 정보를 입력하고 가입하세요!</p>
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 pt-20">
+      <div className="w-full max-w-md bg-white shadow-lg rounded-lg p-6">
+        <h2 className="text-2xl font-bold mb-4 text-center text-purple-700">🌸 문의사항</h2>
 
-      <div className="mt-6 w-full max-w-md">
-        <input
-          type="text"
-          placeholder="이름"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          className="w-full px-4 py-3 border rounded-lg mt-3"
-        />
-        <input
-          type="email"
-          placeholder="E-MAIL"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="w-full px-4 py-3 border rounded-lg mt-3"
-        />
-        <input
-          type="password"
-          placeholder="비밀번호"
-          value={password1}
-          onChange={(e) => setPassword1(e.target.value)}
-          className="w-full px-4 py-3 border rounded-lg mt-3"
-        />
-        <input
-          type="password"
-          placeholder="비밀번호 확인"
-          value={password2}
-          onChange={(e) => setPassword2(e.target.value)}
-          className="w-full px-4 py-3 border rounded-lg mt-3"
-        />
-        <button
-          onClick={handleSignup}
-          className="w-full mt-4 px-4 py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition"
-        >
-          가입하기
-        </button>
+        {submitted ? (
+          <p className="text-green-600 font-semibold text-center">문의사항이 성공적으로 접수되었습니다!</p>
+        ) : (
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <input
+              type="text"
+              placeholder="이름"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+              className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-purple-400"
+            />
+            <input
+              type="email"
+              placeholder="이메일"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-purple-400"
+            />
+            <textarea
+              placeholder="문의 내용을 작성해주세요..."
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              required
+              rows={5}
+              className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-purple-400 resize-none"
+            />
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-purple-600 text-white font-bold py-2 px-4 rounded hover:bg-purple-700 transition"
+            >
+              {loading ? "제출 중..." : "문의사항 보내기"}
+            </button>
+
+            {/* 로딩 스피너 */}
+            {loading && (
+              <div className="mt-4 flex justify-center">
+                <div className="w-8 h-8 border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin" />
+              </div>
+            )}
+          </form>
+        )}
       </div>
-
-      <p className="mt-4 text-sm text-gray-500">
-        이미 계정이 있나요?{" "}
-        <a href="/login" className="text-blue-600 hover:underline">
-          로그인
-        </a>
-      </p>
     </div>
   );
 };
 
-export default SignupCustomer;
+export default Voc;

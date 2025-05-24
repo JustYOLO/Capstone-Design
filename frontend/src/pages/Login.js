@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-const [loading, setLoading] = useState(false); // 로딩
 
 const Login = () => {
+  const [loading, setLoading] = useState(false); 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -12,9 +12,7 @@ const Login = () => {
       setLoading(true);
       const response = await fetch("https://blossompick.duckdns.org/api/v1/auth/login/", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
 
@@ -63,10 +61,18 @@ const Login = () => {
 
         <button
           onClick={handleLogin}
+          disabled={loading}
           className="w-full mt-4 px-4 py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition"
         >
-          LOGIN
+          {loading ? "로그인 중..." : "LOGIN"}
         </button>
+
+        {/* 로딩 스피너 */}
+        {loading && (
+          <div className="mt-4 flex justify-center">
+            <div className="w-8 h-8 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin" />
+          </div>
+        )}
       </div>
 
       <div className="mt-4 flex justify-between w-80 text-sm text-gray-500">

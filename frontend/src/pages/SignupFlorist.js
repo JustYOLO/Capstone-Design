@@ -7,7 +7,7 @@ const SignupFlorist = () => {
   const [email, setEmail] = useState("");
   const [password1, setPassword1] = useState("");
   const [password2, setPassword2] = useState("");
-  const [loading, setLoading] = useState(false); // 로딩
+  const [loading, setLoading] = useState(false);
 
   const handleFileChange = (event) => {
     const selected = event.target.files[0];
@@ -31,7 +31,7 @@ const SignupFlorist = () => {
     formData.append("file", file);
 
     try {
-      setLoading(true); // 시작
+      setLoading(true); 
       const response = await fetch("https://blossompick.duckdns.org/api/v1/florist/registration/", {
         method: "POST",
         body: formData,
@@ -45,12 +45,11 @@ const SignupFlorist = () => {
       const data = await response.json();
       alert("회원가입 성공!");
       console.log("응답 결과:", data);
-
     } catch (err) {
       console.error("❌ 회원가입 오류:", err);
       alert("회원가입 중 오류가 발생했습니다.");
     } finally {
-       setLoading(false); // 종료
+      setLoading(false);
     }
   };
 
@@ -60,24 +59,44 @@ const SignupFlorist = () => {
       <p className="text-gray-600 mt-1">간단한 정보를 입력하고 가입하세요!</p>
 
       <div className="mt-6 w-full max-w-md">
-        <input type="text" placeholder="이름" value={name} onChange={(e) => setName(e.target.value)}
-          className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" />
+        <input
+          type="text"
+          placeholder="이름"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+        />
 
-        <input type="email" placeholder="E-MAIL" value={email} onChange={(e) => setEmail(e.target.value)}
-          className="w-full mt-3 px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" />
+        <input
+          type="email"
+          placeholder="E-MAIL"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          className="w-full mt-3 px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+        />
 
-        <input type="password" placeholder="비밀번호" value={password1} onChange={(e) => setPassword1(e.target.value)}
-          className="w-full mt-3 px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" />
+        <input
+          type="password"
+          placeholder="비밀번호"
+          value={password1}
+          onChange={(e) => setPassword1(e.target.value)}
+          className="w-full mt-3 px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+        />
 
-        <input type="password" placeholder="비밀번호 확인" value={password2} onChange={(e) => setPassword2(e.target.value)}
-          className="w-full mt-3 px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" />
+        <input
+          type="password"
+          placeholder="비밀번호 확인"
+          value={password2}
+          onChange={(e) => setPassword2(e.target.value)}
+          className="w-full mt-3 px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+        />
 
         <div className="mt-4">
           <label className="block text-gray-700 font-medium">📄 사업자등록증 업로드 (PDF 형태)</label>
-          <input 
-            type="file" 
-            accept="application/pdf" 
-            onChange={handleFileChange} 
+          <input
+            type="file"
+            accept="application/pdf"
+            onChange={handleFileChange}
             className="w-full mt-2 px-4 py-2 border rounded-lg cursor-pointer bg-white focus:ring-2 focus:ring-purple-500"
           />
           {preview && (
@@ -88,9 +107,20 @@ const SignupFlorist = () => {
           )}
         </div>
 
-        <button onClick={handleSignup} className="w-full mt-4 px-4 py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition">
-          가입하기
+        <button
+          onClick={handleSignup}
+          disabled={loading}
+          className="w-full mt-4 px-4 py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition"
+        >
+          {loading ? "가입 처리 중..." : "가입하기"}
         </button>
+
+        {/* 로딩 스피너 */}
+        {loading && (
+          <div className="mt-4 flex justify-center">
+            <div className="w-8 h-8 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin" />
+          </div>
+        )}
       </div>
 
       <p className="mt-4 text-sm text-gray-500">
