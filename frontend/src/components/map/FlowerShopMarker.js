@@ -1,4 +1,4 @@
-export const addFlowerShopMarkers = (map, userLat, userLng) => {
+export const FlowerShopMarkers = (map, userLat, userLng) => {
   const flowerShops = [
     { name: "로맨틱플라워", lat: userLat + 0.002, lng: userLng + 0.002 },
     { name: "블룸하우스", lat: userLat - 0.0015, lng: userLng - 0.001 },

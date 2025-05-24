@@ -1,5 +1,5 @@
 import React from "react";
-import { UseChatGPT } from "./UseChatGPT";
+import { UseChatGPT } from "./UseChat";
 import ChatInput from "./ChatInput";
 import ChatButton from "./ChatButton";
 import ChatResponse from "./ChatResponse";

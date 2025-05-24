@@ -52,7 +52,6 @@ function AppContent() {
       <Navbar user={user} />
       <Routes>
         <Route path="/" element={<HeroSection />} />
-        <Route path="/lookup" element={<Lookup />} />
         <Route path="/searchwhere" element={<SearchWhere />} />
         <Route path="/order" element={<Order />} />
         <Route path="/login" element={<Login />} />
