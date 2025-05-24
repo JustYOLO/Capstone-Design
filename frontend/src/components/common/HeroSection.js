@@ -1,8 +1,8 @@
 import React from "react";
 import Snowfall from "./effects/Snowfall";
-import CherryBlossom from "./effects/CherryBlossom";
-import GreenLeaves from "./effects/GreenLeaves";
-import AutumnLeaves from "./effects/AutumnLeaves";
+import CherryBlossom from "../effects/CherryBlossom";
+import GreenLeaves from "../effects/GreenLeaves";
+import AutumnLeaves from "../effects/AutumnLeaves";
 import { Link } from "react-router-dom";
 
 const HeroSection = () => {
