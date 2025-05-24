@@ -82,7 +82,12 @@ const SignupCustomer = () => {
           onChange={(e) => setPassword2(e.target.value)}
           className="w-full px-4 py-3 border rounded-lg mt-3"
         />
-        <button disabled={loading}>
+        <button
+          onClick={handleSignup}
+          disabled={loading}
+          className={`w-full mt-4 px-4 py-3 font-bold rounded-lg transition 
+            ${loading ? "bg-gray-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700 text-white"}`}
+        >
           {loading ? "가입 처리 중..." : "가입하기"}
         </button>
 
