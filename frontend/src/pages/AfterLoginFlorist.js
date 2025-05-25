@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const AfterLoginFlorist = () => {
   const [floristData, setFloristData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [confirmed, setConfirmed] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,6 +37,11 @@ const AfterLoginFlorist = () => {
       if (res.ok) {
         alert("🎉 꽃집 등록이 완료되었습니다!");
         setConfirmed(true);
+
+        // ✅ 등록 후 floristData 넘기며 이동
+        setTimeout(() => {
+          navigate("/flowerhouse", { state: floristData });
+        }, 1500);
       } else {
         alert("⚠️ 등록 중 오류가 발생했습니다.");
       }
@@ -55,7 +62,11 @@ const AfterLoginFlorist = () => {
 
   return (
     <div className="p-8 max-w-2xl mx-auto bg-white rounded shadow border">
-      <h1 className="text-2xl font-bold text-center mb-6">🌼 사업자 등록 정보 확인</h1>
+      <h1 className="text-2xl font-bold text-center mb-2">🌼 사업자 등록 정보 확인</h1>
+      <p className="text-center text-gray-600 text-sm mb-6">
+        아래는 회원님이 업로드한 사업자등록증의 정보입니다. <br />
+        실제 꽃집 정보와 일치하는지 확인해주세요.
+      </p>
 
       <table className="w-full text-sm mb-6 border">
         <tbody>
@@ -78,7 +89,6 @@ const AfterLoginFlorist = () => {
             {loading ? "등록 처리 중..." : "✅ 정보가 맞습니다. 등록하기"}
           </button>
 
-          {/* 로딩 스피너 */}
           {loading && (
             <div className="flex justify-center mt-4">
               <div className="w-8 h-8 border-4 border-green-200 border-t-green-600 rounded-full animate-spin" />
