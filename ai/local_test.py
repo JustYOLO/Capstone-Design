@@ -114,7 +114,7 @@ def generate_flower_recommendation_ko(situation, recommended_flowers):
     """
     
     # 응답 생성
-    output = ollama.generate(model="gemma3:4b", prompt=prompt_text)
+    output = ollama.generate(model="gemma3:latest", prompt=prompt_text)
     return output["response"]
 
 
@@ -141,7 +141,7 @@ def generate_flower_recommendation_en_to_ko(situation, recommended_flowers):
     """
     
     # 응답 생성
-    output = ollama.generate(model="gemma3:4b", prompt=prompt_text)
+    output = ollama.generate(model="gemma3:latest", prompt=prompt_text)
     return output["response"]
 
 
@@ -177,16 +177,6 @@ def format_recommended_flowers(recommended_flowers_ko):
     return "\n".join(formatted_flowers)
 
 
-# def translate_ko_to_en(text):
-#     response = httpx.post("http://translate:5000/translate", json={"text": text, "target_language": "en"})
-#     return response.json()["translated_text"]
-
-# def translate_en_to_ko(text):
-#     response = httpx.post("http://translate:5000/translate", json={"text": text, "target_language": "ko"})
-#     return response.json()["translated_text"]
-
-
-
 
 # 테스트: 특정 상황에 어울리는 꽃 추천
 if __name__ == "__main__":
@@ -194,10 +184,6 @@ if __name__ == "__main__":
     query_text_ko = input("현재 어떤 상태에서 꽃을 선물해주고 싶나요? : ")
     print("")
 
-
-    
-    
-    
     recommended_flowers_ko = search_flower_ko(query_text_ko)
 
     formatted_result = format_recommended_flowers(recommended_flowers_ko)
@@ -206,46 +192,4 @@ if __name__ == "__main__":
     print("")
     
     print(generate_flower_recommendation_ko(query_text_ko, recommended_flowers_ko))
-
-
-
-
-
-    #recommended_flowers_ko_to_en = get_flower_translation(recommended_flowers_ko)
-
-    # 입력을 영어로 번역 
-    #query_text_en = translate_ko_to_en(query_text_ko)
-
-    # 꽃 추천 -> 이거는 위에서 만든 recommended_flowers_ko_to_en 사용용
-    #recommended_flowers_en = search_flower_en(query_text_en)
-    
-    # 응답 생성
-    #response_text_en = generate_flower_recommendation(query_text_en, recommended_flowers_ko_to_en)
-
-    #print(response_text_en)
-    
-    
-    #이제 이 영어로 나온 답변을 한국어로 자연스럽게 만들어주는 llama 사용
-
-    # print("")
-    # print("")
-
-    # # 응답을 한국어로 번역
-    # response_text_ko = translate_en_to_ko(response_text_en)
-
-    # # 최종 결과 출력
-    # print(response_text_ko)
-    
-    # 응답을 더 자연스러운 한국어로 출력
-    # re_response_text_ko = generate_flower_recommendation_en_to_ko(response_text_ko, recommended_flowers_ko)
-
-    # 최종 결과 출력
-    # print(re_response_text_ko)
-
-# 꽃은 한국어 prompt에서 임베딩 비슷한 걸로 가져오고 
-# 그 꽃들에 대해서 Text DB에서 같은 Index를 가지는 꽃들을 가져와서서
-# 영어로 추천 이유를 논리적으로 설명 후
-# 최종적으로 다시 llama 사용해 한국어로 자연스럽게 포현
-
-# 다음에 할 때: Gemma:latest로 한번에 한국어로 출력되게 해보자
 

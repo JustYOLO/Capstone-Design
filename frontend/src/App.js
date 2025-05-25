@@ -33,6 +33,7 @@ import Profile from "./pages/Profile";
 import AfterSingup from "./pages/AfterSignup";
 import Admin from "./pages/Admin";
 import AfterLoginFlorist from "./pages/AfterLoginFlorist";
+import FlowerHouse from "./pages/FlowerHouse";
 
 function AppContent() {
   const location = useLocation();
@@ -67,6 +68,7 @@ function AppContent() {
         <Route path="/aftersignup" element={<AfterSingup />} />
         <Route path="/admin" element={<Admin />} />
         <Route path="/afterloginflorist" element={<AfterLoginFlorist />} />
+        <Route path="/flowerhouse" element={<FlowerHouse />} />
       </Routes>
 
       {isHome && (
