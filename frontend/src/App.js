@@ -34,6 +34,8 @@ import AfterSingup from "./pages/AfterSignup";
 import Admin from "./pages/Admin";
 import AfterLoginFlorist from "./pages/AfterLoginFlorist";
 import FlowerHouse from "./pages/FlowerHouse";
+import FlowerHouseEdit from "./pages/FlowerHouseEdit";
+import FlowerHouseView from "./pages/FlowerHouseView";
 
 function AppContent() {
   const location = useLocation();
@@ -46,7 +48,7 @@ function AppContent() {
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
-  }, [location.pathname]); // 경로 바뀔 때마다 user 정보 반영
+  }, [location.pathname]);
 
   return (
     <div className="w-full min-h-screen bg-gray-50 flex flex-col">
@@ -69,6 +71,8 @@ function AppContent() {
         <Route path="/admin" element={<Admin />} />
         <Route path="/afterloginflorist" element={<AfterLoginFlorist />} />
         <Route path="/flowerhouse" element={<FlowerHouse />} />
+        <Route path="/flowerhouse/edit" element={<FlowerHouseEdit />} />
+        <Route path="/flowerhouse/view" element={<FlowerHouseView />} />
       </Routes>
 
       {isHome && (

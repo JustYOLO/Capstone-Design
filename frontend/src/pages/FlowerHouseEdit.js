@@ -1,26 +1,27 @@
-// FlowerHouse.js (Updated to include address + 카카오 주소 검색)
-import React, { useState, useEffect, useRef } from "react";
+// FlowerHouseEdit.js
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const weekdays = ["월", "화", "수", "목", "금", "토", "일"];
 
-const FlowerHouse = () => {
+const FlowerHouseEdit = () => {
   const [intro, setIntro] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
   const [detailAddress, setDetailAddress] = useState("");
   const [hours, setHours] = useState({});
   const [images, setImages] = useState([]);
-  const containerRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const savedData = JSON.parse(localStorage.getItem("flowerhouse"));
-    if (savedData) {
-      setIntro(savedData.intro || "");
-      setPhone(savedData.phone || "");
-      setAddress(savedData.address || "");
-      setDetailAddress(savedData.detailAddress || "");
-      setHours(savedData.hours || {});
-      setImages(savedData.images || []);
+    const saved = JSON.parse(localStorage.getItem("flowerhouse"));
+    if (saved) {
+      setIntro(saved.intro || "");
+      setPhone(saved.phone || "");
+      setAddress(saved.address || "");
+      setDetailAddress(saved.detailAddress || "");
+      setHours(saved.hours || {});
+      setImages(saved.images || []);
     } else {
       const defaultHours = {};
       weekdays.forEach((day) => {
@@ -29,21 +30,29 @@ const FlowerHouse = () => {
       setHours(defaultHours);
     }
 
-    // Load Kakao Postcode script
     const script = document.createElement("script");
     script.src = "//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js";
     script.async = true;
     document.body.appendChild(script);
   }, []);
 
-  const handleSave = () => {
-    const data = { intro, phone, address, detailAddress, hours, images };
-    localStorage.setItem("flowerhouse", JSON.stringify(data));
-    alert("저장되었습니다!");
+  const openPostcode = () => {
+    if (window.daum && window.daum.Postcode) {
+      new window.daum.Postcode({
+        oncomplete: function (data) {
+          setAddress(data.roadAddress || data.jibunAddress);
+        },
+      }).open();
+    } else {
+      alert("주소 검색 기능을 불러오는 중입니다. 잠시 후 다시 시도해 주세요.");
+    }
   };
 
   const handleTimeChange = (day, field, value) => {
-    setHours((prev) => ({ ...prev, [day]: { ...prev[day], [field]: value } }));
+    setHours((prev) => ({
+      ...prev,
+      [day]: { ...prev[day], [field]: value },
+    }));
   };
 
   const toggleClosed = (day) => {
@@ -62,18 +71,25 @@ const FlowerHouse = () => {
     setImages((prev) => [...prev, ...newImages]);
   };
 
-  const openPostcode = () => {
-    new window.daum.Postcode({
-      oncomplete: function (data) {
-        setAddress(data.roadAddress || data.jibunAddress);
-      },
-    }).open();
+  const handleSave = () => {
+    const data = {
+      intro,
+      phone,
+      address,
+      detailAddress,
+      hours,
+      images,
+    };
+    localStorage.setItem("flowerhouse", JSON.stringify(data));
+    alert("저장되었습니다!");
+    navigate("/flowerhouse/view");
   };
 
   return (
-    <div ref={containerRef} className="min-h-screen bg-white px-4 py-24 flex flex-col items-center relative">
-      <h1 className="text-4xl font-bold text-center mb-8">🌼 꽃집 상호명</h1>
-      <hr className="my-6 border-gray-300" />
+    <div className="min-h-screen bg-white px-4 py-24 flex flex-col items-center">
+      <h1 className="text-4xl font-bold text-center mb-8">🌼  꽃집 상호명
+      </h1>
+
       <div className="w-full max-w-4xl space-y-6">
         <input
           type="text"
@@ -93,7 +109,8 @@ const FlowerHouse = () => {
         <hr className="my-6 border-gray-300" />
 
         <div>
-          <label className="block text-lg font-semibold mb-2">📍 주소</label>
+          <label className="block text-lg font-semibold mb-2">📍 주소
+          </label>
           <div className="flex space-x-2">
             <input
               type="text"
@@ -184,7 +201,7 @@ const FlowerHouse = () => {
             onClick={handleSave}
             className="mt-6 px-8 py-4 bg-blue-600 text-white font-bold rounded-lg text-lg hover:bg-blue-700 transition"
           >
-            💾 저장하기
+            📂 저장하기
           </button>
         </div>
       </div>
@@ -192,4 +209,4 @@ const FlowerHouse = () => {
   );
 };
 
-export default FlowerHouse;
+export default FlowerHouseEdit;
