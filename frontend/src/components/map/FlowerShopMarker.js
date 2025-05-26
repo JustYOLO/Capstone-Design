@@ -1,5 +1,5 @@
 export const FlowerShopMarkers = (map, userLat, userLng) => {
-  // 사용자 위치 마커 추가
+  // 사용자 위치 마커
   new window.naver.maps.Marker({
     position: new window.naver.maps.LatLng(userLat, userLng),
     map,
@@ -9,7 +9,7 @@ export const FlowerShopMarkers = (map, userLat, userLng) => {
     },
   });
 
-  // 꽃집 리스트 마커
+  // 기존 임의 꽃집 마커들
   const flowerShops = [
     { name: "로맨틱플라워", lat: userLat + 0.002, lng: userLng + 0.002 },
     { name: "블룸하우스", lat: userLat - 0.0015, lng: userLng - 0.001 },
@@ -32,29 +32,27 @@ export const FlowerShopMarkers = (map, userLat, userLng) => {
     });
   });
 
-  // 지오코딩: 대지로 42 위치 마커
+  // 주소: 죽전로 152 => 위도/경도로 변환하여 마커 추가
   window.naver.maps.Service.geocode(
-    {
-      query: "경기 용인시 수지구 대지로 42",
-    },
-    function (status, response) {
+    { query: "죽전로 152" },
+    (status, response) => {
       if (status !== window.naver.maps.Service.Status.OK) {
         console.error("지오코딩 실패:", status);
         return;
       }
 
-      const result = response.v2.addresses[0];
-      const lat = parseFloat(result.y);
-      const lng = parseFloat(result.x);
+      const item = response.v2.addresses[0];
+      const lat = parseFloat(item.y);
+      const lng = parseFloat(item.x);
 
       const marker = new window.naver.maps.Marker({
         position: new window.naver.maps.LatLng(lat, lng),
-        map: map,
-        title: "대지로 42",
+        map,
+        title: "죽전로 152",
       });
 
       const infoWindow = new window.naver.maps.InfoWindow({
-        content: `<div style="padding:8px;font-size:14px;">대지로 42</div>`,
+        content: `<div style="padding:8px;font-size:14px;">죽전로 152</div>`,
       });
 
       window.naver.maps.Event.addListener(marker, "click", () => {
