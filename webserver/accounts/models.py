@@ -23,9 +23,10 @@ class BusinessProfile(models.Model):
         related_name="business_profile",
     )
     pdf = models.FileField(upload_to="business_pdfs/")
+    company_name = models.CharField(max_length=255, blank=True)
     is_verified = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"BusinessProfile({self.user.email})"
+        return f"{self.company_name} ({self.user.email})"
 
 # Create your models here.

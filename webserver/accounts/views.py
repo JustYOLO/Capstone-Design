@@ -1,5 +1,10 @@
 from dj_rest_auth.registration.views import RegisterView
 from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework import status
+from accounts.models import BusinessProfile
 from .serializers import BusinessRegisterSerializer
 
 class BusinessRegisterView(RegisterView):
@@ -7,3 +12,16 @@ class BusinessRegisterView(RegisterView):
     parser_classes = [MultiPartParser, FormParser]
 
 # Create your views here.
+
+class HouseNameView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        try:
+            profile = request.user.business_profile
+        except BusinessProfile.DoesNotExist:
+            return Response(
+                {"detail": "You are not registered as a business user."},
+                status=status.HTTP_403_FORBIDDEN
+            )
+        return Response({"housename": profile.company_name})

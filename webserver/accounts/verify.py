@@ -5,6 +5,7 @@ import fitz  # PyMuPDF
 import re
 import os
 import tempfile
+from typing import Tuple, Union
 
 # -------- [1] PDF에서 사업자 정보 추출 --------
 def extract_business_info_from_pdf(pdf_path):
@@ -86,11 +87,11 @@ def is_business_active(api_response: dict, extracted_info: dict) -> bool:
     except (KeyError, IndexError, TypeError):
         return False
 
-def verify_pdf(pdf_input) -> bool:
+def verify_pdf(pdf_input) -> Tuple[bool, str]:
     """
     pdf_input: either a filesystem path (str) or a file-like object
                (e.g. InMemoryUploadedFile from DRF).
-    Returns True if the PDF passes both your extraction and API checks.
+    Returns (is_active: bool, company_name: str).
     """
     # 1) Write to a temp file if we got a file-like
     if isinstance(pdf_input, str):
@@ -100,7 +101,6 @@ def verify_pdf(pdf_input) -> bool:
         cleanup = True
         tmp = tempfile.NamedTemporaryFile(delete=False, suffix=".pdf")
         try:
-            # read all bytes from the upload
             tmp.write(pdf_input.read())
             tmp.flush()
             pdf_path = tmp.name
@@ -112,21 +112,67 @@ def verify_pdf(pdf_input) -> bool:
         info = extract_business_info_from_pdf(pdf_path)
         b_no = info.get("사업자등록번호")
         if not b_no:
-            return False
+            # No registration number ⇒ not active, no company name
+            return False, ""
 
         # 3) Call the external API
         api_resp = verify_business_number(b_no)
 
         # 4) Final check
-        return is_business_active(api_resp, info)
+        is_active = is_business_active(api_resp, info)
+        company_name = info.get("법인명", "") or ""
+        return is_active, company_name
 
     except Exception:
         # any error in parsing or network → fail verification
-        return False
+        return False, ""
     finally:
         # 5) Clean up temp file if we created one
         if cleanup and os.path.exists(pdf_path):
             os.unlink(pdf_path)
+
+# def verify_pdf(pdf_input) -> bool:
+#     """
+#     pdf_input: either a filesystem path (str) or a file-like object
+#                (e.g. InMemoryUploadedFile from DRF).
+#     Returns True if the PDF passes both your extraction and API checks.
+#     """
+#     # 1) Write to a temp file if we got a file-like
+#     if isinstance(pdf_input, str):
+#         pdf_path = pdf_input
+#         cleanup = False
+#     else:
+#         cleanup = True
+#         tmp = tempfile.NamedTemporaryFile(delete=False, suffix=".pdf")
+#         try:
+#             # read all bytes from the upload
+#             tmp.write(pdf_input.read())
+#             tmp.flush()
+#             pdf_path = tmp.name
+#         finally:
+#             tmp.close()
+#
+#     try:
+#         # 2) Extract the business info
+#         info = extract_business_info_from_pdf(pdf_path)
+#         b_no = info.get("사업자등록번호")
+#         info.get("법인명")
+#         if not b_no:
+#             return False
+#
+#         # 3) Call the external API
+#         api_resp = verify_business_number(b_no)
+#
+#         # 4) Final check
+#         return is_business_active(api_resp, info)
+#
+#     except Exception:
+#         # any error in parsing or network → fail verification
+#         return False
+#     finally:
+#         # 5) Clean up temp file if we created one
+#         if cleanup and os.path.exists(pdf_path):
+#             os.unlink(pdf_path)
 
 # -------- [4] 메인 실행 함수 --------
 def main(pdf_path):

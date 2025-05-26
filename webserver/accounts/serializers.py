@@ -29,67 +29,27 @@ class CustomRegisterSerializer(RegisterSerializer):
         return data
 
 class BusinessRegisterSerializer(RegisterSerializer):
-    """
-    Extends your CustomRegisterSerializer (or directly RegisterSerializer)
-    by adding a `file` field for PDF upload and running your PDF check.
-    """
-
     file = serializers.FileField(write_only=True)
 
-    def validate_file(self, uploaded_file):
-        if not verify_pdf(uploaded_file):
-            raise serializers.ValidationError("PDF verification failed")
-        return uploaded_file
+    def validate(self, attrs):
+        pdf_file = attrs.get("file")
+        is_active, company_name = verify_pdf(pdf_file)
+        if not is_active:
+            raise serializers.ValidationError({
+                "file": "PDF verification failed or business not active."
+            })
+        # attach the extracted name so save() can use it
+        attrs["company_name"] = company_name
+        return super().validate(attrs)
 
     def save(self, request):
-        # 1) run the normal dj-rest-auth registration flow:
+        # 1) run normal user creation & email‐confirmation
         user = super().save(request)
-
-        # 2) pull the uploaded file out of validated_data
-        pdf_file = self.validated_data.get("file")
-
-        # 3) create the business profile
+        # 2) create the profile with both pdf and company_name
         BusinessProfile.objects.create(
             user=user,
-            pdf=pdf_file,
-            is_verified=True,  # or False until you manually review
+            pdf=self.validated_data["file"],
+            company_name=self.validated_data["company_name"],
+            is_verified=True,
         )
-
         return user
-
-# class BusinessSignupSerializer(serializers.Serializer):
-#     name     = serializers.CharField(max_length=150)
-#     email    = serializers.EmailField()
-#     password = serializers.CharField(write_only=True)
-#     file     = serializers.FileField()
-#
-#     def validate_file(self, uploaded_file):
-#         # runs your verify_pdf() on the incoming file object
-#         if not verify_pdf(uploaded_file):
-#             raise serializers.ValidationError("PDF verification failed")
-#         return uploaded_file
-#
-#     def create(self, validated_data):
-#         name     = validated_data.pop("name")
-#         email    = validated_data.pop("email")
-#         password = validated_data.pop("password")
-#         pdf_file = validated_data.pop("file")
-#
-#         # 1) create the user
-#         user = User.objects.create_user(
-#             username=email,      # or however your User model is keyed
-#             email=email,
-#             password=password,
-#             # if your User has a `name` field, set it here:
-#             **({"name": name} if hasattr(User, "name") else {})
-#         )
-#
-#         # 2) attach the PDF and mark as verified
-#         BusinessProfile.objects.create(
-#             user=user,
-#             pdf=pdf_file,
-#             is_verified=True,
-#         )
-#
-#         return user
-#

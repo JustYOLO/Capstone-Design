@@ -23,6 +23,7 @@ from django.conf.urls.static import static
 from django.conf import settings
 from django.views.static import serve
 from allauth.account.views import ConfirmEmailView
+from accounts.views import HouseNameView
 from accounts.views import BusinessRegisterView
 
 BUILD_DIR = os.path.join(settings.BASE_DIR, 'webserver', 'static', 'build')
@@ -59,7 +60,11 @@ urlpatterns = [
         },
         name='robots-txt'
     ),
-
+    path(
+        "api/v1/florist/housename/",
+        HouseNameView.as_view(),
+        name="florist-housename",
+    ),
     path('', include('frontend.urls')),
     re_path(r'^(?!static/).*$' , include('frontend.urls')),
 ]
