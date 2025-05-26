@@ -1,9 +1,11 @@
-// FlowerHouse.js (Updated to include address + 카카오 주소 검색)
+// FlowerHouse.js (Updated to include address + 카카오 주소 검색 + 상호명 API 연동)
 import React, { useState, useEffect, useRef } from "react";
+import axios from "axios";
 
 const weekdays = ["월", "화", "수", "목", "금", "토", "일"];
 
 const FlowerHouse = () => {
+  const [storeName, setStoreName] = useState("꽃집 상호명");
   const [intro, setIntro] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
@@ -13,6 +15,18 @@ const FlowerHouse = () => {
   const containerRef = useRef(null);
 
   useEffect(() => {
+    // 상호명 받아오기
+    axios.get("/api/v1/florist/housename/")
+      .then((res) => {
+        if (res.data?.housename) {
+          setStoreName(res.data.housename);
+        }
+      })
+      .catch((err) => {
+        console.error("상호명 가져오기 실패:", err);
+      });
+
+    // 기존 저장 데이터 불러오기
     const savedData = JSON.parse(localStorage.getItem("flowerhouse"));
     if (savedData) {
       setIntro(savedData.intro || "");
@@ -72,7 +86,7 @@ const FlowerHouse = () => {
 
   return (
     <div ref={containerRef} className="min-h-screen bg-white px-4 py-24 flex flex-col items-center relative">
-      <h1 className="text-4xl font-bold text-center mb-8">🌼 꽃집 상호명</h1>
+      <h1 className="text-4xl font-bold text-center mb-8">{storeName}</h1>
       <hr className="my-6 border-gray-300" />
       <div className="w-full max-w-4xl space-y-6">
         <input

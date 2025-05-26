@@ -1,4 +1,3 @@
-// FlowerHouseEdit.js
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -11,6 +10,7 @@ const FlowerHouseEdit = () => {
   const [detailAddress, setDetailAddress] = useState("");
   const [hours, setHours] = useState({});
   const [images, setImages] = useState([]);
+  const [houseName, setHouseName] = useState("꽃집 상호명");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -30,10 +30,23 @@ const FlowerHouseEdit = () => {
       setHours(defaultHours);
     }
 
+    // Load Daum Postcode script
     const script = document.createElement("script");
     script.src = "//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js";
     script.async = true;
     document.body.appendChild(script);
+
+    // Fetch house name from API
+    fetch("https://blossompick.duckdns.org/api/v1/florist/housename/", {
+      credentials: "include",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.housename) {
+          setHouseName(data.housename);
+        }
+      })
+      .catch((err) => console.error("❌ 상호명 불러오기 실패:", err));
   }, []);
 
   const openPostcode = () => {
@@ -87,8 +100,7 @@ const FlowerHouseEdit = () => {
 
   return (
     <div className="min-h-screen bg-white px-4 py-24 flex flex-col items-center">
-      <h1 className="text-4xl font-bold text-center mb-8">🌼  꽃집 상호명
-      </h1>
+      <h1 className="text-4xl font-bold text-center mb-8">{houseName}</h1>
 
       <div className="w-full max-w-4xl space-y-6">
         <input
@@ -109,8 +121,7 @@ const FlowerHouseEdit = () => {
         <hr className="my-6 border-gray-300" />
 
         <div>
-          <label className="block text-lg font-semibold mb-2">📍 주소
-          </label>
+          <label className="block text-lg font-semibold mb-2">📍 주소</label>
           <div className="flex space-x-2">
             <input
               type="text"
