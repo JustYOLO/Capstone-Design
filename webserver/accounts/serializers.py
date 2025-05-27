@@ -58,3 +58,12 @@ class BusinessDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = BusinessProfile
         fields = ["data"]
+
+class PublicBusinessSerializer(serializers.ModelSerializer):
+    housename = serializers.CharField(source="company_name", read_only=True)
+    data      = serializers.JSONField(read_only=True)
+
+    class Meta:
+        model  = BusinessProfile
+        fields = ["housename", "data"]
+

@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from accounts.models import BusinessProfile
 from .serializers import BusinessRegisterSerializer
+from .serializers import PublicBusinessSerializer
 
 class BusinessRegisterView(RegisterView):
     serializer_class = BusinessRegisterSerializer
@@ -40,3 +41,17 @@ class BusinessDataUpdateView(generics.RetrieveUpdateAPIView):
     def get_object(self):
         # Only business users have a profile
         return self.request.user.business_profile
+
+class PublicBusinessListView(generics.ListAPIView):
+    """
+    GET /api/v1/florist/stores/
+    Publicly list all verified businesses.
+    """
+    queryset = BusinessProfile.objects.filter(is_verified=True)
+    serializer_class = PublicBusinessSerializer
+    permission_classes = [permissions.AllowAny]
+
+class PublicBusinessDetailView(generics.RetrieveAPIView):
+    queryset = BusinessProfile.objects.filter(is_verified=True)
+    serializer_class = PublicBusinessSerializer
+    permission_classes = [permissions.AllowAny]

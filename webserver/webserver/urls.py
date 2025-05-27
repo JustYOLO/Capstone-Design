@@ -26,6 +26,7 @@ from allauth.account.views import ConfirmEmailView
 from accounts.views import HouseNameView
 from accounts.views import BusinessRegisterView
 from accounts.views import BusinessDataUpdateView
+from accounts.views import PublicBusinessListView
 
 BUILD_DIR = os.path.join(settings.BASE_DIR, 'webserver', 'static', 'build')
 
@@ -70,6 +71,16 @@ urlpatterns = [
       "api/v1/florist/data/",
       BusinessDataUpdateView.as_view(),
       name="business-data",
+    ),
+    path(
+      "api/v1/florist/stores/",
+      PublicBusinessListView.as_view(),
+      name="public-business-list",
+    ),
+    path(
+     "api/v1/florist/stores/<int:pk>/",
+     PublicBusinessDetailView.as_view(),
+     name="public-business-detail",
     ),
     path('', include('frontend.urls')),
     re_path(r'^(?!static/).*$' , include('frontend.urls')),
