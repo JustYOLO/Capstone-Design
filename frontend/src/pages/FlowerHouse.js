@@ -71,11 +71,11 @@ const FlowerHouse = () => {
     script.async = true;
     document.body.appendChild(script);
   }, []);
-  
+
   const handleSave = async () => {
     // 1) Build the payload exactly as your DRF serializer expects:
     const payload = {
-      data: { intro, phone, address, detailAddress, hours, images }
+      data: { storeName, intro, phone, address, detailAddress, hours, images }
     };
 
     // 2) Grab the JWT you saved earlier
