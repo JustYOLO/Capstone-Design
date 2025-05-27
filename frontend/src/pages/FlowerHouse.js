@@ -15,16 +15,39 @@ const FlowerHouse = () => {
   const containerRef = useRef(null);
 
   useEffect(() => {
-    // 상호명 받아오기
-    axios.get("/api/v1/florist/housename/")
-      .then((res) => {
-        if (res.data?.housename) {
-          setStoreName(res.data.housename);
-        }
-      })
-      .catch((err) => {
-        console.error("상호명 가져오기 실패:", err);
-      });
+    // grab the token you stored earlier
+    const token = localStorage.getItem("access_token");
+
+    axios.get("/api/v1/florist/housename/", {
+      headers: {
+        // attach it here as a Bearer token
+        Authorization: `Bearer ${token}`
+      }
+    })
+    .then((res) => {
+      if (res.data?.housename) {
+        setStoreName(res.data.housename);
+      }
+    })
+    .catch((err) => {
+      console.error("상호명 가져오기 실패:", err);
+    });
+  }, []);
+
+
+  // useEffect(() => {
+  //   // 상호명 받아오기
+  //   axios.get("/api/v1/florist/housename/"), {
+  //     headers
+  //   }
+  //     .then((res) => {
+  //       if (res.data?.housename) {
+  //         setStoreName(res.data.housename);
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       console.error("상호명 가져오기 실패:", err);
+  //     });
 
     // 기존 저장 데이터 불러오기
     const savedData = JSON.parse(localStorage.getItem("flowerhouse"));

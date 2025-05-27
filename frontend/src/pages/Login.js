@@ -23,6 +23,10 @@ const Login = () => {
         const userData = { ...data, isAdmin };
         localStorage.setItem("user", JSON.stringify(userData));
 
+        const accessToken = data.access;
+        localStorage.setItem("access_token", accessToken);
+        localStorage.setItem("refresh_token", data.refresh);
+
         setTimeout(() => {
           navigate(isAdmin ? "/admin" : "/");
         }, 0);
