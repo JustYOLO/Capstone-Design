@@ -32,7 +32,6 @@ const FlowerHouse = () => {
     .catch((err) => {
       console.error("상호명 가져오기 실패:", err);
     });
-  }, []);
 
 
   // useEffect(() => {
