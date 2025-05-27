@@ -1,3 +1,4 @@
+// FlowerHouseEdit.js (상호명 연동 포함)
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -10,7 +11,7 @@ const FlowerHouseEdit = () => {
   const [detailAddress, setDetailAddress] = useState("");
   const [hours, setHours] = useState({});
   const [images, setImages] = useState([]);
-  const [houseName, setHouseName] = useState("꽃집 상호명");
+  const [houseName, setHouseName] = useState("🌼 꽃집 상호명");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -37,8 +38,11 @@ const FlowerHouseEdit = () => {
     document.body.appendChild(script);
 
     // Fetch house name from API
+    const token = localStorage.getItem("access_token");
     fetch("https://blossompick.duckdns.org/api/v1/florist/housename/", {
-      credentials: "include",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     })
       .then((res) => res.json())
       .then((data) => {

@@ -18,8 +18,7 @@ const FlowerDictionary = () => {
   );
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 px-4 pt-20">
-      {/* Navbar에 가리지 않도록 pt-20 추가 */}
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 px-4 pt-24">
       <h1 className="text-4xl font-bold text-gray-900 mb-4">🌺 꽃말 사전</h1>
       <p className="text-gray-600 mb-6">꽃의 이름을 검색하고 꽃말을 알아보세요!</p>
 
@@ -32,13 +31,13 @@ const FlowerDictionary = () => {
         onChange={(e) => setSearchTerm(e.target.value)}
       />
 
-      {/* 검색 결과 (고정된 높이 설정) */}
+      {/* 검색 결과 */}
       <div className="mt-6 w-full max-w-md h-[600px] overflow-y-auto bg-white shadow-lg rounded-lg p-4">
         {filteredFlowers.length > 0 ? (
           filteredFlowers.map((flower, index) => (
             <div
               key={index}
-              className="bg-white p-4 mb-3 shadow-md rounded-lg border-l-4 border-pink-400"
+              className="bg-white p-4 mb-3 shadow-md rounded-lg border-l-4 border-pink-300"
             >
               <p className="text-lg font-semibold text-gray-800">{flower.name}</p>
               <p className="text-gray-600">{flower.meaning}</p>

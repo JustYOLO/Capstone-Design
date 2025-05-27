@@ -33,21 +33,6 @@ const FlowerHouse = () => {
       console.error("상호명 가져오기 실패:", err);
     });
 
-
-  // useEffect(() => {
-  //   // 상호명 받아오기
-  //   axios.get("/api/v1/florist/housename/"), {
-  //     headers
-  //   }
-  //     .then((res) => {
-  //       if (res.data?.housename) {
-  //         setStoreName(res.data.housename);
-  //       }
-  //     })
-  //     .catch((err) => {
-  //       console.error("상호명 가져오기 실패:", err);
-  //     });
-
     // 기존 저장 데이터 불러오기
     const savedData = JSON.parse(localStorage.getItem("flowerhouse"));
     if (savedData) {
@@ -99,11 +84,6 @@ const FlowerHouse = () => {
     }
   };
 
-  // const handleSave = () => {
-  //   const data = { intro, phone, address, detailAddress, hours, images };
-  //   localStorage.setItem("flowerhouse", JSON.stringify(data));
-  //   alert("저장되었습니다!");
-  // };
 
   const handleTimeChange = (day, field, value) => {
     setHours((prev) => ({ ...prev, [day]: { ...prev[day], [field]: value } }));

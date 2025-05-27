@@ -23,7 +23,7 @@ const FlowerHouseView = () => {
       ref={containerRef}
       className="min-h-screen px-4 py-24 bg-gray-50 flex flex-col items-center relative"
     >
-      <h1 className="text-4xl font-bold text-purple-700 mb-2">🌼 꽃집 상호명</h1>
+      <h1 className="text-4xl font-bold text-purple-700 mb-2">꽃집 상호명</h1>
       <p className="text-lg mb-1 text-gray-700">{data.intro || "소개 문구가 없습니다."}</p>
       <p className="text-sm text-gray-500">{`📞 ${data.phone || "전화번호 없음"}`}</p>
       <p className="text-sm text-gray-500 mb-6">
@@ -43,7 +43,7 @@ const FlowerHouseView = () => {
         </div>
         <button
           onClick={() => navigate("/order")}
-          className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+          className="px-4 py-2 bg-green-600 text-white rounded hover:bg-pink-300"
         >
           🛍️ 주문하러 가기
         </button>
