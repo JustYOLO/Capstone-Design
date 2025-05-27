@@ -27,6 +27,7 @@ from accounts.views import HouseNameView
 from accounts.views import BusinessRegisterView
 from accounts.views import BusinessDataUpdateView
 from accounts.views import PublicBusinessListView
+from accounts.views import PublicBusinessDetailView
 
 BUILD_DIR = os.path.join(settings.BASE_DIR, 'webserver', 'static', 'build')
 
