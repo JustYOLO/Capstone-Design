@@ -11,8 +11,8 @@ const FlowerHouse = () => {
   const [detailAddress, setDetailAddress] = useState("");
   const [hours, setHours] = useState({});
   const [images, setImages] = useState([]);
-  const containerRef = useRef(null);
   const [isLoaded, setIsLoaded] = useState(false);
+  const containerRef = useRef(null);
 
   const defaultHourInit = () => {
     const def = {};
@@ -31,12 +31,11 @@ const FlowerHouse = () => {
       return;
     }
 
-    // 모든 axios 요청에 공통 Authorization 헤더 설정
-    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-
     // 1. 상호명 불러오기
     axios
-      .get("/api/v1/florist/housename/")
+      .get("/api/v1/florist/housename/", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .then((res) => {
         console.log("✅ housename 응답:", res.data);
         if (res.data?.housename) setStoreName(res.data.housename);
@@ -45,10 +44,12 @@ const FlowerHouse = () => {
 
     // 2. florist 데이터 불러오기
     axios
-      .get("/api/v1/florist/data/")
+      .get("/api/v1/florist/data/", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .then((res) => {
         console.log("✅ florist/data 응답:", res.data);
-        const d = res.data.data ?? res.data;
+        const d = res.data?.data ?? res.data;
         setIntro(d.intro ?? "");
         setPhone(d.phone ?? "");
         setAddress(d.address ?? "");
@@ -62,7 +63,7 @@ const FlowerHouse = () => {
       })
       .finally(() => setIsLoaded(true));
 
-    // 카카오 주소 API 로드
+    // 카카오 주소 스크립트 삽입
     const script = document.createElement("script");
     script.src = "//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js";
     script.async = true;
@@ -85,7 +86,11 @@ const FlowerHouse = () => {
       alert("저장되었습니다!");
     } catch (err) {
       console.error("❌ 저장 실패:", err);
-      alert("저장에 실패했습니다.");
+      if (err.response?.status === 401) {
+        alert("인증이 만료되었거나 유효하지 않습니다. 다시 로그인해주세요.");
+      } else {
+        alert("저장에 실패했습니다. 콘솔을 확인해주세요.");
+      }
     }
   };
 
@@ -139,13 +144,7 @@ const FlowerHouse = () => {
             <input type="text" value={address} readOnly className="flex-1 border px-4 py-2 rounded" placeholder="도로명 주소" />
             <button onClick={openPostcode} className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">검색</button>
           </div>
-          <input
-            type="text"
-            placeholder="상세 주소를 입력하세요"
-            value={detailAddress}
-            onChange={(e) => setDetailAddress(e.target.value)}
-            className="w-full border mt-2 px-4 py-2 rounded"
-          />
+          <input type="text" placeholder="상세 주소를 입력하세요" value={detailAddress} onChange={(e) => setDetailAddress(e.target.value)} className="w-full border mt-2 px-4 py-2 rounded" />
         </div>
 
         <div>
