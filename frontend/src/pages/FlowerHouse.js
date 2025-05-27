@@ -1,4 +1,3 @@
-// FlowerHouse.js (최신 서버 동기화 기반)
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 
@@ -13,27 +12,28 @@ const FlowerHouse = () => {
   const [hours, setHours] = useState({});
   const [images, setImages] = useState([]);
   const containerRef = useRef(null);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("access_token");
 
-    // 1. 상호명 불러오기
-    axios.get("/api/v1/florist/housename/", {
-      headers: { Authorization: `Bearer ${token}` },
-    })
+    axios
+      .get("/api/v1/florist/housename/", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .then((res) => {
         if (res.data?.housename) setStoreName(res.data.housename);
       })
       .catch((err) => console.error("상호명 가져오기 실패:", err));
 
-    // 2. 서버에서 저장된 데이터 불러오기
-    axios.get("/api/v1/florist/data/", {
-      headers: { Authorization: `Bearer ${token}` },
-    })
+    axios
+      .get("/api/v1/florist/data/", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .then((res) => {
         const d = res.data;
-        setIntro(d.intro || "");
-        setPhone(d.phone || "");
+        setIntro((prev) => prev || d.intro || "");
+        setPhone((prev) => prev || d.phone || "");
         setAddress(d.address || "");
         setDetailAddress(d.detailAddress || "");
         setHours(d.hours || defaultHourInit());
@@ -42,7 +42,8 @@ const FlowerHouse = () => {
       .catch((err) => {
         console.error("전체 정보 불러오기 실패:", err);
         setHours(defaultHourInit());
-      });
+      })
+      .finally(() => setIsLoaded(true));
 
     const script = document.createElement("script");
     script.src = "//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js";
@@ -69,10 +70,10 @@ const FlowerHouse = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      alert("\uC800\uC7A5\uB418\uC5C8\uC2B5\uB2C8\uB2E4!");
+      alert("저장되었습니다!");
     } catch (err) {
-      console.error("\uC800\uC7A5 \uC2E4\uD328:", err);
-      alert("\uC800\uC7A5\uC5D0 \uC2E4\uD328\uD588\uC2B5\uB2C8\uB2E4.");
+      console.error("저장 실패:", err);
+      alert("저장에 실패했습니다.");
     }
   };
 
@@ -101,16 +102,18 @@ const FlowerHouse = () => {
     }));
   };
 
+  if (!isLoaded) return <div className="text-center py-24">불러오는 중...</div>;
+
   return (
     <div ref={containerRef} className="min-h-screen bg-white px-4 py-24 flex flex-col items-center">
       <h1 className="text-4xl font-bold text-center mb-8">{storeName}</h1>
       <div className="w-full max-w-4xl space-y-6">
-        <input placeholder="\uD55C \uC904 \uC18C\uAC1C" value={intro} onChange={(e) => setIntro(e.target.value)} className="w-full border px-4 py-3 rounded text-lg" />
-        <input placeholder="\uC804\uD654\uBC88\uD638" value={phone} onChange={(e) => setPhone(e.target.value)} className="w-full border px-4 py-3 rounded text-lg" />
+        <input placeholder="한 줄 소개" value={intro} onChange={(e) => setIntro(e.target.value)} className="w-full border px-4 py-3 rounded text-lg" />
+        <input placeholder="전화번호" value={phone} onChange={(e) => setPhone(e.target.value)} className="w-full border px-4 py-3 rounded text-lg" />
         <div>
-          <label className="block text-lg font-semibold mb-2">\uC8FC\uC18C</label>
+          <label className="block text-lg font-semibold mb-2">주소</label>
           <div className="flex space-x-2">
-            <input type="text" value={address} readOnly className="flex-1 border px-4 py-2 rounded" placeholder="\uB3C4\uB85C\uBA85 \uC8FC\uC18C" />
+            <input type="text" value={address} readOnly className="flex-1 border px-4 py-2 rounded" placeholder="도로명 주소" />
             <button onClick={openPostcode} className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">검색</button>
           </div>
           <input type="text" placeholder="상세 주소를 입력하세요" value={detailAddress} onChange={(e) => setDetailAddress(e.target.value)} className="w-full border mt-2 px-4 py-2 rounded" />
