@@ -25,6 +25,7 @@ from django.views.static import serve
 from allauth.account.views import ConfirmEmailView
 from accounts.views import HouseNameView
 from accounts.views import BusinessRegisterView
+from accounts.views import BusinessDataUpdateView
 
 BUILD_DIR = os.path.join(settings.BASE_DIR, 'webserver', 'static', 'build')
 
@@ -64,6 +65,11 @@ urlpatterns = [
         "api/v1/florist/housename/",
         HouseNameView.as_view(),
         name="florist-housename",
+    ),
+    path(
+      "api/v1/florist/data/",
+      BusinessDataUpdateView.as_view(),
+      name="business-data",
     ),
     path('', include('frontend.urls')),
     re_path(r'^(?!static/).*$' , include('frontend.urls')),

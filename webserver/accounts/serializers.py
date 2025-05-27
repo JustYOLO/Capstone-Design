@@ -53,3 +53,8 @@ class BusinessRegisterSerializer(RegisterSerializer):
             is_verified=True,
         )
         return user
+
+class BusinessDataSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BusinessProfile
+        fields = ["data"]

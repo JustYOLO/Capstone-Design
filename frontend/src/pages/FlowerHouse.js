@@ -71,12 +71,39 @@ const FlowerHouse = () => {
     script.async = true;
     document.body.appendChild(script);
   }, []);
+  
+  const handleSave = async () => {
+    // 1) Build the payload exactly as your DRF serializer expects:
+    const payload = {
+      data: { intro, phone, address, detailAddress, hours, images }
+    };
 
-  const handleSave = () => {
-    const data = { intro, phone, address, detailAddress, hours, images };
-    localStorage.setItem("flowerhouse", JSON.stringify(data));
-    alert("저장되었습니다!");
+    // 2) Grab the JWT you saved earlier
+    const token = localStorage.getItem("access_token");
+
+    try {
+      // 3) Send it up with axios.patch (or .put if you prefer)
+      await axios.patch("/api/v1/florist/data/", payload, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      // 4) On success, you can still cache locally or just alert
+      localStorage.setItem("flowerhouse", JSON.stringify(payload.data));
+      alert("저장되었습니다!");
+    } catch (err) {
+      console.error("저장 실패:", err);
+      alert("저장에 실패했습니다. 콘솔을 확인해주세요.");
+    }
   };
+
+  // const handleSave = () => {
+  //   const data = { intro, phone, address, detailAddress, hours, images };
+  //   localStorage.setItem("flowerhouse", JSON.stringify(data));
+  //   alert("저장되었습니다!");
+  // };
 
   const handleTimeChange = (day, field, value) => {
     setHours((prev) => ({ ...prev, [day]: { ...prev[day], [field]: value } }));

@@ -25,3 +25,18 @@ class HouseNameView(APIView):
                 status=status.HTTP_403_FORBIDDEN
             )
         return Response({"housename": profile.company_name})
+
+from rest_framework import generics, permissions
+from .serializers import BusinessDataSerializer
+
+class BusinessDataUpdateView(generics.RetrieveUpdateAPIView):
+    """
+    GET  /api/v1/florist/data/  → { "data": { ... } }
+    PUT  /api/v1/florist/data/  ← { ...business JSON... }
+    """
+    serializer_class = BusinessDataSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_object(self):
+        # Only business users have a profile
+        return self.request.user.business_profile
