@@ -1,4 +1,3 @@
-// FlowerHouseEdit.js (서버 저장 방식 + 상호명 연동 반영)
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -18,35 +17,37 @@ const FlowerHouseEdit = () => {
   useEffect(() => {
     const token = localStorage.getItem("access_token");
 
+    if (!token) {
+      alert("로그인이 필요합니다.");
+      return;
+    }
+
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
     // 상호명 불러오기
-    axios.get("https://blossompick.duckdns.org/api/v1/florist/housename/", {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-    .then((res) => {
-      if (res.data.housename) {
-        setHouseName(res.data.housename);
-      }
-    })
-    .catch((err) => console.error("❌ 상호명 불러오기 실패:", err));
+    axios.get("https://blossompick.duckdns.org/api/v1/florist/housename/")
+      .then((res) => {
+        console.log("✅ housename 응답:", res.data);
+        if (res.data.housename) setHouseName(res.data.housename);
+      })
+      .catch((err) => console.error("❌ 상호명 불러오기 실패:", err));
 
     // 기존 데이터 불러오기
-    axios.get("https://blossompick.duckdns.org/api/v1/florist/data/", {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-    .then((res) => {
-      const data = res.data;
-      setIntro(data.intro || "");
-      setPhone(data.phone || "");
-      setAddress(data.address || "");
-      setDetailAddress(data.detailAddress || "");
-      setHours(data.hours || {});
-      setImages(data.images || []);
-    })
-    .catch((err) => {
-      console.error("❌ 초기 데이터 불러오기 실패:", err);
-    });
+    axios.get("https://blossompick.duckdns.org/api/v1/florist/data/")
+      .then((res) => {
+        console.log("✅ florist/data 응답:", res.data);
+        const data = res.data.data ?? res.data;
+        setIntro(data.intro || "");
+        setPhone(data.phone || "");
+        setAddress(data.address || "");
+        setDetailAddress(data.detailAddress || "");
+        setHours(data.hours || {});
+        setImages(data.images || []);
+      })
+      .catch((err) => {
+        console.error("❌ 초기 데이터 불러오기 실패:", err);
+      });
 
-    // Daum 주소 스크립트 로드
     const script = document.createElement("script");
     script.src = "//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js";
     script.async = true;
@@ -95,13 +96,16 @@ const FlowerHouseEdit = () => {
       images,
     };
 
+    console.log("📤 PATCH 전송 payload:", payload);
+
     try {
-      await axios.patch("https://blossompick.duckdns.org/api/v1/florist/data/", payload, {
+      const res = await axios.patch("https://blossompick.duckdns.org/api/v1/florist/data/", payload, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
       });
+      console.log("✅ PATCH 성공 응답:", res.data);
       alert("서버에 저장되었습니다!");
       navigate("/flowerhouse/view");
     } catch (err) {

@@ -1,4 +1,3 @@
-// FlowerHouse.js (GET 디버깅 코드 및 구조 개선 포함)
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 
@@ -25,26 +24,31 @@ const FlowerHouse = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("access_token");
+    console.log("📦 Access Token:", token);
 
-    // 상호명 불러오기
+    if (!token) {
+      alert("로그인이 필요합니다.");
+      return;
+    }
+
+    // 모든 axios 요청에 공통 Authorization 헤더 설정
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
+    // 1. 상호명 불러오기
     axios
-      .get("/api/v1/florist/housename/", {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+      .get("/api/v1/florist/housename/")
       .then((res) => {
         console.log("✅ housename 응답:", res.data);
         if (res.data?.housename) setStoreName(res.data.housename);
       })
-      .catch((err) => console.error("상호명 가져오기 실패:", err));
+      .catch((err) => console.error("❌ housename 실패:", err));
 
-    // 가게 정보 불러오기
+    // 2. florist 데이터 불러오기
     axios
-      .get("/api/v1/florist/data/", {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+      .get("/api/v1/florist/data/")
       .then((res) => {
         console.log("✅ florist/data 응답:", res.data);
-        const d = res.data;
+        const d = res.data.data ?? res.data;
         setIntro(d.intro ?? "");
         setPhone(d.phone ?? "");
         setAddress(d.address ?? "");
@@ -53,12 +57,12 @@ const FlowerHouse = () => {
         setImages(d.images ?? []);
       })
       .catch((err) => {
-        console.error("전체 정보 불러오기 실패:", err);
+        console.error("❌ florist/data 실패:", err);
         setHours(defaultHourInit());
       })
       .finally(() => setIsLoaded(true));
 
-    // 카카오 주소 스크립트 삽입
+    // 카카오 주소 API 로드
     const script = document.createElement("script");
     script.src = "//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js";
     script.async = true;
@@ -80,7 +84,7 @@ const FlowerHouse = () => {
       console.log("✅ PATCH 성공 응답:", res.data);
       alert("저장되었습니다!");
     } catch (err) {
-      console.error("저장 실패:", err);
+      console.error("❌ 저장 실패:", err);
       alert("저장에 실패했습니다.");
     }
   };
@@ -104,7 +108,10 @@ const FlowerHouse = () => {
   };
 
   const toggleClosed = (day) => {
-    setHours((prev) => ({ ...prev, [day]: { ...prev[day], closed: !prev[day].closed } }));
+    setHours((prev) => ({
+      ...prev,
+      [day]: { ...prev[day], closed: !prev[day].closed },
+    }));
   };
 
   if (!isLoaded) return <div className="text-center py-24">불러오는 중...</div>;
@@ -113,8 +120,18 @@ const FlowerHouse = () => {
     <div ref={containerRef} className="min-h-screen bg-white px-4 py-24 flex flex-col items-center">
       <h1 className="text-4xl font-bold text-center mb-8">{storeName}</h1>
       <div className="w-full max-w-4xl space-y-6">
-        <input placeholder="📢 한 줄 소개를 입력하세요 !" value={intro} onChange={(e) => setIntro(e.target.value)} className="w-full border px-4 py-3 rounded text-lg" />
-        <input placeholder="📞 전화번호를 입력하세요 !" value={phone} onChange={(e) => setPhone(e.target.value)} className="w-full border px-4 py-3 rounded text-lg" />
+        <input
+          placeholder="📢 한 줄 소개를 입력하세요 !"
+          value={intro}
+          onChange={(e) => setIntro(e.target.value)}
+          className="w-full border px-4 py-3 rounded text-lg"
+        />
+        <input
+          placeholder="📞 전화번호를 입력하세요 !"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+          className="w-full border px-4 py-3 rounded text-lg"
+        />
 
         <div>
           <label className="block text-lg font-semibold mb-2">📍 주소</label>
@@ -122,7 +139,13 @@ const FlowerHouse = () => {
             <input type="text" value={address} readOnly className="flex-1 border px-4 py-2 rounded" placeholder="도로명 주소" />
             <button onClick={openPostcode} className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">검색</button>
           </div>
-          <input type="text" placeholder="상세 주소를 입력하세요" value={detailAddress} onChange={(e) => setDetailAddress(e.target.value)} className="w-full border mt-2 px-4 py-2 rounded" />
+          <input
+            type="text"
+            placeholder="상세 주소를 입력하세요"
+            value={detailAddress}
+            onChange={(e) => setDetailAddress(e.target.value)}
+            className="w-full border mt-2 px-4 py-2 rounded"
+          />
         </div>
 
         <div>
