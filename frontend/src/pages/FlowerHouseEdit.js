@@ -1,6 +1,7 @@
-// FlowerHouseEdit.js (상호명 연동 포함)
+// FlowerHouseEdit.js (서버 저장 방식 + 상호명 연동 반영)
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const weekdays = ["월", "화", "수", "목", "금", "토", "일"];
 
@@ -15,54 +16,49 @@ const FlowerHouseEdit = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem("flowerhouse"));
-    if (saved) {
-      setIntro(saved.intro || "");
-      setPhone(saved.phone || "");
-      setAddress(saved.address || "");
-      setDetailAddress(saved.detailAddress || "");
-      setHours(saved.hours || {});
-      setImages(saved.images || []);
-    } else {
-      const defaultHours = {};
-      weekdays.forEach((day) => {
-        defaultHours[day] = { start: "09:00", end: "18:00", closed: false };
-      });
-      setHours(defaultHours);
-    }
+    const token = localStorage.getItem("access_token");
 
-    // Load Daum Postcode script
+    // 상호명 불러오기
+    axios.get("https://blossompick.duckdns.org/api/v1/florist/housename/", {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    .then((res) => {
+      if (res.data.housename) {
+        setHouseName(res.data.housename);
+      }
+    })
+    .catch((err) => console.error("❌ 상호명 불러오기 실패:", err));
+
+    // 기존 데이터 불러오기
+    axios.get("https://blossompick.duckdns.org/api/v1/florist/data/", {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    .then((res) => {
+      const data = res.data;
+      setIntro(data.intro || "");
+      setPhone(data.phone || "");
+      setAddress(data.address || "");
+      setDetailAddress(data.detailAddress || "");
+      setHours(data.hours || {});
+      setImages(data.images || []);
+    })
+    .catch((err) => {
+      console.error("❌ 초기 데이터 불러오기 실패:", err);
+    });
+
+    // Daum 주소 스크립트 로드
     const script = document.createElement("script");
     script.src = "//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js";
     script.async = true;
     document.body.appendChild(script);
-
-    // Fetch house name from API
-    const token = localStorage.getItem("access_token");
-    fetch("https://blossompick.duckdns.org/api/v1/florist/housename/", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.housename) {
-          setHouseName(data.housename);
-        }
-      })
-      .catch((err) => console.error("❌ 상호명 불러오기 실패:", err));
   }, []);
 
   const openPostcode = () => {
-    if (window.daum && window.daum.Postcode) {
-      new window.daum.Postcode({
-        oncomplete: function (data) {
-          setAddress(data.roadAddress || data.jibunAddress);
-        },
-      }).open();
-    } else {
-      alert("주소 검색 기능을 불러오는 중입니다. 잠시 후 다시 시도해 주세요.");
-    }
+    new window.daum.Postcode({
+      oncomplete: (data) => {
+        setAddress(data.roadAddress || data.jibunAddress);
+      },
+    }).open();
   };
 
   const handleTimeChange = (day, field, value) => {
@@ -88,8 +84,9 @@ const FlowerHouseEdit = () => {
     setImages((prev) => [...prev, ...newImages]);
   };
 
-  const handleSave = () => {
-    const data = {
+  const handleSave = async () => {
+    const token = localStorage.getItem("access_token");
+    const payload = {
       intro,
       phone,
       address,
@@ -97,15 +94,25 @@ const FlowerHouseEdit = () => {
       hours,
       images,
     };
-    localStorage.setItem("flowerhouse", JSON.stringify(data));
-    alert("저장되었습니다!");
-    navigate("/flowerhouse/view");
+
+    try {
+      await axios.patch("https://blossompick.duckdns.org/api/v1/florist/data/", payload, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      alert("서버에 저장되었습니다!");
+      navigate("/flowerhouse/view");
+    } catch (err) {
+      console.error("❌ 저장 실패:", err);
+      alert("저장 실패! 콘솔을 확인해주세요.");
+    }
   };
 
   return (
     <div className="min-h-screen bg-white px-4 py-24 flex flex-col items-center">
       <h1 className="text-4xl font-bold text-center mb-8">{houseName}</h1>
-
       <div className="w-full max-w-4xl space-y-6">
         <input
           type="text"
