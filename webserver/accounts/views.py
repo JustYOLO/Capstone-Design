@@ -4,6 +4,8 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework import generics, permissions
+from .serializers import BusinessDataSerializer
 from accounts.models import BusinessProfile
 from .serializers import BusinessRegisterSerializer
 from .serializers import PublicBusinessSerializer
@@ -26,9 +28,6 @@ class HouseNameView(APIView):
                 status=status.HTTP_403_FORBIDDEN
             )
         return Response({"housename": profile.company_name})
-
-from rest_framework import generics, permissions
-from .serializers import BusinessDataSerializer
 
 class BusinessDataUpdateView(generics.RetrieveUpdateAPIView):
     """

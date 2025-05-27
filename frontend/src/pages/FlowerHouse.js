@@ -13,6 +13,7 @@ const FlowerHouse = () => {
   const [hours, setHours] = useState({});
   const [images, setImages] = useState([]);
   const containerRef = useRef(null);
+  const pk = localStorage.getItem("pk")
 
   useEffect(() => {
     // grab the token you stored earlier
@@ -75,7 +76,7 @@ const FlowerHouse = () => {
   const handleSave = async () => {
     // 1) Build the payload exactly as your DRF serializer expects:
     const payload = {
-      data: { storeName, intro, phone, address, detailAddress, hours, images }
+      data: { pk, storeName, intro, phone, address, detailAddress, hours, images }
     };
 
     // 2) Grab the JWT you saved earlier

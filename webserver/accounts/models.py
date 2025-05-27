@@ -25,7 +25,7 @@ class BusinessProfile(models.Model):
     pdf = models.FileField(upload_to="business_pdfs/")
     company_name = models.CharField(max_length=255, blank=True)
     is_verified = models.BooleanField(default=False)
-    data = models.JSONField(blank=True, default=dict)  # ← new field
+    data = models.JSONField(blank=True, default=dict)
 
     def __str__(self):
         return f"{self.company_name} ({self.user.email})"

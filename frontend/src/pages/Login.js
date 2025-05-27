@@ -26,6 +26,7 @@ const Login = () => {
         const accessToken = data.access;
         localStorage.setItem("access_token", accessToken);
         localStorage.setItem("refresh_token", data.refresh);
+        localStorage.setItem("pk", data.user.pk);
 
         setTimeout(() => {
           navigate(isAdmin ? "/admin" : "/");
