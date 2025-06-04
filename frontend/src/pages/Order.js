@@ -5,7 +5,7 @@ import AdCarousel from "./AdCarousel"; // 배너 컴포넌트 import
 
 const weekdays = ["월", "화", "수", "목", "금", "토", "일"];
 
-const OrderDetail = () => {
+const Order = () => {
   const { pk } = useParams();
   const [shopData, setShopData] = useState(null);
 
@@ -64,4 +64,4 @@ const OrderDetail = () => {
   );
 };
 
-export default OrderDetail;
+export default Order;
