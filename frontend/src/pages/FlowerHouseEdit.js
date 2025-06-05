@@ -88,7 +88,7 @@ const FlowerHouseEdit = () => {
   const handleSave = async () => {
     const token = localStorage.getItem("access_token");
     const payload = {
-      data: { storeName, intro, phone, address, detailAddress, hours, images }
+      data: { intro, phone, address, detailAddress, hours, images }
     };
 
     // const payload = {

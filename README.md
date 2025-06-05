@@ -81,7 +81,9 @@ docker-compose up --build
 
 ### Run using docker
 
-Django image is publically available on docker hub. (But .env file is needed) Use this command:
+
+Django의 docker image는 docker hub에서 가져오실 수 있습니다. (.env 파일이 필요합니다.)
+아래의 명령어를 사용하세요:
 
 ```bash
 
@@ -90,9 +92,9 @@ docker network create your_network_name
 sudo docker run --name django_container --env-file .env --network your_network_name justyolo912/django-docker
 ```
 
-If you need to connect directly to Django container, use port forwarding (-p8011:8000)
+Django container로 직접 접근하시려면 port forwading을 사용하셔야 합니다. (e.g., -p8011:8000)
 
-Example .env file:
+.env 파일의 예시
 
 ```bash
 SECRET_KEY=1111
@@ -102,7 +104,7 @@ DJANGO_ALLOWED_HOSTS=127.0.0.1,localhost
 
 ### MySQL container (UserDB)
 
-MySQL conatiner holds user data.
+MySQL conatiner는 Django와 연결되어 사용자 정보를 저장합니다. 아래의 명령어를 사용하세요:
 
 ```bash
 sudo docker run --name user_db --network your_network_name -v /path/to/db:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=yourpw -d mysql:latest
@@ -111,7 +113,8 @@ sudo docker run --name user_db --network your_network_name -v /path/to/db:/var/l
 
 ### Nginx container
 
-We're using Nginx container as HTTPS endpoint. You can run the container by using this command:
+저희는 Nginx를 HTTPS endpoint로 사용합니다. 코드 그대로 사용하시려면 SSL 인증서가 필요합니다.
+아래의 명령어로 container를 build 및 실행하실 수 있습니다.
 
 ```bash
 docker build -f Dockerfile.nginx -t my_nginx .
