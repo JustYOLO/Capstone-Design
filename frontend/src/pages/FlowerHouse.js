@@ -72,7 +72,11 @@ const FlowerHouse = () => {
 
   const handleSave = async () => {
     const token = localStorage.getItem("access_token");
-    const payload = { storeName, intro, phone, address, detailAddress, hours, images };
+    // const payload = { storeName, intro, phone, address, detailAddress, hours, images };
+    const payload = {
+      data: { storeName, intro, phone, address, detailAddress, hours, images }
+    };
+
     console.log("📤 PATCH 전송 payload:", payload);
 
     try {
