@@ -12,6 +12,7 @@ from .serializers import PublicBusinessSerializer
 from .serializers import BusinessImageSerializer
 from .serializers import BusinessInventorySerializer
 from .serializers import OrderCreateSerializer, OrderSerializer
+from .models import Order
 
 class BusinessRegisterView(RegisterView):
     serializer_class = BusinessRegisterSerializer
