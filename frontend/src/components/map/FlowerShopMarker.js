@@ -28,7 +28,7 @@ const markAddresses = (map, addressList) => {
   });
 };
 
-export const FlowerShopMarkers = (map, userLat, userLng) => {
+export const FlowerShopMarker = (map, userLat, userLng) => {
   // 사용자 위치 마커
   new window.naver.maps.Marker({
     position: new window.naver.maps.LatLng(userLat, userLng),

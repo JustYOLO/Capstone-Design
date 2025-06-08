@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { FlowerShopMarker } from "./FlowerShopMarker.js";
+import { FlowerShopMarker } from "./FlowerShopMarker";
 
 const UserLocationMap = () => {
   const mapRef = useRef(null);
