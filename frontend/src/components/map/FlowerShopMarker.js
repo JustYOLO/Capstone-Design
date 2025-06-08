@@ -56,7 +56,7 @@ const MapWithAddress = () => {
     fetch(`https://blossompick.duckdns.org/api/v1/florist/stores/${pk}/`)
       .then((res) => res.json())
       .then((res) => {
-        const backendAddress = res.data?.address || "";
+        const backendAddress = res.data.address || "";
         if (backendAddress) setShopAddress(backendAddress);
       })
       .catch((err) => console.error("❌ 주소 불러오기 실패:", err));
