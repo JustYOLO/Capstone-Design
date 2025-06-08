@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import FlowerMapWrapper from "../map/FlowerMapWrapper.js";
-
-
 
 const weekdays = ["월", "화", "수", "목", "금", "토", "일"];
 

@@ -1,3 +1,4 @@
+// 주소 배열을 받아 마커를 생성하는 함수
 const markAddresses = (map, addressList) => {
   addressList.forEach((address) => {
     window.naver.maps.Service.geocode({ query: address }, (status, response) => {
@@ -27,7 +28,7 @@ const markAddresses = (map, addressList) => {
   });
 };
 
-export const FlowerShopMarker = (map, userLat, userLng, roadAddresses = []) => {
+export const FlowerShopMarkers = (map, userLat, userLng) => {
   // 사용자 위치 마커
   new window.naver.maps.Marker({
     position: new window.naver.maps.LatLng(userLat, userLng),
@@ -38,5 +39,8 @@ export const FlowerShopMarker = (map, userLat, userLng, roadAddresses = []) => {
     },
   });
 
-  markAddresses(map, roadAddresses); // 외부에서 받은 주소 리스트 사용
+
+  // 도로명 주소 목록 → 마커 생성
+  const roadAddresses = ["경기도 용인시 수지구 죽전로 152", "대지로 131-1", "동백죽전대로 1066"];
+  markAddresses(map, roadAddresses);
 };
