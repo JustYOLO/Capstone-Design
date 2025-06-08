@@ -122,37 +122,66 @@ class OrderCreateSerializer(serializers.Serializer):
         return attrs
 
     def create(self, validated_data):
-        user = self.context["request"].user
-        # grab name/email from the user model
-        customer_name  = user.get_full_name() or user.email
-        customer_email = user.email
-
-        # then the rest is the same
         business = self.business
         items    = validated_data["items"]
-        # subtract inventory, save profile, etc…
+        user     = self.context["request"].user
+
+        # 1) Subtract stock
+        inv = business.inventory
+        stock_map = {i["name"]: i["quantity"] for i in inv}
+        for it in items:
+            stock_map[it["name"]] -= it["quantity"]
+        new_inv = [
+            {"name": i["name"], "meaning": i.get("meaning", ""), "quantity": stock_map[i["name"]]}
+            for i in inv
+        ]
+        business.inventory = new_inv
+        business.save()
+
+        # 2) Record the order
         order = Order.objects.create(
-            business=business,
-            customer_name=customer_name,
-            customer_email=customer_email,
-            items=items
+            business       = business,
+            customer       = user,
+            customer_name  = user.get_full_name() or user.email,
+            customer_email = user.email,
+            items          = items,
         )
 
-        # 3) Email notification to the business owner
-        subject = f"[New Order #{order.id}] {business.company_name}"
-        body = ["You have a new flower order:", ""]
-        for it in items:
-            body.append(f"- {it['name']}: {it['quantity']}")
-        body += [
+        # 3) Email the business
+        subject_biz = f"[New Order #{order.id}] {business.company_name}"
+        body_biz = "\n".join([
+            "You have a new flower order:",
+            *[f"- {it['name']}: {it['quantity']}" for it in items],
             "",
             f"Customer: {order.customer_name}",
-            f"Email: {order.customer_email}",
-        ]
+            f"Email: {order.customer_email}"
+        ])
         send_mail(
-            subject,
-            "\n".join(body),
+            subject_biz,
+            body_biz,
             settings.EMAIL_HOST_USER,
             [business.user.email],
+            fail_silently=False,
+        )
+
+        # 4) Email the customer
+        subject_cust = f"Your Order #{order.id} at {business.company_name}"
+        body_cust = "\n".join([
+            f"Hi {order.customer_name},",
+            "",
+            "Thank you for your order! Here is what we received:",
+            *[f"- {it['name']}: {it['quantity']}" for it in items],
+            "",
+            f"We will prepare these for you at {business.company_name}.",
+            "",
+            "Best regards,",
+            business.company_name
+        ])
+        send_mail(
+            subject_cust,
+            body_cust,
+            settings.EMAIL_HOST_USER,
+            [order.customer_email],
             fail_silently=False,
         )
 
@@ -161,5 +190,4 @@ class OrderCreateSerializer(serializers.Serializer):
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model  = Order
-        fields = ["id", "customer_name", "customer_email", "items", "created_at"]
-
+        fields = ["id", "business", "customer_name", "customer_email", "items", "created_at"]
