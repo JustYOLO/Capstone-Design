@@ -30,6 +30,7 @@ from accounts.views import PublicBusinessListView
 from accounts.views import PublicBusinessDetailView
 from accounts.views import BusinessImageUploadView
 from accounts.views import BusinessInventoryView
+from accounts.views import PlaceOrderView
 
 BUILD_DIR = os.path.join(settings.BASE_DIR, 'webserver', 'static', 'build')
 
@@ -100,8 +101,11 @@ urlpatterns = [
       BusinessInventoryView.as_view(),
       name="business-inventory",
     ),
-
-
+    path(
+      "api/v1/florist/order/",
+      PlaceOrderView.as_view(),
+      name="place-order",
+    ),
     path('', include('frontend.urls')),
     re_path(r'^(?!static/).*$' , include('frontend.urls')),
 ]

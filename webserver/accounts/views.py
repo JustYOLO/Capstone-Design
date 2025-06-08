@@ -11,6 +11,7 @@ from .serializers import BusinessRegisterSerializer
 from .serializers import PublicBusinessSerializer
 from .serializers import BusinessImageSerializer
 from .serializers import BusinessInventorySerializer
+from .serializers import OrderCreateSerializer, OrderSerializer
 
 class BusinessRegisterView(RegisterView):
     serializer_class = BusinessRegisterSerializer
@@ -94,3 +95,22 @@ class BusinessInventoryView(APIView):
             {"flowers": profile.inventory},
             status=status.HTTP_200_OK,
         )
+
+class PlaceOrderView(generics.CreateAPIView):
+    """
+    POST /api/v1/florist/order/
+    {
+      "business_id": 3,
+      "items": [
+        {"name": "Rose", "quantity": 5},
+        {"name": "Tulip", "quantity": 2}
+      ]
+    }
+    """
+    permission_classes = [IsAuthenticated]   # only logged in
+    serializer_class   = OrderCreateSerializer
+
+    def get_serializer_context(self):
+        return {"request": self.request}
+
+ 
