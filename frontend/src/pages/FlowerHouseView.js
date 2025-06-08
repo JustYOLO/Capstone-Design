@@ -1,29 +1,29 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { FlowerShopMarker } from "../components/map/FlowerShopMarker"; // FlowerShopMarker import
+import { FlowerShopMarker } from "../components/map/FlowerShopMarker";
 
 const weekdays = ["월", "화", "수", "목", "금", "토", "일"];
 
 const FlowerHouseView = () => {
-  const { pk } = useParams();
+  const { business_id } = useParams();
   const [data, setData] = useState(null);
   const [showHours, setShowHours] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`https://blossompick.duckdns.org/api/v1/florist/stores/${pk}/`)
+    fetch(`https://blossompick.duckdns.org/api/v1/florist/stores/${business_id}/`)
       .then((res) => {
         if (!res.ok) throw new Error("불러오기 실패");
         return res.json();
       })
       .then((res) => {
-        setData(res);  // ✅ 여기만 고침
+        setData(res);
       })
       .catch((err) => {
         console.error("가게 정보 로딩 실패", err);
         alert("해당 가게 정보를 불러올 수 없습니다.");
       });
-  }, [pk]);
+  }, [business_id]);
 
   if (!data) {
     return <div className="text-center p-8 text-red-500">가게 정보를 불러오는 중입니다...</div>;

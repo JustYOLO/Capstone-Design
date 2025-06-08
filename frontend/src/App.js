@@ -73,7 +73,7 @@ function AppContent() {
         <Route path="/flowerhouse" element={<FlowerHouse />} />
         <Route path="/flowerhouse/view/:business_id" element={<FlowerHouseView />} />
         <Route path="/flowerhouse/addflower" element={<FlowerHouseAddFlower />} />
-        <Route path="order/:business_id" element={<OrderPage />} />
+        <Route path="/order/:business_id" element={<OrderPage />} />
       </Routes>
 
       {isHome && (
