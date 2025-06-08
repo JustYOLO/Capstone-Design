@@ -61,7 +61,7 @@ def save_to_chromadb(documents_ko):
     new_collection = client.get_or_create_collection(name="flowers_ko")  # 재생성
 
     for i, d in enumerate(documents_ko):
-        response = ollama.embeddings(model="llama-ko-bllossom-8B:latest", prompt=d)
+        response = ollama.embeddings(model="llama3-ko:latest", prompt=d)
         embedding = response["embedding"]
         new_collection.add(
             ids=[str(i)],

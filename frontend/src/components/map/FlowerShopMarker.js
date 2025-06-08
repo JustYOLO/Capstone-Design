@@ -30,7 +30,7 @@ const markAddresses = (map, addressList) => {
   });
 };
 
-const FlowerShopMarkers = (map, userLat, userLng, roadAddresses = []) => {
+const FlowerShopMarker = (map, userLat, userLng, roadAddresses = []) => {
   new window.naver.maps.Marker({
     position: new window.naver.maps.LatLng(userLat, userLng),
     map,
@@ -59,7 +59,7 @@ const MapWithAddress = () => {
       zoom: 14,
     });
 
-    FlowerShopMarkers(map, userLat, userLng, [address]);
+    FlowerShopMarker(map, userLat, userLng, [address]);
   }, [address]);
 
   return (
