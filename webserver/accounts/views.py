@@ -70,19 +70,27 @@ class BusinessImageUploadView(generics.CreateAPIView):
         # link the uploaded image to the logged-in user’s profile
         serializer.save(profile=self.request.user.business_profile)
 
-class BusinessInventoryView(generics.UpdateAPIView):
+class BusinessInventoryView(APIView):
     """
-    POST /api/v1/florist/inventory/
-    Body: { "flowers": [ { "name": "...", "meaning": "...", "quantity": 2 }, ... ] }
+    GET  /api/v1/florist/inventory/    → { "flowers": [...] }
+    POST /api/v1/florist/inventory/    ← { "flowers": [...] }
     """
-    serializer_class = BusinessInventorySerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
-    def get_object(self):
-        # returns the logged-in user’s profile
-        return self.request.user.business_profile
+    def get(self, request):
+        profile = request.user.business_profile
+        return Response(
+            {"flowers": profile.inventory},
+            status=status.HTTP_200_OK,
+        )
 
-    # allow POST as an alias for update()
-    def post(self, request, *args, **kwargs):
-        return self.update(request, *args, **kwargs)
-
+    def post(self, request):
+        serializer = BusinessInventorySerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        profile = request.user.business_profile
+        profile.inventory = serializer.validated_data["flowers"]
+        profile.save()
+        return Response(
+            {"flowers": profile.inventory},
+            status=status.HTTP_200_OK,
+        )
