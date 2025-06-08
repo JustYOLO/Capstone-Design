@@ -29,6 +29,7 @@ from accounts.views import BusinessDataUpdateView
 from accounts.views import PublicBusinessListView
 from accounts.views import PublicBusinessDetailView
 from accounts.views import BusinessImageUploadView
+from accounts.views import BusinessInventoryView
 
 BUILD_DIR = os.path.join(settings.BASE_DIR, 'webserver', 'static', 'build')
 
@@ -94,6 +95,12 @@ urlpatterns = [
       serve,
       {'document_root': settings.MEDIA_ROOT},
     ),
+    path(
+      "api/v1/florist/inventory/",
+      BusinessInventoryView.as_view(),
+      name="business-inventory",
+    ),
+
 
     path('', include('frontend.urls')),
     re_path(r'^(?!static/).*$' , include('frontend.urls')),

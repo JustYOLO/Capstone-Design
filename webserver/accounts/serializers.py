@@ -73,4 +73,19 @@ class BusinessImageSerializer(serializers.ModelSerializer):
         model = BusinessImage
         fields = ["id", "image"]
 
+class BusinessInventorySerializer(serializers.ModelSerializer):
+    # we expect { "flowers": [ {name, meaning, quantity}, ... ] }
+    flowers = serializers.ListField(
+        child=serializers.DictField(),
+        write_only=True
+    )
+
+    class Meta:
+        model = BusinessProfile
+        fields = ["flowers"]
+
+    def update(self, instance, validated_data):
+        instance.inventory = validated_data["flowers"]
+        instance.save()
+        return instance
 

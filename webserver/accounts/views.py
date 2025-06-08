@@ -10,6 +10,7 @@ from accounts.models import BusinessProfile, BusinessImage
 from .serializers import BusinessRegisterSerializer
 from .serializers import PublicBusinessSerializer
 from .serializers import BusinessImageSerializer
+from .serializers import BusinessInventorySerializer
 
 class BusinessRegisterView(RegisterView):
     serializer_class = BusinessRegisterSerializer
@@ -68,4 +69,20 @@ class BusinessImageUploadView(generics.CreateAPIView):
     def perform_create(self, serializer):
         # link the uploaded image to the logged-in user’s profile
         serializer.save(profile=self.request.user.business_profile)
+
+class BusinessInventoryView(generics.UpdateAPIView):
+    """
+    POST /api/v1/florist/inventory/
+    Body: { "flowers": [ { "name": "...", "meaning": "...", "quantity": 2 }, ... ] }
+    """
+    serializer_class = BusinessInventorySerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_object(self):
+        # returns the logged-in user’s profile
+        return self.request.user.business_profile
+
+    # allow POST as an alias for update()
+    def post(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
 

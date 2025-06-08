@@ -26,6 +26,7 @@ class BusinessProfile(models.Model):
     company_name = models.CharField(max_length=255, blank=True)
     is_verified = models.BooleanField(default=False)
     data = models.JSONField(blank=True, default=dict)
+    inventory = models.JSONField(blank=True, default=list)
 
     def __str__(self):
         return f"{self.company_name} ({self.user.email})"
@@ -40,6 +41,7 @@ class BusinessImage(models.Model):
 
     def __str__(self):
         return f"Image for {self.profile.company_name}"
+
 
 
 # Create your models here.
