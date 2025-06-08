@@ -113,4 +113,13 @@ class PlaceOrderView(generics.CreateAPIView):
     def get_serializer_context(self):
         return {"request": self.request}
 
+class MyOrdersView(generics.ListAPIView):
+    """
+    GET /api/v1/orders/ → all orders placed by the logged-in user
+    """
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class   = OrderSerializer
+
+    def get_queryset(self):
+        return Order.objects.filter(customer=self.request.user).order_by("-created_at")
  
