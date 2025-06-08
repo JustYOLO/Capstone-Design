@@ -35,6 +35,7 @@ import AfterLoginFlorist from "./pages/AfterLoginFlorist";
 import FlowerHouse from "./pages/FlowerHouse";
 import FlowerHouseView from "./pages/FlowerHouseView";
 import FlowerHouseAddFlower from "./pages/FlowerHouseAddFlower";
+import OrderPage from "./pages/OrderPage";
 
 function AppContent() {
   const location = useLocation();
@@ -71,6 +72,7 @@ function AppContent() {
         <Route path="/flowerhouse" element={<FlowerHouse />} />
         <Route path="/flowerhouse/view/:pk" element={<FlowerHouseView />} />
         <Route path="/flowerhouse/addflower" element={<FlowerHouseAddFlower />} />
+        <Route path="order/:pk" element={<OrderPage />} />
       </Routes>
 
       {isHome && (

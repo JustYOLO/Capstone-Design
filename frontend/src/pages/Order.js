@@ -45,7 +45,7 @@ const Order = () => {
                   <p>🌸 인기 꽃 종류: {store.inventory?.map(f => f.name).join(", ") || "정보 없음"}</p>
                   <p>📞 전화번호: {store.data?.phone || "없음"}</p>
                   <button
-                    onClick={() => navigate(`/flowerhouse/view/${store.id || store.pk}`)}
+                    onClick={() => navigate(`/flowerhouse/view/${store.id}`)}
                     className="mt-2 text-blue-600 hover:underline text-sm"
                   >
                     자세히 보기

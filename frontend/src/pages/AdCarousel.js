@@ -4,11 +4,11 @@ const AdCarousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const bannerImages = [
-    "/home/wlk/capstone/Capstone-Design/frontend/ad_image/IMG_4330.JPG",
-    "/home/wlk/capstone/Capstone-Design/frontend/ad_image/IMG_4331.JPG",
-    "/home/wlk/capstone/Capstone-Design/frontend/ad_image/IMG_4332.JPG",
-    "/home/wlk/capstone/Capstone-Design/frontend/ad_image/IMG_4333.JPG",
-    "/home/wlk/capstone/Capstone-Design/frontend/ad_image/IMG_4334.JPG"
+    "/ad_image/IMG_4330.JPG",
+    "/ad_image/IMG_4331.JPG",
+    "/ad_image/IMG_4332.JPG",
+    "/ad_image/IMG_4333.JPG",
+    "/ad_image/IMG_4334.JPG"
   ];
 
   useEffect(() => {
