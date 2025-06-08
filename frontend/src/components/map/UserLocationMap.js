@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { FlowerShopMarkers } from "./FlowerShopMarker";
+import { FlowerShopMarker } from "./FlowerShopMarker";
 
 const UserLocationMap = () => {
   const mapRef = useRef(null);
@@ -21,7 +21,7 @@ const UserLocationMap = () => {
           title: "내 위치",
         });
 
-        FlowerShopMarkers(map, lat, lng);
+        FlowerShopMarker(map, lat, lng);
       },
       () => {
         const defaultLatLng = new window.naver.maps.LatLng(37.5665, 126.9780);
