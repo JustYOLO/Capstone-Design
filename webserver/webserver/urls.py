@@ -89,17 +89,14 @@ urlpatterns = [
       BusinessImageUploadView.as_view(),
       name="business-image-upload",
     ),
+    re_path(
+      r'^media/(?P<path>.*)$',
+      serve,
+      {'document_root': settings.MEDIA_ROOT},
+    ),
+
     path('', include('frontend.urls')),
     re_path(r'^(?!static/).*$' , include('frontend.urls')),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=os.path.join(BASE_DIR, 'webserver/static/build/static'))
-# urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
-urlpatterns += [
-    re_path(
-        r"^media/(?P<path>.*)$",
-        serve,
-        {"document_root": settings.MEDIA_ROOT},
-    ),
-]
