@@ -16,7 +16,7 @@ const FlowerHouseView = () => {
         return res.json();
       })
       .then((res) => {
-        setData(res.data); // 백엔드 응답 형식: { data: {...} }
+        setData(res.data);
       })
       .catch((err) => {
         console.error("가게 정보 로딩 실패", err);

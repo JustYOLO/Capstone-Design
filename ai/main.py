@@ -35,7 +35,7 @@ def extract_keywords(situation: str) -> list:
 
     반드시 Python 리스트 형식으로 출력해.
     """
-    output = client.generate(model="gemma3:4b", prompt=prompt)["response"]
+    output = client.generate(model="gemma3:12b", prompt=prompt)["response"]
     print(f"[키워드 추출 결과]: {output.strip()}")
 
     try:
@@ -89,7 +89,7 @@ def search_flower_ko(situation: str) -> list:
     - 설강화: 희망
     """
     
-    response = client.generate(model="gemma3:4b", prompt=prompt)["response"]
+    response = client.generate(model="gemma3:12b", prompt=prompt)["response"]
 
     print(f"[추천된 꽃 목록]: {response.strip()}")
 
@@ -131,7 +131,7 @@ def generate_flower_recommendation_ko(situation, recommended_flowers):
     """
     
     # 응답 생성
-    output = client.generate(model="gemma3:4b", prompt=prompt_text)
+    output = client.generate(model="gemma3:12b", prompt=prompt_text)
     return output["response"]
 
 
