@@ -44,6 +44,8 @@ def search_flower_ko(situation):
     candidate_docs = results["documents"][0]
     if not candidate_docs:
         return []
+    
+    print(candidate_docs)
 
     # LLM 재정렬
     flowers_info = "\n".join(candidate_docs)
@@ -56,7 +58,7 @@ def search_flower_ko(situation):
 
     {flowers_info}
 
-    ## 출력 형식:
+    ## 출력 형식: (이유는 추천하지 않습니다)
     - 꽃: 꽃말
     
     ## 예시 출력:
@@ -66,17 +68,18 @@ def search_flower_ko(situation):
     """
     output = ollama.generate(model="gemma3:4b", prompt=rerank_prompt)["response"]
 
-    print(output)
+    # print(output)
     # 결과 파싱
     recommended_flowers = []
     for line in output.strip().split("\n"):
-        if "꽃:" in line:
+        if line.startswith("- "):  # 리스트 형식의 라인
             try:
-                flower, flower_mean = line.replace("꽃:", "").strip().split(":", 1)
+                flower, flower_mean = line[2:].strip().split(":", 1)
                 recommended_flowers.append((flower.strip(), flower_mean.strip()))
             except:
                 continue
     return recommended_flowers
+
 
 
 

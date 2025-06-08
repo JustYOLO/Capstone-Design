@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FiUser } from "react-icons/fi";
 import { MdLogout } from "react-icons/md";
@@ -7,7 +7,34 @@ import { FaBars } from "react-icons/fa";
 const Navbar = ({ user }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [isFlorist, setIsFlorist] = useState(false); // 추가
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const checkFloristStatus = async () => {
+      if (!user) return;
+      try {
+        const token = user.access;
+        const response = await fetch("https://blossompick.duckdns.org/api/v1/florist/housename/", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          if (data.housename) {
+            setIsFlorist(true);
+          }
+        }
+      } catch (err) {
+        console.error("❌ florist 확인 실패:", err);
+      }
+    };
+
+    checkFloristStatus();
+  }, [user]);
 
   const handleLogout = () => {
     localStorage.removeItem("user");
@@ -18,9 +45,7 @@ const Navbar = ({ user }) => {
   return (
     <nav className="navbar-root">
       <div className="navbar-container">
-        <Link to="/" className="navbar-logo">
-          BlossomPick
-        </Link>
+        <Link to="/" className="navbar-logo">BlossomPick</Link>
 
         {/* 모바일 메뉴 토글 */}
         <div className="md:hidden">
@@ -36,17 +61,12 @@ const Navbar = ({ user }) => {
           <Link to="/order" className="navbar-link">꽃 주문</Link>
         </div>
 
-        {/* 로그인 상태에 따라 UI 변경 */}
+        {/* 로그인 상태 */}
         {user ? (
           <div className="relative">
-            <button
-              onClick={() => setShowDropdown(!showDropdown)}
-              className="profile-button"
-            >
+            <button onClick={() => setShowDropdown(!showDropdown)} className="profile-button">
               <FiUser className="text-gray-700 text-xl" />
-              <span className="text-gray-700">
-                {user.name || user.email || "프로필"}
-              </span>
+              <span className="text-gray-700">{user.name || user.email || "프로필"}</span>
             </button>
 
             {showDropdown && (
@@ -54,30 +74,26 @@ const Navbar = ({ user }) => {
                 <Link to="/profile" className="dropdown-item">개인정보 설정</Link>
                 <Link to="/voc" className="dropdown-item">문의사항</Link>
 
-                {user.isFlorist && (
+                {/* florist용 메뉴 추가 */}
+                {isFlorist && (
                   <>
                     <Link to="/flowerhouse/edit" className="dropdown-item">꽃집 정보 수정</Link>
                     <Link to="/flowerhouse/addflower" className="dropdown-item">꽃집 주문 관리</Link>
                   </>
                 )}
 
-                <button
-                  onClick={handleLogout}
-                  className="logout-button"
-                >
+                <button onClick={handleLogout} className="logout-button">
                   <MdLogout className="inline-block mr-2" /> 로그아웃
                 </button>
               </div>
             )}
           </div>
         ) : (
-          <Link to="/login" className="login-button">
-            로그인/가입
-          </Link>
+          <Link to="/login" className="login-button">로그인/가입</Link>
         )}
       </div>
 
-      {/* 모바일 드롭다운 메뉴 */}
+      {/* 모바일 메뉴 */}
       {menuOpen && (
         <div className="navbar-menu-mobile">
           <Link to="/dictionary" className="block hover:text-blue-500">꽃말 검색</Link>

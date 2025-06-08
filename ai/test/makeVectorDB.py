@@ -27,7 +27,7 @@ def add_or_update_flower(flower, meaning):
         if existing_flower == flower:
             # Update the meaning if the flower exists
             doc_flowers[i] = (flower, meaning)
-            print(f"✅ Updated meaning for {flower}")
+            print(f"Updated meaning for {flower}")
             break
     else:
         # Add the new flower if it doesn't exist
@@ -71,7 +71,7 @@ def read_flower(flower):
     # Find the meaning of the flower
     for existing_flower, meaning in doc_flowers:
         if existing_flower == flower:
-            print(f"🌸 {flower}: {meaning}")
+            print(f"{flower}: {meaning}")
             return
     
     print(f"Flower not found: {flower}")

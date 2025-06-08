@@ -27,12 +27,12 @@ def add_or_update_flower(flower, meaning):
         if existing_flower == flower:
             # Update the meaning if the flower exists
             doc_flowers[i] = (flower, meaning)
-            print(f"✅ Updated meaning for {flower}")
+            print(f"Updated meaning for {flower}")
             break
     else:
         # Add the new flower if it doesn't exist
         doc_flowers.append((flower, meaning))
-        print(f"✅ Added new flower: {flower}")
+        print(f"Added new flower: {flower}")
     
     # Sort the flowers by Korean alphabetical order
     doc_flowers.sort(key=lambda x: x[0])
@@ -46,10 +46,10 @@ def delete_flower(flower):
     for i, (existing_flower, _) in enumerate(doc_flowers):
         if existing_flower == flower:
             del doc_flowers[i]
-            print(f"✅ Deleted flower: {flower}")
+            print(f"Deleted flower: {flower}")
             break
     else:
-        print(f"❌ Flower not found: {flower}")
+        print(f"Flower not found: {flower}")
     
     save_flower_data(file_path, doc_flowers)
 
@@ -63,7 +63,7 @@ def save_to_chromadb(documents_ko):
             embeddings=[embedding],
             documents=[d]
         )
-    print(f"✅ {len(documents_ko)}개 꽃 데이터를 ChromaDB에 저장 완료!")
+    print(f"{len(documents_ko)}개 꽃 데이터를 ChromaDB에 저장 완료!")
 
 def read_flower(flower):
     doc_flowers = load_flower_data(file_path)
@@ -74,7 +74,7 @@ def read_flower(flower):
             print(f"🌸 {flower}: {meaning}")
             return
     
-    print(f"❌ Flower not found: {flower}")
+    print(f"Flower not found: {flower}")
 
 def save_to_json(file_path, json_file_path):
     doc_flowers = load_flower_data(file_path)
@@ -84,7 +84,7 @@ def save_to_json(file_path, json_file_path):
     
     with open(json_file_path, 'w', encoding='utf-8') as f:
         json.dump(flower_list, f, indent=4, ensure_ascii=False)  # ensure_ascii=False 추가
-    print(f"✅ txt 내용을 {json_file_path}에 JSON 형태로 저장 완료!")
+    print(f"txt 내용을 {json_file_path}에 JSON 형태로 저장 완료!")
 
 while True:
     print("\n기능을 선택하세요:")
