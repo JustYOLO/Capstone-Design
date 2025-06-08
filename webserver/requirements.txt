@@ -10,3 +10,4 @@ PyMySQL==1.1.1
 whitenoise==6.9.0
 django-allauth>=0.56.0,<0.62.0
 pymupdf==1.25.5
+Pillow>=9.0.0
