@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
-
-
 const weekdays = ["월", "화", "수", "목", "금", "토", "일"];
 
 const FlowerHouseView = () => {
