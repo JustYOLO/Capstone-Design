@@ -21,7 +21,7 @@ const OrderPage = () => {
         setQuantities(initialQuantities);
       })
       .catch((err) => console.error("❌ 꽃집 정보 가져오기 실패:", err));
-  }, [pk]);
+  }, [business_id]);
 
   const updateQuantity = (name, delta) => {
     setQuantities((prev) => ({
