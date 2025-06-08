@@ -63,13 +63,14 @@ class BusinessDataSerializer(serializers.ModelSerializer):
         fields = ["data"]
 
 class PublicBusinessSerializer(serializers.ModelSerializer):
+    business_id = serializers.IntegerField(source="pk", read_only=True)
     housename = serializers.CharField(source="company_name", read_only=True)
     data      = serializers.JSONField(read_only=True)
     inventory  = serializers.JSONField(read_only=True)
 
     class Meta:
         model  = BusinessProfile
-        fields = ["housename", "data", "inventory"]
+        fields = ["business_id", "housename", "data", "inventory"]
 
 class BusinessImageSerializer(serializers.ModelSerializer):
     class Meta:
