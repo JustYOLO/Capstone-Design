@@ -4,7 +4,7 @@ const AdCarousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const bannerImages = [
-    "/banner1.jpg",
+    "/home/wlk/capstone/Capstone-Design/frontend/ad_image/IMG",
     "/banner2.jpg",
     "/banner3.jpg",
     "/banner4.jpg",

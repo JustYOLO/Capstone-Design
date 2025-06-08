@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import FlowerMapWrapper from "/home/wlk/capstone/Capstone-Design/frontend/src/components/map/FlowerMapWrapper.js";
+
+
 
 const weekdays = ["월", "화", "수", "목", "금", "토", "일"];
 
@@ -98,5 +101,17 @@ const FlowerHouseView = () => {
     </div>
   );
 };
+
+
+{data.address && (
+  <div className="w-full max-w-4xl my-10">
+    <h2 className="text-lg font-semibold mb-2">🗺️ 위치 지도</h2>
+    <FlowerMapWrapper
+      userLat={37.335887}
+      userLng={127.127758}
+      addressList={[data.address]}
+    />
+  </div>
+)}
 
 export default FlowerHouseView;

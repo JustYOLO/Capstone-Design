@@ -1,64 +1,60 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import axios from "axios";
-import AdCarousel from "./AdCarousel"; // 배너 컴포넌트 import
-
-const weekdays = ["월", "화", "수", "목", "금", "토", "일"];
+import AdCarousel from "./AdCarousel"; // 광고 배너 컴포넌트
+import { useNavigate } from "react-router-dom";
 
 const Order = () => {
-  const { pk } = useParams();
-  const [shopData, setShopData] = useState(null);
+  const [stores, setStores] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get(`https://blossompick.duckdns.org/api/v1/florist/stores/${pk}/`)
+    axios.get("https://blossompick.duckdns.org/api/v1/florist/stores/")
       .then((res) => {
-        setShopData(res.data.data); // data 안에 data가 있음
+        setStores(res.data); // API에서 리스트 배열로 응답되면 그대로 저장
       })
-      .catch((err) => console.error("가게 정보 가져오기 실패:", err));
-  }, [pk]);
-
-  if (!shopData) return <div className="p-8 text-center text-gray-600">로딩 중...</div>;
+      .catch((err) => {
+        console.error("❌ 꽃집 리스트 가져오기 실패:", err);
+      });
+  }, []);
 
   return (
     <div className="min-h-screen bg-white pt-20 px-4">
-      {/* 배너 */}
+      {/* 광고 배너 */}
       <div className="flex justify-center mb-6">
         <AdCarousel />
       </div>
 
-      <div className="max-w-4xl mx-auto bg-white p-6 rounded shadow">
-        <h1 className="text-3xl font-bold mb-2 text-purple-800">{shopData.storeName}</h1>
-        <p className="mb-1 text-gray-700">📍 {shopData.address} {shopData.detailAddress}</p>
-        <p className="mb-1 text-gray-700">📞 {shopData.phone}</p>
-        <p className="mb-4 text-gray-800">📢 {shopData.intro}</p>
-
-        <h2 className="text-xl font-semibold mt-6 mb-2">🕒 영업 시간</h2>
-        <ul className="space-y-1 text-sm">
-          {weekdays.map((day) => (
-            <li key={day}>
-              <strong>{day}:</strong>{" "}
-              {shopData.hours[day]?.closed
-                ? "휴무"
-                : `${shopData.hours[day].start} ~ ${shopData.hours[day].end}`}
-            </li>
-          ))}
-        </ul>
-
-        <h2 className="text-xl font-semibold mt-6 mb-2">📷 사진</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-2">
-          {shopData.images?.length > 0 ? (
-            shopData.images.map((img, idx) => (
-              <img
-                key={idx}
-                src={img.url}
-                alt={`img-${idx}`}
-                className="w-full h-48 object-cover rounded"
-              />
-            ))
-          ) : (
-            <p className="col-span-full text-gray-500 text-sm">등록된 사진이 없습니다.</p>
-          )}
-        </div>
+      <div className="max-w-4xl mx-auto">
+        {stores.length === 0 ? (
+          <p className="text-center text-gray-500 mt-8">등록된 꽃집이 없습니다.</p>
+        ) : (
+          stores.map((store, idx) => (
+            <div
+              key={idx}
+              className="border rounded p-4 shadow mb-4 bg-gray-50"
+            >
+              <div className="flex items-start">
+                <img
+                  src={store.images?.[0]?.url || "/no-image.png"}
+                  alt={store.housename}
+                  className="w-24 h-24 object-cover rounded mr-4"
+                />
+                <div className="flex-1">
+                  <p className="font-bold text-lg">{store.housename}</p>
+                  <p>🌍 주소: {store.data?.address || "주소 없음"}</p>
+                  <p>🌸 인기 꽃 종류: {store.inventory?.map(f => f.name).join(", ") || "정보 없음"}</p>
+                  <p>📞 전화번호: {store.data?.phone || "없음"}</p>
+                  <button
+                    onClick={() => navigate(`/flowerhouse/view/${store.id || store.pk}`)}
+                    className="mt-2 text-blue-600 hover:underline text-sm"
+                  >
+                    자세히 보기
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))
+        )}
       </div>
     </div>
   );
