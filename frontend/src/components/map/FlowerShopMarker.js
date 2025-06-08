@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import AddressInput from "./AddressInput";
+import AddressInput from "../AddressInput";
 
 const markAddresses = (map, addressList) => {
   addressList.forEach((address) => {

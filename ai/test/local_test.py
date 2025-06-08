@@ -37,7 +37,8 @@ collection_ko = client_ko.get_or_create_collection(name="flowers_ko")
 def extract_keywords(situation: str) -> list:
     prompt = f"""
     다음 문장에서 핵심 의미를 담은 단어(예: 감정, 목적, 관계 등)를 3개 추출해줘. 꼭 문장 내 단어가 존재하지 않아도 괜찮다. 
-    너가 상황을 유추하여 꽃 추천에 중심이 되는 단어만 뽑아줘. 이때 '선물' 같은 일반 단어는 제외해.
+    너가 상황을 유추하여 꽃 추천에 중심이 되는 단어만 뽑아줘. 
+    이때 '선물' 단어는 절대 뽑지마.
 
     문장: "{situation}"
 
@@ -62,15 +63,21 @@ def extract_keywords(situation: str) -> list:
 
 def search_flower_ko(situation: str) -> list:
     keywords = extract_keywords(situation)
-    query_text = ", ".join(keywords) if keywords else situation
-    print(f"[검색 기준 키워드]: {query_text}")
+    print(f"[추출된 키워드]: {keywords}")
 
-    query_embedding = ollama.embeddings(model="llama3-ko:latest", prompt=query_text)["embedding"]
-    
-    results = collection_ko.query(query_embeddings=[query_embedding], n_results=10)
-    candidates = results["documents"][0]
-    
-    print(candidates)
+    all_candidates = []
+    for keyword in keywords:
+        print(f"[🔍 검색 기준 키워드]: {keyword}")
+        embedding = ollama.embeddings(model="llama3-ko:latest", prompt=keyword)["embedding"]
+        results = collection_ko.query(query_embeddings=[embedding], n_results=10)
+        docs = results["documents"][0]
+        print(f"[{keyword} 후보]: {docs}")
+        all_candidates.extend(docs)
+
+    # 중복 제거
+    all_candidates = list(dict.fromkeys(all_candidates))
+
+    flowers_info = "\n".join(all_candidates)
     
     # 최종 추천 3개를 LLM으로 재정렬
     prompt = f"""
@@ -80,7 +87,7 @@ def search_flower_ko(situation: str) -> list:
     아래는 추천 후보 꽃과 그 꽃말입니다.
     상황에 가장 잘 어울리는 꽃 3개를 선택해주세요.
 
-    {chr(10).join(candidates)}
+    {flowers_info}
 
     ## 출력 형식: (이유는 추천하지 않습니다)
     - 꽃: 꽃말

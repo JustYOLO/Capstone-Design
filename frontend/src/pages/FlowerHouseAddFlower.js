@@ -12,6 +12,18 @@ const FlowerHouseAddFlower = () => {
       .then((res) => res.json())
       .then((data) => setFlowerData(data))
       .catch((err) => console.error("❌ 꽃말 데이터 불러오기 실패:", err));
+
+    const token = localStorage.getItem("access_token");
+    fetch("https://blossompick.duckdns.org/api/v1/florist/inventory/", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setInventory(data?.flowers || []);
+      })
+      .catch((err) => console.error("❌ 재고 불러오기 실패:", err));
   }, []);
 
   const filteredFlowers = flowerData.filter((flower) =>
@@ -38,32 +50,35 @@ const FlowerHouseAddFlower = () => {
 
   const handleSave = async () => {
     try {
-      const user = JSON.parse(localStorage.getItem("user"));
-      const token = user?.access;
+      const token = localStorage.getItem("access_token");
 
-      // 1. 재고 저장 요청
-      const response = await fetch("https://blossompick.duckdns.org/api/v1/florist/inventory/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ flowers: inventory }),
-      });
+      const response = await fetch(
+        "https://blossompick.duckdns.org/api/v1/florist/inventory/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ flowers: inventory }),
+        }
+      );
 
       if (!response.ok) throw new Error("저장 실패");
 
       alert("🌸 꽃 재고 저장 완료!");
 
-      // 2. 저장 후 housename에서 pk 받아서 이동
-      const res2 = await fetch("https://blossompick.duckdns.org/api/v1/florist/housename/", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const res2 = await fetch(
+        "https://blossompick.duckdns.org/api/v1/florist/housename/",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       const data2 = await res2.json();
-      const pk = data2?.id || data2?.pk; // id 또는 pk 키로 받아온다고 가정
+      const pk = data2?.id || data2?.pk;
 
       if (pk) {
         navigate(`/flowerhouse/view/${pk}`);
