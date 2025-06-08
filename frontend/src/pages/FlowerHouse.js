@@ -111,21 +111,28 @@ const FlowerHouse = () => {
 
   const handleImageChange = async (e) => {
     const files = Array.from(e.target.files);
-    const form = new FormData();
-    files.forEach(file => form.append("images", file));
-
     const token = localStorage.getItem("access_token");
-    const res = await axios.post("/api/v1/florist/images/", form, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Authorization: `Bearer ${token}`,
-      },
-    });
 
-    // res.data is an array of { id, image: "/media/…" }
-    setImages(prev => [...prev, ...res.data.map(img => ({ url: img.image }))]);
+    const uploaded = [];
+    // upload each file one by one
+    for (let file of files) {
+      const form = new FormData();
+      form.append("image", file);   // <-- must match your serializer field
+
+      const res = await axios.post("/api/v1/florist/images/", form, {
+        headers: {
+          // DO NOT hard-code Content-Type; let Axios set the correct boundary
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      // res.data is { id, image: "/media/…" }
+      uploaded.push({ url: res.data.image });
+    }
+
+    // merge into your state
+    setImages((prev) => [...prev, ...uploaded]);
   };
-
 
   const handleTimeChange = (day, field, value) => {
     setHours((prev) => ({ ...prev, [day]: { ...prev[day], [field]: value } }));
