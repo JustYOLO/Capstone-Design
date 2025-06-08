@@ -11,12 +11,7 @@ app = Flask(__name__)
 
 rd = redis.StrictRedis(host='chat_log', port=6666, db=0)
 
-# client = ollama.Client(host='http://172.17.0.1:11434')
-
 client = ollama.Client(host='http://host.docker.internal:11434')
-
-#client_en = chromadb.PersistentClient(path="./chromadb_storage_en")
-#collection_en = client_en.get_or_create_collection(name="flowers_en")
 
 client_ko = chromadb.PersistentClient(path="/app/chromadb_storage_ko")
 collection_ko = client_ko.get_or_create_collection(name="flowers_ko")
@@ -52,7 +47,7 @@ def generate_flower_recommendation_ko(situation, recommended_flowers):
         return "죄송합니다. 적절한 꽃을 찾을 수 없습니다."
     
     flowers_info = ", ".join([f"{f}({m})" for f, m in recommended_flowers])
-    #print(flowers_info)
+    
     prompt_text = f"""
         You are a flower expert. The user has requested a flower recommendation for the following situation:
         Situation: {situation}
