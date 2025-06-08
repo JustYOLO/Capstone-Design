@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 const FlowerHouseAddFlower = () => {
+  const { pk } = useParams();
   const [flowerData, setFlowerData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [inventory, setInventory] = useState([]);
@@ -77,14 +78,8 @@ const FlowerHouseAddFlower = () => {
         }
       );
 
-      const data2 = await res2.json();
-      const pk = data2?.id || data2?.pk;
 
-      if (pk) {
-        navigate(`/flowerhouse/view/${pk}`);
-      } else {
-        alert("❗ 이동할 꽃집 정보를 찾을 수 없습니다.");
-      }
+      navigate(`/flowerhouse/view/${pk}`);
     } catch (err) {
       console.error("❌ 저장 오류:", err);
       alert("저장 중 문제가 발생했습니다.");

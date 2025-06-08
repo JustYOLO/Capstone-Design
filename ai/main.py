@@ -35,7 +35,7 @@ def extract_keywords(situation: str) -> list:
 
     반드시 Python 리스트 형식으로 출력해.
     """
-    output = client.generate(model="gemma3:4b", prompt=prompt)["response"]
+    output = client.generate(model="gemma3:12b", prompt=prompt)["response"]
     print(f"[키워드 추출 결과]: {output.strip()}")
 
     try:
@@ -55,8 +55,11 @@ def search_flower_ko(situation: str) -> list:
     all_candidates = []
     for keyword in keywords:
         print(f"[🔍 검색 기준 키워드]: {keyword}")
-        embedding = client.embeddings(model="llama3-ko:latest", prompt=keyword)["embedding"]
-        results = collection_ko.query(query_embeddings=[query_embedding], n_results=10)
+        query_embedding = client.embeddings(model="llama3-ko:latest", prompt=keyword)["embedding"]
+        results = collection_ko.query(
+            query_embeddings=[query_embedding],
+            n_results=10  
+        )
         docs = results["documents"][0]
         print(f"[{keyword} 후보]: {docs}")
         all_candidates.extend(docs)
@@ -80,13 +83,15 @@ def search_flower_ko(situation: str) -> list:
     ## 출력 형식: (이유는 절대 추천하지 않습니다)
     - 꽃: 꽃말
     
-    ## 예시 출력:
-    - 붉은 동백꽃: 나는 당신이 누구보다도 아름답다고 생각합니다.
-    - 흰 장미: 당신의 순수함과 진실함을 존경합니다.
-    - 노란 해바라기: 당신의 밝은 에너지가 주변을 환하게 만듭니다.
+    ## 예시 출력: (아래 예시처럼 출력해주세요)
+    - 클로버: 약속, 행운, 평화
+    - 물망초: 나를 잊지 마세요, 진실한 사랑, 우정
+    - 설강화: 희망
     """
+    
+    response = client.generate(model="gemma3:12b", prompt=prompt)["response"]
 
-    response = client.generate(model="gemma3:4b", prompt=prompt)["response"]
+    print(f"[추천된 꽃 목록]: {response.strip()}")
 
     final_result = []
     for line in response.strip().split("\n"):
@@ -122,11 +127,11 @@ def generate_flower_recommendation_ko(situation, recommended_flowers):
         - Provide ONLY the '종합 추천 이유' section.
         - Do NOT include any other sections or titles.
         - Respond strictly in Korean.
-        - And there must be a new line between flower descriptions.
+        - And there must be a new line between each flower descriptions.
     """
     
     # 응답 생성
-    output = client.generate(model="gemma3:4b", prompt=prompt_text)
+    output = client.generate(model="gemma3:12b", prompt=prompt_text)
     return output["response"]
 
 

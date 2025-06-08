@@ -119,11 +119,7 @@ const FlowerHouse = () => {
         },
       });
       alert("🌸 저장되었습니다!");
-      if (housePk) {
-        navigate(`/flowerhouse/view/${housePk}`);
-      } else {
-        navigate("/flowerhouse/view");
-      }
+      navigate("/flowerhouse/addflower");
     } catch (err) {
       console.error("❌ 저장 실패:", err);
       alert("저장 중 오류 발생! 콘솔을 확인해주세요.");

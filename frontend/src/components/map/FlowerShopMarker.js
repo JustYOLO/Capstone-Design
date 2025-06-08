@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import AddressInput from "../AddressInput";
+import { useParams } from "react-router-dom";
 
 const markAddresses = (map, addressList) => {
   addressList.forEach((address) => {
@@ -45,36 +45,41 @@ const FlowerShopMarker = (map, userLat, userLng, roadAddresses = []) => {
 };
 
 const MapWithAddress = () => {
-  const [address, setAddress] = useState("");
-  const [detail, setDetail] = useState("");
+  const { pk } = useParams();
+  const [shopAddress, setShopAddress] = useState(null);
 
   const userLat = 37.5665;
   const userLng = 126.9780;
 
   useEffect(() => {
-    if (!window.naver || !address) return;
+    // 백엔드에서 주소 가져오기
+    fetch(`https://blossompick.duckdns.org/api/v1/florist/stores/${pk}/`)
+      .then((res) => res.json())
+      .then((res) => {
+        const backendAddress = res.data?.address || "";
+        if (backendAddress) setShopAddress(backendAddress);
+      })
+      .catch((err) => console.error("❌ 주소 불러오기 실패:", err));
+  }, [pk]);
+
+  useEffect(() => {
+    if (!window.naver || !shopAddress) return;
 
     const map = new window.naver.maps.Map("map", {
       center: new window.naver.maps.LatLng(userLat, userLng),
       zoom: 14,
     });
 
-    FlowerShopMarker(map, userLat, userLng, [address]);
-  }, [address]);
+    FlowerShopMarker(map, userLat, userLng, [shopAddress]);
+  }, [shopAddress]);
 
   return (
     <div>
-      <AddressInput
-        address={address}
-        setAddress={setAddress}
-        detail={detail}
-        setDetail={setDetail}
-      />
       <div id="map" className="w-full h-96 mt-8 rounded shadow" />
     </div>
   );
 };
 
-export { FlowerShopMarker };
-
 export default MapWithAddress;
+
+export { FlowerShopMarker };
