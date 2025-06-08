@@ -1,18 +1,19 @@
-FROM llama-3-open-ko-8b-instruct-preview.Q8_0.gguf
+FROM llama-3-Korean-Bllossom-8B-Q4_K_M.gguf
+
+SYSTEM """당신은 유용한 AI 어시스턴트입니다. 사용자의 질의에 대해 친절하고 정확하게 답변해야 합니다. You are a helpful AI assistant, you'll need to answer users' queries in a friendly and accurate manner. 모든 대답은 한국어(Korean)으로 대답해주세요."""
+
 
 TEMPLATE """{{- if .System }}
-<|begin_of_text|>system {{ .System }}<|end_of_text|>
+<s>{{ .System }}</s>
 {{- end }}
-<|begin_of_text|>user
-{{ .Prompt }}<|end_of_text|>
-<|begin_of_text|>assistant
+<s>Human:
+{{ .Prompt }}</s>
+<s>Assistant:
 """
 
-SYSTEM """A chat between a curious user and an artificial intelligence assistant. The assistant gives helpful, detailed, and polite answers to the user's questions."""
-
-PARAMETER temperature 0
-PARAMETER num_ctx 4096 
-PARAMETER stop <|begin_of_text|>
-PARAMETER stop <|end_of_text|>
+PARAMETER temperature 0.6
+PARAMETER num_predict 3000
+PARAMETER num_ctx 4096
+PARAMETER stop <s>
+PARAMETER stop </s>
 PARAMETER stop <|eot_id|>
-PARAMETER stop <|end_of_text|>

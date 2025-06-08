@@ -6,21 +6,17 @@ const Profile = () => {
   const [isFlorist, setIsFlorist] = useState(false);
 
   useEffect(() => {
-    // localStorage에서 사용자 정보 불러오기
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
-      const parsedUser = JSON.parse(storedUser);
-      setUser(parsedUser);
+      const parsed = JSON.parse(storedUser);
+      setUser(parsed.user);
     }
 
-    // florist 여부 확인
     const token = localStorage.getItem("access_token");
     if (token) {
       axios
         .get("https://blossompick.duckdns.org/api/v1/florist/housename/", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         })
         .then((res) => {
           if (res.data?.housename) {
@@ -55,11 +51,6 @@ const Profile = () => {
           <span className="font-semibold">계정 유형: </span>{" "}
           {isFlorist ? "꽃집 운영자" : "일반 사용자"}
         </p>
-
-        {/* 보라색 정보 수정하기 버튼 */}
-        <button className="w-full bg-purple-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-purple-700 transition">
-          정보 수정하기
-        </button>
       </div>
     </div>
   );

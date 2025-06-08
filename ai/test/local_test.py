@@ -33,7 +33,7 @@ collection_ko = client_ko.get_or_create_collection(name="flowers_ko")
 
 
 def search_flower_ko(situation):
-    query_embedding = ollama.embeddings(model="llama3-ko:latest", prompt=situation)["embedding"]
+    query_embedding = ollama.embeddings(model="llama-ko-bllossom-8B:latest", prompt=situation)["embedding"]
     
     # 상위 10개 검색 후 의미 필터링
     results = collection_ko.query(
