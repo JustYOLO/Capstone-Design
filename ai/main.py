@@ -55,8 +55,11 @@ def search_flower_ko(situation: str) -> list:
     all_candidates = []
     for keyword in keywords:
         print(f"[🔍 검색 기준 키워드]: {keyword}")
-        embedding = client.embeddings(model="llama3-ko:latest", prompt=keyword)["embedding"]
-        results = collection_ko.query(query_embeddings=[query_embedding], n_results=10)
+        query_embedding = client.embeddings(model="llama3-ko:latest", prompt=keyword)["embedding"]
+        results = collection_ko.query(
+            query_embeddings=[query_embedding],
+            n_results=10  
+        )
         docs = results["documents"][0]
         print(f"[{keyword} 후보]: {docs}")
         all_candidates.extend(docs)
@@ -85,8 +88,10 @@ def search_flower_ko(situation: str) -> list:
     - 흰 장미: 당신의 순수함과 진실함을 존경합니다.
     - 노란 해바라기: 당신의 밝은 에너지가 주변을 환하게 만듭니다.
     """
-
+    
     response = client.generate(model="gemma3:4b", prompt=prompt)["response"]
+
+    print(f"[추천된 꽃 목록]: {response.strip()}")
 
     final_result = []
     for line in response.strip().split("\n"):
@@ -122,7 +127,7 @@ def generate_flower_recommendation_ko(situation, recommended_flowers):
         - Provide ONLY the '종합 추천 이유' section.
         - Do NOT include any other sections or titles.
         - Respond strictly in Korean.
-        - And there must be a new line between flower descriptions.
+        - And there must be a new line between each flower descriptions.
     """
     
     # 응답 생성

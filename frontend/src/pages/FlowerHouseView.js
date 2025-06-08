@@ -30,7 +30,7 @@ const FlowerHouseView = () => {
 
   return (
     <div className="min-h-screen px-4 py-24 bg-gray-50 flex flex-col items-center">
-      <h1 className="text-4xl font-bold text-purple-700 mb-2">{data.housename || "꽃집 이름"}</h1>
+      <h1 className="text-4xl font-bold text-purple-700 mb-2">{housename || "꽃집 이름"}</h1>
       <p className="text-lg mb-1 text-gray-700">{data.intro || "소개 문구가 없습니다."}</p>
       <p className="text-sm text-gray-500">{`📞 ${data.phone || "전화번호 없음"}`}</p>
       <p className="text-sm text-gray-500 mb-6">
