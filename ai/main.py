@@ -56,7 +56,7 @@ def search_flower_ko(situation: str) -> list:
     for keyword in keywords:
         print(f"[🔍 검색 기준 키워드]: {keyword}")
         embedding = client.embeddings(model="llama3-ko:latest", prompt=keyword)["embedding"]
-        results = collection_ko.query(query_embeddings=[embedding], n_results=10)
+        results = collection_ko.query(query_embeddings=[query_embedding], n_results=10)
         docs = results["documents"][0]
         print(f"[{keyword} 후보]: {docs}")
         all_candidates.extend(docs)

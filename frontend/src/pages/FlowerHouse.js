@@ -119,8 +119,8 @@ const FlowerHouse = () => {
         },
       });
       alert("🌸 저장되었습니다!");
-      if (pk) {
-        navigate(`/flowerhouse/view/${pk}`);
+      if (housePk) {
+        navigate(`/flowerhouse/view/${housePk}`);
       } else {
         navigate("/flowerhouse/view");
       }
