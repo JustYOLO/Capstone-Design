@@ -79,7 +79,7 @@ const FlowerHouseAddFlower = () => {
       );
 
 
-      navigate("flowerhouse/view/${pk}/");
+      navigate(`/flowerhouse/view/${pk}`);
     } catch (err) {
       console.error("❌ 저장 오류:", err);
       alert("저장 중 문제가 발생했습니다.");
