@@ -72,7 +72,7 @@ function AppContent() {
         <Route path="/afterloginflorist" element={<AfterLoginFlorist />} />
         <Route path="/flowerhouse" element={<FlowerHouse />} />
         <Route path="/flowerhouse/edit" element={<FlowerHouseEdit />} />
-        <Route path="/flowerhouse/view" element={<FlowerHouseView />} />
+        <Route path="/flowerhouse/view/:pk" element={<FlowerHouseView />} />
       </Routes>
 
       {isHome && (
