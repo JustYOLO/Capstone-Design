@@ -75,4 +75,6 @@ const MapWithAddress = () => {
   );
 };
 
+export { FlowerShopMarker };
+
 export default MapWithAddress;

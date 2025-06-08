@@ -6,6 +6,7 @@ import os
 from flask import Flask, request, Response, jsonify
 import json
 import redis
+import re
 
 app = Flask(__name__)
 
@@ -17,27 +18,82 @@ client_ko = chromadb.PersistentClient(path="/app/chromadb_storage_ko")
 collection_ko = client_ko.get_or_create_collection(name="flowers_ko")
 
 
-def search_flower_ko(situation):
-    # 사용자가 입력한 상황을 벡터 임베딩
-    query_embedding = client.embeddings(model="llama3-ko:latest", prompt=situation)["embedding"]
+def extract_keywords(situation: str) -> list:
+    prompt = f"""
+    다음 문장에서 핵심 의미를 담은 단어(예: 감정, 목적, 관계 등)를 3개 추출해줘. 꼭 문장 내 단어가 존재하지 않아도 괜찮다. 
+    너가 상황을 유추하여 꽃 추천에 중심이 되는 단어만 뽑아줘. 
+    절대 '선물', '꽃' 단어는 뽑지마.
+
+    문장: "{situation}"
+
+    ## 출력 예시
+    - 키워드: ["존경", "교수님", "감사"]
+    - 키워드: ["감사", "어버이", "부모님"]
+    - 키워드: ["사랑", "기념일", "연인"]
     
-    # 가장 유사한 꽃말을 가진 꽃 검색
-    results = collection_ko.query(
-        query_embeddings=[query_embedding],
-        n_results=3  # 검색할 결과 개수 (최대 3개 추천)
-    )
+    절대 '선물', '꽃' 단어는 뽑지마.
 
-    recommended_flowers = []
-    if results["documents"]:
-        for doc in results["documents"][0]:
-            if ": " in doc:
-                flower, meaning = doc.split(": ", 1)
-                recommended_flowers.append((flower.strip(), meaning.strip()))
+    반드시 Python 리스트 형식으로 출력해.
+    """
+    output = ollama.generate(model="gemma3:4b", prompt=prompt)["response"]
+    print(f"[키워드 추출 결과]: {output.strip()}")
 
-    if not recommended_flowers:
-        return "검색 결과가 없습니다."
+    try:
+        # 리스트 안의 문자열만 추출
+        matches = re.findall(r'"(.*?)"', output)
+        return matches
+    except Exception as e:
+        print(f"[keyword parse error] {e}")
+        return []
 
-    return recommended_flowers
+
+
+def search_flower_ko(situation: str) -> list:
+    keywords = extract_keywords(situation)
+    print(f"[추출된 키워드]: {keywords}")
+
+    all_candidates = []
+    for keyword in keywords:
+        print(f"[🔍 검색 기준 키워드]: {keyword}")
+        embedding = ollama.embeddings(model="llama3-ko:latest", prompt=keyword)["embedding"]
+        results = collection_ko.query(query_embeddings=[embedding], n_results=10)
+        docs = results["documents"][0]
+        print(f"[{keyword} 후보]: {docs}")
+        all_candidates.extend(docs)
+
+    # 중복 제거
+    all_candidates = list(dict.fromkeys(all_candidates))
+
+    flowers_info = "\n".join(all_candidates)
+    
+    # 최종 추천 3개를 LLM으로 재정렬
+    prompt = f"""
+    상황: "{situation}"
+    
+    당신은 꽃 전문가입니다. 사용자가 요청한 상황에 가장 잘 어울리는 꽃을 감정적으로 잘 추천해주세요.
+    아래는 추천 후보 꽃과 그 꽃말입니다.
+
+    {flowers_info}
+    
+    이 중에서 상황에 가장 잘 어울리면서 꽃집에서 구할 수 있는 꽃 3개를 선택해주세요.
+
+    ## 출력 형식: (이유는 절대 추천하지 않습니다)
+    - 꽃: 꽃말
+    
+    ## 예시 출력:
+    - 붉은 동백꽃: 나는 당신이 누구보다도 아름답다고 생각합니다.
+    - 흰 장미: 당신의 순수함과 진실함을 존경합니다.
+    - 노란 해바라기: 당신의 밝은 에너지가 주변을 환하게 만듭니다.
+    """
+
+    response = ollama.generate(model="gemma3:4b", prompt=prompt)["response"]
+
+    final_result = []
+    for line in response.strip().split("\n"):
+        if ":" in line:
+            name, reason = line.split(":", 1)
+            final_result.append((name.strip(), reason.strip()))
+    return final_result
 
 
 
