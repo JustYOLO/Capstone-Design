@@ -8,28 +8,76 @@ client_ko = chromadb.PersistentClient(path="./chromadb_storage_ko")
 collection_ko = client_ko.get_or_create_collection(name="flowers_ko")
 
 
+# def search_flower_ko(situation):
+#     # 사용자가 입력한 상황을 벡터 임베딩
+#     query_embedding = ollama.embeddings(model="llama3-ko:latest", prompt=situation)["embedding"]
+    
+#     # 가장 유사한 꽃말을 가진 꽃 검색
+#     results = collection_ko.query(
+#         query_embeddings=[query_embedding],
+#         n_results=3  # 검색할 결과 개수 (최대 3개 추천)
+#     )
+    
+
+#     recommended_flowers = []
+#     if results["documents"]:
+#         for doc in results["documents"][0]:
+#             if ": " in doc:
+#                 flower, meaning = doc.split(": ", 1)
+#                 recommended_flowers.append((flower.strip(), meaning.strip()))
+
+#     if not recommended_flowers:
+#         return "검색 결과가 없습니다."
+
+#     return recommended_flowers
+
+
 def search_flower_ko(situation):
-    # 사용자가 입력한 상황을 벡터 임베딩
     query_embedding = ollama.embeddings(model="llama3-ko:latest", prompt=situation)["embedding"]
     
-    # 가장 유사한 꽃말을 가진 꽃 검색
+    # 상위 10개 검색 후 의미 필터링
     results = collection_ko.query(
         query_embeddings=[query_embedding],
-        n_results=3  # 검색할 결과 개수 (최대 3개 추천)
+        n_results=20
     )
+
+    candidate_docs = results["documents"][0]
+    if not candidate_docs:
+        return []
+
+    # LLM 재정렬
+    flowers_info = "\n".join(candidate_docs)
+    rerank_prompt = f"""
+    상황: "{situation}"
     
+    당신은 꽃 전문가입니다. 사용자가 요청한 상황에 가장 잘 어울리는 꽃을 감정적으로 잘 추천해주세요.
+    아래는 꽃과 그 꽃말입니다.
+    상황에 가장 잘 어울리는 꽃 3개를 선택해주세요.
 
+    {flowers_info}
+
+    ## 출력 형식:
+    - 꽃: 꽃말
+    
+    ## 예시 출력:
+    - 붉은 동백꽃: 나는 당신이 누구보다도 아름답다고 생각합니다.
+    - 흰 장미: 당신의 순수함과 진실함을 존경합니다.
+    - 노란 해바라기: 당신의 밝은 에너지가 주변을 환하게 만듭니다.
+    """
+    output = ollama.generate(model="gemma3:4b", prompt=rerank_prompt)["response"]
+
+    print(output)
+    # 결과 파싱
     recommended_flowers = []
-    if results["documents"]:
-        for doc in results["documents"][0]:
-            if ": " in doc:
-                flower, meaning = doc.split(": ", 1)
-                recommended_flowers.append((flower.strip(), meaning.strip()))
-
-    if not recommended_flowers:
-        return "검색 결과가 없습니다."
-
+    for line in output.strip().split("\n"):
+        if "꽃:" in line:
+            try:
+                flower, flower_mean = line.replace("꽃:", "").strip().split(":", 1)
+                recommended_flowers.append((flower.strip(), flower_mean.strip()))
+            except:
+                continue
     return recommended_flowers
+
 
 
 def generate_flower_recommendation(situation, recommended_flowers):

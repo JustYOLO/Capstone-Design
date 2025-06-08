@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const SignupFlorist = () => {
   const [file, setFile] = useState(null);
@@ -8,6 +9,7 @@ const SignupFlorist = () => {
   const [password1, setPassword1] = useState("");
   const [password2, setPassword2] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleFileChange = (event) => {
     const selected = event.target.files[0];
@@ -31,20 +33,28 @@ const SignupFlorist = () => {
     formData.append("file", file);
 
     try {
-      setLoading(true); 
+      setLoading(true);
       const response = await fetch("https://blossompick.duckdns.org/api/v1/florist/registration/", {
         method: "POST",
         body: formData,
       });
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(errorText);
-      }
-
       const data = await response.json();
-      alert("회원가입 성공!");
-      console.log("응답 결과:", data);
+
+      if (response.ok) {
+        alert("이메일로 전송된 링크를 눌러주세요!");
+        navigate("/aftersignup");
+      } else {
+        if (data.email) {
+          alert("이미 등록된 이메일입니다.");
+        } else if (data.password1) {
+          alert("비밀번호 오류: " + data.password1.join(" "));
+        } else if (data.non_field_errors) {
+          alert("오류: " + data.non_field_errors.join(" "));
+        } else {
+          alert("회원가입 실패: " + JSON.stringify(data));
+        }
+      }
     } catch (err) {
       console.error("❌ 회원가입 오류:", err);
       alert("회원가입 중 오류가 발생했습니다.");
@@ -66,7 +76,6 @@ const SignupFlorist = () => {
           onChange={(e) => setName(e.target.value)}
           className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
         />
-
         <input
           type="email"
           placeholder="E-MAIL"
@@ -74,7 +83,6 @@ const SignupFlorist = () => {
           onChange={(e) => setEmail(e.target.value)}
           className="w-full mt-3 px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
         />
-
         <input
           type="password"
           placeholder="비밀번호"
@@ -82,7 +90,6 @@ const SignupFlorist = () => {
           onChange={(e) => setPassword1(e.target.value)}
           className="w-full mt-3 px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
         />
-
         <input
           type="password"
           placeholder="비밀번호 확인"
@@ -115,7 +122,6 @@ const SignupFlorist = () => {
           {loading ? "가입 처리 중..." : "가입하기"}
         </button>
 
-        {/* 로딩 스피너 */}
         {loading && (
           <div className="mt-4 flex justify-center">
             <div className="w-8 h-8 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin" />
@@ -124,7 +130,8 @@ const SignupFlorist = () => {
       </div>
 
       <p className="mt-4 text-sm text-gray-500">
-        이미 계정이 있나요? <a href="/login" className="text-blue-600 hover:underline">로그인</a>
+        이미 계정이 있나요?{" "}
+        <a href="/login" className="text-blue-600 hover:underline">로그인</a>
       </p>
     </div>
   );

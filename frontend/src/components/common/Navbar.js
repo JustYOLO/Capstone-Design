@@ -44,13 +44,23 @@ const Navbar = ({ user }) => {
               className="profile-button"
             >
               <FiUser className="text-gray-700 text-xl" />
-              <span className="text-gray-700">{user.name || user.email || "프로필"}</span>
+              <span className="text-gray-700">
+                {user.name || user.email || "프로필"}
+              </span>
             </button>
 
             {showDropdown && (
               <div className="dropdown-menu">
                 <Link to="/profile" className="dropdown-item">개인정보 설정</Link>
                 <Link to="/voc" className="dropdown-item">문의사항</Link>
+
+                {user.isFlorist && (
+                  <>
+                    <Link to="/flowerhouse/edit" className="dropdown-item">꽃집 정보 수정</Link>
+                    <Link to="/flowerhouse/addflower" className="dropdown-item">꽃집 주문 관리</Link>
+                  </>
+                )}
+
                 <button
                   onClick={handleLogout}
                   className="logout-button"

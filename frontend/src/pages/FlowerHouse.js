@@ -70,9 +70,10 @@ const FlowerHouse = () => {
     document.body.appendChild(script);
   }, []);
 
+  const navigate = useNavigate(); // 컴포넌트 상단에 추가
+
   const handleSave = async () => {
     const token = localStorage.getItem("access_token");
-    // const payload = { storeName, intro, phone, address, detailAddress, hours, images };
     const payload = {
       data: { storeName, intro, phone, address, detailAddress, hours, images }
     };
@@ -88,6 +89,7 @@ const FlowerHouse = () => {
       });
       console.log("✅ PATCH 성공 응답:", res.data);
       alert("저장되었습니다!");
+      navigate("/flowerhouse/addflower"); // ✅ 여기 추가!
     } catch (err) {
       console.error("❌ 저장 실패:", err);
       if (err.response?.status === 401) {
@@ -106,11 +108,23 @@ const FlowerHouse = () => {
     }).open();
   };
 
-  const handleImageChange = (e) => {
+  const handleImageChange = async (e) => {
     const files = Array.from(e.target.files);
-    const newImages = files.map((file) => ({ url: URL.createObjectURL(file) }));
-    setImages((prev) => [...prev, ...newImages]);
+    const form = new FormData();
+    files.forEach(file => form.append("images", file));
+
+    const token = localStorage.getItem("access_token");
+    const res = await axios.post("/api/v1/florist/images/", form, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    // res.data is an array of { id, image: "/media/…" }
+    setImages(prev => [...prev, ...res.data.map(img => ({ url: img.image }))]);
   };
+
 
   const handleTimeChange = (day, field, value) => {
     setHours((prev) => ({ ...prev, [day]: { ...prev[day], [field]: value } }));
