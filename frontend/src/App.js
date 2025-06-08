@@ -28,13 +28,11 @@ import SignupCustomer from "./pages/SignupCustomer";
 import SignupFlorist from "./pages/SignupFlorist";
 import FlowerDictionary from "./pages/FlowerDictionary";
 import FlowerMBTI from "./pages/FlowerMBTI";
-import Voc from "./pages/Voc";
 import Profile from "./pages/Profile";
 import AfterSingup from "./pages/AfterSignup";
 import Admin from "./pages/Admin";
 import AfterLoginFlorist from "./pages/AfterLoginFlorist";
 import FlowerHouse from "./pages/FlowerHouse";
-import FlowerHouseEdit from "./pages/FlowerHouseEdit";
 import FlowerHouseView from "./pages/FlowerHouseView";
 import FlowerHouseAddFlower from "./pages/FlowerHouseAddFlower";
 
@@ -66,13 +64,11 @@ function AppContent() {
         <Route path="/dictionary" element={<FlowerDictionary />} />
         <Route path="/FlowerMBTI" element={<FlowerMBTI />} />
         <Route path="/map" element={<Map />} />
-        <Route path="/voc" element={<Voc />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/aftersignup" element={<AfterSingup />} />
         <Route path="/admin" element={<Admin />} />
         <Route path="/afterloginflorist" element={<AfterLoginFlorist />} />
         <Route path="/flowerhouse" element={<FlowerHouse />} />
-        <Route path="/flowerhouse/edit" element={<FlowerHouseEdit />} />
         <Route path="/flowerhouse/view/:pk" element={<FlowerHouseView />} />
         <Route path="/flowerhouse/addflower" element={<FlowerHouseAddFlower />} />
       </Routes>

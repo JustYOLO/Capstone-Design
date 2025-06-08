@@ -54,16 +54,22 @@ def delete_flower(flower):
     save_flower_data(file_path, doc_flowers)
 
 def save_to_chromadb(documents_ko):
-    print("ChromaDB에 꽃 데이터를 처음 저장합니다...")
+    print("기존 ChromaDB 컬렉션을 삭제합니다...")
+    client.delete_collection("flowers_ko")  # 컬렉션 전체 삭제
+
+    print("ChromaDB에 꽃 데이터를 새로 저장합니다...")
+    new_collection = client.get_or_create_collection(name="flowers_ko")  # 재생성
+
     for i, d in enumerate(documents_ko):
-        response = ollama.embeddings(model="llama3-ko:latest", prompt=d)  # 한국어 모델 사용
+        response = ollama.embeddings(model="llama3-ko:latest", prompt=d)
         embedding = response["embedding"]
-        collection.add(
+        new_collection.add(
             ids=[str(i)],
             embeddings=[embedding],
             documents=[d]
         )
     print(f"{len(documents_ko)}개 꽃 데이터를 ChromaDB에 저장 완료!")
+
 
 def read_flower(flower):
     doc_flowers = load_flower_data(file_path)
