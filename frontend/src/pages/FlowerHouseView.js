@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import FlowerMapWrapper from "/home/wlk/capstone/Capstone-Design/frontend/src/components/map/FlowerMapWrapper.js";
+import FlowerMapWrapper from "../map/FlowerMapWrapper.js";
 
 
 

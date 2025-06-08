@@ -7,7 +7,8 @@ const AdCarousel = () => {
     "/home/wlk/capstone/Capstone-Design/frontend/ad_image/IMG_4330.JPG",
     "/home/wlk/capstone/Capstone-Design/frontend/ad_image/IMG_4331.JPG",
     "/home/wlk/capstone/Capstone-Design/frontend/ad_image/IMG_4332.JPG",
-    
+    "/home/wlk/capstone/Capstone-Design/frontend/ad_image/IMG_4333.JPG",
+    "/home/wlk/capstone/Capstone-Design/frontend/ad_image/IMG_4334.JPG"
   ];
 
   useEffect(() => {
