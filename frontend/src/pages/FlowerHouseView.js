@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { FlowerShopMarker } from "../components/map/FlowerShopMarker"; // FlowerShopMarker import
 
 const weekdays = ["월", "화", "수", "목", "금", "토", "일"];
 
@@ -16,7 +17,7 @@ const FlowerHouseView = () => {
         return res.json();
       })
       .then((res) => {
-        setData(res.data);
+        setData(res);  // ✅ 여기만 고침
       })
       .catch((err) => {
         console.error("가게 정보 로딩 실패", err);
@@ -31,11 +32,11 @@ const FlowerHouseView = () => {
   return (
     <div className="min-h-screen px-4 py-24 bg-gray-50 flex flex-col items-center">
       <h1 className="text-4xl font-bold text-purple-700 mb-2">{data.housename || "꽃집 이름"}</h1>
-      <p className="text-lg mb-1 text-gray-700">{data.intro || "소개 문구가 없습니다."}</p>
-      <p className="text-sm text-gray-500">{`📞 ${data.phone || "전화번호 없음"}`}</p>
+      <p className="text-lg mb-1 text-gray-700">{data.data?.intro || "소개 문구가 없습니다."}</p>
+      <p className="text-sm text-gray-500">📞 {data.data?.phone || "전화번호 없음"}</p>
       <p className="text-sm text-gray-500 mb-6">
-        📍 {data.address || "주소 정보 없음"}
-        {data.detailAddress ? `, ${data.detailAddress}` : ""}
+        📍 {data.data?.address || "주소 정보 없음"}
+        {data.data?.detailAddress ? `, ${data.data.detailAddress}` : ""}
       </p>
 
       <div className="flex justify-between items-center w-full max-w-4xl mb-6">
@@ -49,7 +50,7 @@ const FlowerHouseView = () => {
           </button>
         </div>
         <button
-          onClick={() => navigate("/order")}
+          onClick={() => navigate(`/order/${data.business_id}`)}
           className="px-4 py-2 bg-green-600 text-white rounded hover:bg-pink-300"
         >
           🛍️ 주문하러 가기
@@ -60,7 +61,7 @@ const FlowerHouseView = () => {
         <div className="w-full max-w-3xl bg-white p-6 rounded shadow mb-8">
           <ul className="space-y-2">
             {weekdays.map((day) => {
-              const dayData = data.hours?.[day];
+              const dayData = data.data?.hours?.[day];
               return (
                 <li key={day} className="flex justify-between text-sm">
                   <span className="font-medium">{day}</span>
@@ -81,8 +82,8 @@ const FlowerHouseView = () => {
       <div className="w-full max-w-4xl bg-white p-6 rounded shadow">
         <h2 className="text-lg font-semibold mb-4">📷 사진</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-          {data.images?.length > 0 ? (
-            data.images.map((img, idx) => (
+          {data.data?.images?.length > 0 ? (
+            data.data.images.map((img, idx) => (
               <img
                 key={idx}
                 src={img.url}
@@ -98,6 +99,5 @@ const FlowerHouseView = () => {
     </div>
   );
 };
-
 
 export default FlowerHouseView;

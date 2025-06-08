@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+const { business_id } = useParams();
 // common
 import Navbar from "./components/common/Navbar";
 import HeroSection from "./components/common/HeroSection";
@@ -70,9 +71,9 @@ function AppContent() {
         <Route path="/admin" element={<Admin />} />
         <Route path="/afterloginflorist" element={<AfterLoginFlorist />} />
         <Route path="/flowerhouse" element={<FlowerHouse />} />
-        <Route path="/flowerhouse/view/:pk" element={<FlowerHouseView />} />
+        <Route path="/flowerhouse/view/:business_id" element={<FlowerHouseView />} />
         <Route path="/flowerhouse/addflower" element={<FlowerHouseAddFlower />} />
-        <Route path="order/:pk" element={<OrderPage />} />
+        <Route path="order/:business_id" element={<OrderPage />} />
       </Routes>
 
       {isHome && (
