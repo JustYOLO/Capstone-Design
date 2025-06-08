@@ -10,7 +10,7 @@ const Order = () => {
   const [shopData, setShopData] = useState(null);
 
   useEffect(() => {
-    axios.get(`/api/v1/florist/stores/${pk}/`)
+    axios.get(`https://api/v1/florist/stores/${pk}/`)
       .then((res) => {
         setShopData(res.data.data); // data 안에 data가 있음
       })
