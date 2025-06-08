@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import FlowerMapWrapper from "../components/map/FlowerMapWrapper.js";
+import FlowerMapWrapper from "../map/FlowerMapWrapper.js";
+
 
 
 const weekdays = ["월", "화", "수", "목", "금", "토", "일"];
@@ -80,7 +81,7 @@ const FlowerHouseView = () => {
         </div>
       )}
 
-      <div className="w-full max-w-4xl bg-white p-6 rounded shadow mb-10">
+      <div className="w-full max-w-4xl bg-white p-6 rounded shadow">
         <h2 className="text-lg font-semibold mb-4">📷 사진</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {data.images?.length > 0 ? (
@@ -97,20 +98,9 @@ const FlowerHouseView = () => {
           )}
         </div>
       </div>
-
-      {/* ✅ 지도 표시 영역 (주소가 있을 때만 렌더링) */}
-      {data.address && (
-        <div className="w-full max-w-4xl my-10">
-          <h2 className="text-lg font-semibold mb-2">🗺️ 위치 지도</h2>
-          <FlowerMapWrapper
-            userLat={37.335887}
-            userLng={127.127758}
-            addressList={[data.address]}
-          />
-        </div>
-      )}
     </div>
   );
 };
+
 
 export default FlowerHouseView;
