@@ -1,4 +1,6 @@
-// 주소 배열을 받아 마커를 생성하는 함수
+import React, { useState, useEffect } from "react";
+import AddressInput from "./AddressInput";
+
 const markAddresses = (map, addressList) => {
   addressList.forEach((address) => {
     window.naver.maps.Service.geocode({ query: address }, (status, response) => {
@@ -28,19 +30,49 @@ const markAddresses = (map, addressList) => {
   });
 };
 
-export const FlowerShopMarkers = (map, userLat, userLng) => {
-  // 사용자 위치 마커
+const FlowerShopMarkers = (map, userLat, userLng, roadAddresses = []) => {
   new window.naver.maps.Marker({
     position: new window.naver.maps.LatLng(userLat, userLng),
     map,
     title: "내 위치",
     icon: {
-      content: '<div style="background:#2b90d9;color:white;padding:5px 10px;border-radius:5px;font-size:12px;">내 위치</div>',
+      content:
+        '<div style="background:#2b90d9;color:white;padding:5px 10px;border-radius:5px;font-size:12px;">내 위치</div>',
     },
   });
 
-
-  // 도로명 주소 목록 → 마커 생성
-  const roadAddresses = ["경기도 용인시 수지구 죽전로 152", "대지로 131-1", "동백죽전대로 1066"];
   markAddresses(map, roadAddresses);
 };
+
+const MapWithAddress = () => {
+  const [address, setAddress] = useState("");
+  const [detail, setDetail] = useState("");
+
+  const userLat = 37.5665;
+  const userLng = 126.9780;
+
+  useEffect(() => {
+    if (!window.naver || !address) return;
+
+    const map = new window.naver.maps.Map("map", {
+      center: new window.naver.maps.LatLng(userLat, userLng),
+      zoom: 14,
+    });
+
+    FlowerShopMarkers(map, userLat, userLng, [address]);
+  }, [address]);
+
+  return (
+    <div>
+      <AddressInput
+        address={address}
+        setAddress={setAddress}
+        detail={detail}
+        setDetail={setDetail}
+      />
+      <div id="map" className="w-full h-96 mt-8 rounded shadow" />
+    </div>
+  );
+};
+
+export default MapWithAddress;
