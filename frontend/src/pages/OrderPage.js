@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 
 const OrderPage = () => {
-  const { pk } = useParams();
+  const { business_id } = useParams();
   const [shopData, setShopData] = useState(null);
   const [quantities, setQuantities] = useState({});
   const [showConfirm, setShowConfirm] = useState(false);
@@ -11,7 +11,7 @@ const OrderPage = () => {
   const [readyTime, setReadyTime] = useState(15); // 기본 준비 시간 (분)
 
   useEffect(() => {
-    axios.get(`https://blossompick.duckdns.org/api/v1/florist/stores/${pk}/`)
+    axios.get(`https://blossompick.duckdns.org/api/v1/florist/stores/${business_id}/`)
       .then((res) => {
         setShopData(res.data);
         const initialQuantities = {};
