@@ -35,7 +35,7 @@ def extract_keywords(situation: str) -> list:
 
     반드시 Python 리스트 형식으로 출력해.
     """
-    output = ollama.generate(model="gemma3:4b", prompt=prompt)["response"]
+    output = client.generate(model="gemma3:4b", prompt=prompt)["response"]
     print(f"[키워드 추출 결과]: {output.strip()}")
 
     try:
@@ -55,7 +55,7 @@ def search_flower_ko(situation: str) -> list:
     all_candidates = []
     for keyword in keywords:
         print(f"[🔍 검색 기준 키워드]: {keyword}")
-        embedding = ollama.embeddings(model="llama3-ko:latest", prompt=keyword)["embedding"]
+        embedding = client.embeddings(model="llama3-ko:latest", prompt=keyword)["embedding"]
         results = collection_ko.query(query_embeddings=[embedding], n_results=10)
         docs = results["documents"][0]
         print(f"[{keyword} 후보]: {docs}")
@@ -86,7 +86,7 @@ def search_flower_ko(situation: str) -> list:
     - 노란 해바라기: 당신의 밝은 에너지가 주변을 환하게 만듭니다.
     """
 
-    response = ollama.generate(model="gemma3:4b", prompt=prompt)["response"]
+    response = client.generate(model="gemma3:4b", prompt=prompt)["response"]
 
     final_result = []
     for line in response.strip().split("\n"):
