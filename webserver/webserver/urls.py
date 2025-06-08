@@ -28,6 +28,7 @@ from accounts.views import BusinessRegisterView
 from accounts.views import BusinessDataUpdateView
 from accounts.views import PublicBusinessListView
 from accounts.views import PublicBusinessDetailView
+from accounts.views import BusinessImageUploadView
 
 BUILD_DIR = os.path.join(settings.BASE_DIR, 'webserver', 'static', 'build')
 
@@ -82,6 +83,11 @@ urlpatterns = [
      "api/v1/florist/stores/<int:pk>/",
      PublicBusinessDetailView.as_view(),
      name="public-business-detail",
+    ),
+    path(
+      "api/v1/florist/images/",
+      BusinessImageUploadView.as_view(),
+      name="business-image-upload",
     ),
     path('', include('frontend.urls')),
     re_path(r'^(?!static/).*$' , include('frontend.urls')),

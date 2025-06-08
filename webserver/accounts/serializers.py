@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from .models import BusinessProfile
 from .verify import verify_pdf  # your existing function
+from .models import BusinessImage
 
 
 User = get_user_model()
@@ -66,4 +67,10 @@ class PublicBusinessSerializer(serializers.ModelSerializer):
     class Meta:
         model  = BusinessProfile
         fields = ["housename", "data"]
+
+class BusinessImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BusinessImage
+        fields = ["id", "image"]
+
 

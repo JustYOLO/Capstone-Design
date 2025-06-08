@@ -6,9 +6,10 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import generics, permissions
 from .serializers import BusinessDataSerializer
-from accounts.models import BusinessProfile
+from accounts.models import BusinessProfile, BusinessImage
 from .serializers import BusinessRegisterSerializer
 from .serializers import PublicBusinessSerializer
+from .serializers import BusinessImageSerializer
 
 class BusinessRegisterView(RegisterView):
     serializer_class = BusinessRegisterSerializer
@@ -54,3 +55,17 @@ class PublicBusinessDetailView(generics.RetrieveAPIView):
     queryset = BusinessProfile.objects.filter(is_verified=True)
     serializer_class = PublicBusinessSerializer
     permission_classes = [permissions.AllowAny]
+
+class BusinessImageUploadView(generics.CreateAPIView):
+    """
+    POST /api/v1/florist/images/
+    FormData: images=<file1>&images=<file2>&…
+    """
+    serializer_class = BusinessImageSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    parser_classes = [MultiPartParser]
+
+    def perform_create(self, serializer):
+        # link the uploaded image to the logged-in user’s profile
+        serializer.save(profile=self.request.user.business_profile)
+

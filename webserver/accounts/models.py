@@ -30,4 +30,16 @@ class BusinessProfile(models.Model):
     def __str__(self):
         return f"{self.company_name} ({self.user.email})"
 
+class BusinessImage(models.Model):
+    profile = models.ForeignKey(
+        "accounts.BusinessProfile", 
+        on_delete=models.CASCADE, 
+        related_name="images"
+    )
+    image = models.ImageField(upload_to="business_images/")
+
+    def __str__(self):
+        return f"Image for {self.profile.company_name}"
+
+
 # Create your models here.
