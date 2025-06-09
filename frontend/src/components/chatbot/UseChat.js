@@ -33,6 +33,9 @@ export const UseChatGPT = () => {
 
       const text = await res.text();
       const { flowers_result, flower_names } = JSON.parse(text);
+
+      localStorage.setItem("flowerNames", JSON.stringify(flower_names));
+      
       console.log("받아온 꽃 이름들:", flower_names);
       setResponse(flowers_result || "응답 없음");
     } catch (err) {

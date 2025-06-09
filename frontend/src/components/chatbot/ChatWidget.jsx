@@ -3,9 +3,11 @@ import { UseChatGPT } from "./UseChat";
 import ChatInput from "./ChatInput";
 import ChatButton from "./ChatButton";
 import ChatResponse from "./ChatResponse";
+import { useNavigate } from "react-router-dom";
 
 const ChatWidget = () => {
   const { input, setInput, response, loading, handleGenerate } = UseChatGPT();
+  const navigate = useNavigate();
 
   return (
     <div className="chat-container">
@@ -23,6 +25,19 @@ const ChatWidget = () => {
       )}
 
       {!loading && <ChatResponse response={response} />}
+      {!loading && response && (
+       <>
+         <ChatResponse response={response} />
+         <div className="flex justify-center mt-4">
+           <button
+             onClick={() => navigate("/order", { state: { recommended: true } })}
+             className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+           >
+             추천 꽃집 보기
+           </button>
+         </div>
+       </>
+     )}
     </div>
   );
 };

@@ -19,6 +19,7 @@ const Order = () => {
   const [filteredStores, setFilteredStores] = useState([]);
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     axios.get("https://blossompick.duckdns.org/api/v1/florist/stores/")
@@ -40,8 +41,20 @@ const Order = () => {
           );
 
           withDist.sort((a, b) => a.distance - b.distance);
+          // setStores(withDist);
+          // setFilteredStores(withDist);
           setStores(withDist);
-          setFilteredStores(withDist);
+         // state.recommended === true 면 자동 필터링
+          if (location.state?.recommended) {
+            const names = JSON.parse(localStorage.getItem("flowerNames") || "[]");
+            const rec = withDist.filter(store =>
+              store.inventory?.some(item => names.includes(item.name))
+            );
+            setFilteredStores(rec);
+            setRecommendedOnly(true);
+          } else {
+            setFilteredStores(withDist);
+          }
         },
         () => {
           setStores(data.map(s => ({ ...s, distance: undefined })));
