@@ -1,13 +1,56 @@
-# Capstone-Design Project
-Dankook University software major Capstone Design with 김민성, 이용민, 위다연
+# 🌷BlossomPick🌷
+ 
+Dankook University Software Major Capstone Design with 김민성, 이용민, 위다연
 
-ms 디렉토리에서는 ai,
-dy 디렉토리에서는 frontend,
-nginx와 webserver 디렉토리는 backend를 다루고 있습니다.
+## 👪팀원 소개
+### AI
+🤗 김민성
+- 상황에 알맞는 꽃을 추천해주는 챗봇 시스템
+- Locall LLM(Ollama🦙)와 VectorDB(chormaDB)를 연동한 RAG 시스템
+- 
+
+### Backend
+🤭 이용민
+
+
+### Frontend
+🤭 위다연
+
+
+## 📌프로젝트 배경
+사람들이 기념일이나 사랑하는 사람을 위해 선물을 줄 때 꽃을 선물해주는 경우가 많다.   
+이 때 꽃의 꽃말을 바탕으로 더 의미 있는 꽃 선물을 줄 수 있다면 어떨지 생각해봤다.   
+하지만 꽃과 해당 꽃말을 검색하기 위해 꽃말 사전을 뒤적이면서 선물해줄 상황에 알맞은 꽃을 선물해주기는 매우 번거롭다.   
+이를 기반으로 본 프로젝트에서는 특정 상황에 알맞은 꽃을 추천해주는 챗봇 시스템을 구현한다.     
+또한 이에 그치지 않고 꽃집 운영자와 일반 회원이 서로 꽃을 쉽게 등록하고 주문하고 팔 수 있는 홈페이지을 구축하여 판매까지 유도한다.   
+
+
+## 🧑‍💻구현 기능 
 
 
 
-아래 설명을 따라 설치하고 실행할 수 있습니다.
+## 📁아키텍처 
+![image](https://github.com/user-attachments/assets/c5d6e985-a303-41b2-b4ec-b95afff15a52)
+
+
+
+## 📄사용 기술 스택 
+
+
+
+## Directory 구조 
+
+
+
+## 실행 방법
+
+
+
+## 시연
+
+
+
+
 
 
 # AI run
