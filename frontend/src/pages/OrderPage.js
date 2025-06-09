@@ -43,9 +43,10 @@ const OrderPage = () => {
       alert("🌸 최소 1개 이상의 꽃을 선택해주세요!");
       return;
     }
+    
+    const token = localStorage.getItem("access_token");
 
-    axios
-      .post("https://blossompick.duckdns.org/api/v1/florist/order/", {
+    axios.post("https://blossompick.duckdns.org/api/v1/florist/order/", {
         business_id: parseInt(business_id),
         items: orderedItems,
       })
