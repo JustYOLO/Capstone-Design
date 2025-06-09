@@ -1,4 +1,4 @@
-export const markAddresses = (map, addressList) => {
+const markAddresses = (map, addressList) => {
   addressList.forEach((address) => {
     console.log("📌 지오코딩 시도 주소:", address);
 
@@ -31,10 +31,12 @@ export const markAddresses = (map, addressList) => {
   });
 };
 
+// 🔧 여기서부터 business_id 사용
 export const FlowerShopMarker = async (map, business_id) => {
   const userLat = 37.5665;
   const userLng = 126.9780;
 
+  // 사용자 위치 마커
   new window.naver.maps.Marker({
     position: new window.naver.maps.LatLng(userLat, userLng),
     map,
@@ -49,19 +51,21 @@ export const FlowerShopMarker = async (map, business_id) => {
     "동백죽전대로 1066",
   ];
 
+  // API에서 business_id로 주소 가져오기
   try {
     const res = await fetch(`https://blossompick.duckdns.org/api/v1/florist/stores/${business_id}/`);
     const json = await res.json();
-    const fetchedAddress = json.data?.address;
 
-    console.log("🏠 API에서 받아온 주소:", fetchedAddress);
+    const fetchedAddress = json.data.data?.address;
+    console.log("🏠 백엔드에서 받아온 주소:", fetchedAddress);
 
     if (fetchedAddress) {
       roadAddresses.push(fetchedAddress);
     }
   } catch (err) {
-    console.error("❌ 주소 API 호출 실패:", err);
+    console.error("❌ 주소 불러오기 실패:", err);
   }
 
+  // 📌 마커 표시
   markAddresses(map, roadAddresses);
 };
