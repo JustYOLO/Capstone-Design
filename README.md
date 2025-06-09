@@ -89,31 +89,13 @@ Dankook University Software Major Capstone Design with 김민성, 이용민, 위
 📦Capstone-Design
  ┣ 📂ai 
  ┃ ┣ 📂chromadb_storage_ko
- ┃ ┃ ┣ 📂8be9cc09-4636-4b3d-bff8-a44226777b2f
- ┃ ┃ ┃ ┣ 📜data_level0.bin
- ┃ ┃ ┃ ┣ 📜header.bin
- ┃ ┃ ┃ ┣ 📜length.bin
- ┃ ┃ ┃ ┗ 📜link_lists.bin
- ┃ ┃ ┗ 📜chroma.sqlite3
  ┃ ┣ 📂flower_directory
- ┃ ┃ ┣ 📜flowers_en.txt
- ┃ ┃ ┣ 📜flowers_ko.txt
- ┃ ┃ ┗ 📜flowers_ko_formatted.txt
  ┃ ┣ 📜Dockerfile
- ┃ ┣ 📜README.md
  ┃ ┣ 📜docker-compose.yml
- ┃ ┣ 📜format_flower.py
  ┃ ┣ 📜main.py
  ┃ ┗ 📜makeVectorDB_flowers_ko.py
  ┣ 📂frontend
  ┃ ┣ 📂ad_image
- ┃ ┃ ┣ 📜IMG_4330.JPG
- ┃ ┃ ┣ 📜IMG_4331.JPG
- ┃ ┃ ┣ 📜IMG_4332.JPG
- ┃ ┃ ┣ 📜IMG_4333.JPG
- ┃ ┃ ┗ 📜IMG_4334.JPG
- ┃ ┃ ┗ 📂css
- ┃ ┃ ┃ ┗ 📜tailwindcss.css
  ┃ ┣ 📂src
  ┃ ┃ ┣ 📂components
  ┃ ┃ ┃ ┣ 📂chatbot
