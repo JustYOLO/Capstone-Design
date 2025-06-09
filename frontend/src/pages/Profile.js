@@ -43,8 +43,6 @@ const Profile = () => {
 
   }, []);
 
-  if (tokeen)
-
   if (!user) {
     return (
       <div className="flex items-center justify-center min-h-screen text-xl text-gray-500">
