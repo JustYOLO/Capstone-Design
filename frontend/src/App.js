@@ -24,6 +24,7 @@ import Login from "./pages/Login";
 import SearchWhere from "./pages/Search_Where";
 import Order from "./pages/Order";
 import ResetPassword from "./pages/ResetPassword";
+import ResetPassword from "./pages/PasswordResetConfirm";
 import Signup from "./pages/Signup";
 import SignupCustomer from "./pages/SignupCustomer";
 import SignupFlorist from "./pages/SignupFlorist";
