@@ -56,6 +56,29 @@ Dankook University Software Major Capstone Design with 김민성, 이용민, 위
 
 ## 📄사용 기술 스택 
 
+### AI
+
+|category|vesion|
+|------|---|
+|React|19.0.0|
+|Tailwind CSS|3.4.17|
+|Axios|1.8.4|
+
+### Backend
+
+|category|vesion|
+|------|---|
+|React|19.0.0|
+|Tailwind CSS|3.4.17|
+|Axios|1.8.4|
+
+### Frontend
+
+|category|vesion|
+|------|---|
+|React|19.0.0|
+|Tailwind CSS|3.4.17|
+|Axios|1.8.4|
 
 
 ## Directory 구조 
@@ -227,7 +250,7 @@ yarn start
 ```
 ---
 
-## 서버에서 실행하는 경우
+## 로컬에서 실행하는 경우
 package.json 파일 내의 scripts 부분을 수정해야 함
 ```
 "scripts": {
@@ -238,9 +261,19 @@ package.json 파일 내의 scripts 부분을 수정해야 함
   },
 ```
 ```
-http://서버IP:3000
+http://localhost:3000
 ```
-위와 같이 서버에 접속
+위와 같이 접속
+
+---
+
+## 서버에 올려 실행하는 경우
+github에 업로드 하면, CI/CD를 통하여 자동으로 build 됨
+기존 코드로 그대로 실행을 한다면,
+```
+https://blossompick.duckdns.org
+```
+로 접속을 하면 Blossompick의 메인 페이지에 들어갈 수 있음
 
 ---
 
