@@ -1,4 +1,3 @@
-// UseChat.js
 import { useState } from "react";
 
 export const UseChatGPT = () => {
@@ -15,20 +14,21 @@ export const UseChatGPT = () => {
       if (lastUse === today) {
         setResponse("⚠️ 비회원은 하루 1번만 사용할 수 있어요.\n로그인 후 무제한으로 이용해보세요!");
         return;
+      } else {
+        localStorage.setItem("lastGuestUsage", today);
       }
-      localStorage.setItem("lastGuestUsage", today);
     }
 
+    if (!input.trim()) return;
+
     setLoading(true);
+    setResponse("");
+
     try {
-      const token = localStorage.getItem("user");
-      const res = await fetch("http://blossompick.duckdns.org/api/generate", {
+      const res = await fetch("/api/generate", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ model: "gemma3:4b", prompt: input, stream: false }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ model: "gemma3:12b", prompt: input, stream: false }),
       });
 
       const text = await res.text();
