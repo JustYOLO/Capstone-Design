@@ -141,6 +141,8 @@ ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL      = True
 
+ACCOUNT_ADAPTER = "accounts.adapters.CustomAccountAdapter"
+
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
