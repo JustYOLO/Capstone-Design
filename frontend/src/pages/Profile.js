@@ -6,11 +6,11 @@ const Profile = () => {
   const [isFlorist, setIsFlorist] = useState(false);
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      const parsed = JSON.parse(storedUser);
-      setUser(parsed.user);
-    }
+    // const storedUser = localStorage.getItem("user");
+    // if (storedUser) {
+    //   const parsed = JSON.parse(storedUser);
+    //   setUser(parsed.user);
+    // }
 
     const token = localStorage.getItem("access_token");
     if (token) {
@@ -27,7 +27,23 @@ const Profile = () => {
           console.warn("꽃집 운영자 아님 or 확인 실패:", err);
         });
     }
+
+    if (token) {
+      axios
+        .get("https://blossompick.duckdns.org/api/v1/auth/user/", {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((res) => {
+          setUser(res.data);
+        })
+        .catch((err) => {
+          console.warn("사용자 정보 로드 실패:", err);
+        });
+    }
+
   }, []);
+
+  if (tokeen)
 
   if (!user) {
     return (
@@ -42,7 +58,7 @@ const Profile = () => {
       <h1 className="text-3xl font-bold text-gray-800 mb-6">내 프로필</h1>
       <div className="bg-white rounded-xl shadow-md p-6 w-full max-w-md border border-gray-200">
         <p className="text-lg text-gray-700 mb-2">
-          <span className="font-semibold">이름: </span> {user.name ?? "-"}
+          <span className="font-semibold">이름: </span> {user.username ?? "-"}
         </p>
         <p className="text-lg text-gray-700 mb-2">
           <span className="font-semibold">이메일: </span> {user.email}
