@@ -43,7 +43,7 @@ export const FlowerShopMarker = async (map) => {
   const userLng = 126.9780;
 
   // 사용자 현재 위치 마커
-  const userMarker = new window.naver.maps.Marker({
+  new window.naver.maps.Marker({
     position: new window.naver.maps.LatLng(userLat, userLng),
     map,
     title: "내 위치",
@@ -51,12 +51,6 @@ export const FlowerShopMarker = async (map) => {
       content: '<div style="background:#2b90d9;color:white;padding:5px 10px;border-radius:5px;font-size:12px;">내 위치</div>',
     },
   });
-
-  const userInfoWindow = new window.naver.maps.InfoWindow({
-    content: `<div style="padding:8px;font-size:14px;">📍 내 위치</div>`,
-  });
-
-  let userInfoOpen = false;
 
   window.naver.maps.Event.addListener(userMarker, "click", () => {
     if (userInfoOpen) {
