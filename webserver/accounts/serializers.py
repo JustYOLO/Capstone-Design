@@ -34,7 +34,7 @@ class CustomRegisterSerializer(RegisterSerializer):
         data["user_type"] = self.validated_data.get("user_type")
         return data
 
-class BusinessRegisterSerializer(RegisterSerializer):
+class BusinessRegisterSerializer(CustomRegisterSerializer):
     file = serializers.FileField(write_only=True)
 
     def validate(self, attrs):
