@@ -60,7 +60,8 @@ function AppContent() {
         <Route path="/searchwhere" element={<SearchWhere />} />
         <Route path="/order" element={<Order />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/password-reset/confirm" element={<ResetPassword />} />
+        <Route path="/resetpassword" element={<ResetPassword />} />
+        <Route path="/password-reset/confirm" element={<PasswordResetConfirm />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/signupcustomer" element={<SignupCustomer />} />
         <Route path="/signupflorist" element={<SignupFlorist />} />

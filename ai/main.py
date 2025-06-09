@@ -181,17 +181,14 @@ def recommend():
 
     flowers_result = format_flowers + "\n" + "\n" + result 
     print("DEBUG: 최종 출력 \n", flowers_result)
-    # return Response(
-    #     flowers_result,
-    #     content_type='text/plain'
-    # ), 200
+
     payload = {
         "flowers_result": flowers_result,
         "flower_names": flower_names
     }
     return Response(
         json.dumps(payload, ensure_ascii=False),
-        content_type='text/plain; charset=utf-8'
+        content_type='text/plain'
     ), 200
 
 
