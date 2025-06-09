@@ -31,8 +31,7 @@ const markAddresses = (map, addressList) => {
   });
 };
 
-// 🔧 여기서부터 business_id 사용
-export const FlowerShopMarker = async (map, business_id) => {
+export const FlowerShopMarker = async (map) => {
   const userLat = 37.5665;
   const userLng = 126.9780;
 
@@ -46,26 +45,18 @@ export const FlowerShopMarker = async (map, business_id) => {
     },
   });
 
-  const roadAddresses = [
-    "경기도 용인시 수지구 죽전로 152",
-    "동백죽전대로 1066",
-  ];
-
-  // API에서 business_id로 주소 가져오기
   try {
-    const res = await fetch(`https://blossompick.duckdns.org/api/v1/florist/stores/${business_id}/`);
+    const res = await fetch("https://blossompick.duckdns.org/api/v1/florist/stores/");
     const json = await res.json();
 
-    const fetchedAddress = json.data.data?.address;
-    console.log("🏠 백엔드에서 받아온 주소:", fetchedAddress);
+    const addressList = json
+      .map((store) => store.data?.address)
+      .filter((addr) => !!addr); // 주소 있는 것만 필터링
 
-    if (fetchedAddress) {
-      roadAddresses.push(fetchedAddress);
-    }
+    console.log("📍 전체 받아온 주소들:", addressList);
+
+    markAddresses(map, addressList);
   } catch (err) {
     console.error("❌ 주소 불러오기 실패:", err);
   }
-
-  // 📌 마커 표시
-  markAddresses(map, roadAddresses);
 };
