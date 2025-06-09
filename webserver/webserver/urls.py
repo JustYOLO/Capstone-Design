@@ -42,7 +42,8 @@ urlpatterns = [
         ConfirmEmailView.as_view(),
         name="account_confirm_email",
     ),
-    path('api/v1/auth/registration/', include('dj_rest_auth.registration.urls')),    
+    path('api/v1/auth/registration/', include('dj_rest_auth.registration.urls')),
+    path("api/v1/auth/", include("django.contrib.auth.urls")),
     path(
       "api/v1/florist/registration/",
       BusinessRegisterView.as_view(),
