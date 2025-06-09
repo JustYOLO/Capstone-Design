@@ -192,3 +192,10 @@ class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model  = Order
         fields = ["id", "business", "customer_name", "customer_email", "items", "created_at"]
+
+class UserDetailsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        # expose both fields; email is read‐only
+        fields = ['username', 'email']
+        read_only_fields = ['email']

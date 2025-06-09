@@ -132,6 +132,11 @@ REST_AUTH_REGISTER_SERIALIZERS = {
 
 }
 
+REST_AUTH_SERIALIZERS = {
+  'USER_DETAILS_SERIALIZER': 'accounts.serializers.UserDetailsSerializer',
+}
+
+
 AUTH_USER_MODEL = "accounts.CustomUser"
 
 # django-allauth settings
