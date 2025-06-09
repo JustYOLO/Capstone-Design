@@ -38,6 +38,18 @@ const markAddresses = (map, locationList) => {
   });
 };
 
+export const geocodeAddress = (address) =>
+  new Promise((resolve, reject) => {
+    window.naver.maps.Service.geocode({ query: address }, (status, response) => {
+      if (status === window.naver.maps.Service.Status.OK) {
+        const item = response.v2.addresses[0];
+        resolve({ lat: parseFloat(item.y), lng: parseFloat(item.x) });
+      } else {
+        reject(status);
+      }
+    });
+  });
+
 export const FlowerShopMarker = async (map) => {
   // 실제 사용자 위치 가져오기
   navigator.geolocation.getCurrentPosition(

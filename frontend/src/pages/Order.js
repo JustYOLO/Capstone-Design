@@ -2,6 +2,17 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import AdCarousel from "./AdCarousel";
 import { useNavigate } from "react-router-dom";
+import { geocodeAddress } from "../components/map/FlowerShopMarker";  // ← 추가
+
+const toRad = deg => (deg * Math.PI) / 180;
+const haversine = (lat1, lng1, lat2, lng2) => {
+  const R = 6371e3;
+  const φ1 = toRad(lat1), φ2 = toRad(lat2);
+  const Δφ = toRad(lat2 - lat1), Δλ = toRad(lng2 - lng1);
+  const a = Math.sin(Δφ/2)**2 +
+            Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ/2)**2;
+  return 2 * R * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+};
 
 const Order = () => {
   const [stores, setStores] = useState([]);
@@ -9,21 +20,42 @@ const Order = () => {
 
   useEffect(() => {
     axios.get("https://blossompick.duckdns.org/api/v1/florist/stores/")
-      .then((res) => {
-        setStores(res.data);
+      .then(({ data }) => {
+        // 사용자 위치가 허용되면 거리 계산 후 정렬
+        navigator.geolocation.getCurrentPosition(async pos => {
+          const userLat = pos.coords.latitude;
+          const userLng = pos.coords.longitude;
+
+          const withDist = await Promise.all(
+            data.map(async store => {
+              try {
+                const { lat, lng } = await geocodeAddress(store.data.address);
+                const distance = haversine(userLat, userLng, lat, lng);
+                return { ...store, distance };
+              } catch {
+                return { ...store, distance: Infinity };
+              }
+            })
+          );
+
+          withDist.sort((a, b) => a.distance - b.distance);
+          setStores(withDist);
+        },
+        // 위치 정보 거부 시 원본 순서
+        () => {
+          setStores(data.map(s => ({ ...s, distance: undefined })));
+        });
       })
-      .catch((err) => {
+      .catch(err => {
         console.error("❌ 꽃집 리스트 가져오기 실패:", err);
       });
   }, []);
 
-  // 오늘 요일을 한글로 반환하는 유틸
+  // 오늘 요일을 한글로 반환
   const getTodayKoreanDay = () => {
     const days = ["일", "월", "화", "수", "목", "금", "토"];
-    const today = new Date().getDay();
-    return days[today];
+    return days[new Date().getDay()];
   };
-
   const today = getTodayKoreanDay();
 
   return (
@@ -34,10 +66,15 @@ const Order = () => {
 
       <div className="max-w-4xl mx-auto">
         {stores.length === 0 ? (
-          <p className="text-center text-gray-500 mt-8">등록된 꽃집이 없습니다.</p>
+          <p className="text-center text-gray-500 mt-8">
+            등록된 꽃집이 없습니다.
+          </p>
         ) : (
           stores.map((store, idx) => {
             const isClosedToday = store.data?.hours?.[today]?.closed === true;
+            const distKm = store.distance !== undefined && store.distance !== Infinity
+              ? (store.distance / 1000).toFixed(2) + " km"
+              : "거리 정보 없음";
 
             return (
               <div
@@ -53,16 +90,26 @@ const Order = () => {
                   <div className="flex-1">
                     <p className="font-bold text-lg">{store.housename}</p>
                     <p>🌍 주소: {store.data?.address || "주소 없음"}</p>
-                    <p>🌸 인기 꽃 종류: {store.inventory?.map(f => f.name).join(", ") || "정보 없음"}</p>
+                    <p>
+                      🌸 인기 꽃 종류:{" "}
+                      {store.inventory?.map(f => f.name).join(", ") ||
+                        "정보 없음"}
+                    </p>
                     <p>📞 전화번호: {store.data?.phone || "없음"}</p>
-
-                    {/* 오늘 휴무 여부 표시 */}
+                    {/* 오늘 휴무 여부 */}
                     {isClosedToday && (
-                      <p className="text-red-500 font-semibold mt-1">🚫 오늘은 휴무일입니다.</p>
+                      <p className="text-red-500 font-semibold mt-1">
+                        🚫 오늘은 휴무일입니다.
+                      </p>
                     )}
-
+                    {/* 거리 정보 */}
+                    <p className="mt-1">📏 거리: {distKm}</p>
                     <button
-                      onClick={() => navigate(`/flowerhouse/view/${store.business_id}`)}
+                      onClick={() =>
+                        navigate(
+                          `/flowerhouse/view/${store.business_id}`
+                        )
+                      }
                       className="mt-2 text-blue-600 hover:underline text-sm"
                     >
                       자세히 보기
