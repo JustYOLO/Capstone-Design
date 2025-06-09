@@ -1,4 +1,7 @@
+import { useParams } from "react-router-dom";
+
 const markAddresses = (map, addressList) => {
+  const { business_id } = useParams();
   addressList.forEach((address) => {
     console.log("📌 지오코딩 시도 주소:", address);
 
@@ -52,8 +55,8 @@ export const FlowerShopMarker = async (map, address) => {
 
   // 주소를 API에서 동적으로 불러와서 추가
   try {
-    const pk = address; // address 인자에 pk가 들어오는 형태로 가정
-    const res = await fetch(`https://blossompick.duckdns.org/api/v1/florist/stores/${pk}/`);
+    // const pk = address; // address 인자에 pk가 들어오는 형태로 가정
+    const res = await fetch(`https://blossompick.duckdns.org/api/v1/florist/stores/${business_id}/`);
     const json = await res.json();
 
     const fetchedAddress = json.data?.address;
