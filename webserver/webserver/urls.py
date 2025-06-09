@@ -31,11 +31,20 @@ from accounts.views import PublicBusinessDetailView
 from accounts.views import BusinessImageUploadView
 from accounts.views import BusinessInventoryView
 from accounts.views import PlaceOrderView, MyOrdersView
+from django.shortcuts import redirect
 
 BUILD_DIR = os.path.join(settings.BASE_DIR, 'webserver', 'static', 'build')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path(
+        "api/v1/auth/password/reset/confirm/<uidb64>/<token>/",
+        # this view never renders HTML; it just bounces the user onto your SPA
+        lambda request, uidb64, token: redirect(
+            f"https://blossompick.duckdns.org/password-reset/confirm?uid={uidb64}&token={token}"
+        ),
+        name="password_reset_confirm",
+    ),
     path('api/v1/auth/', include("dj_rest_auth.urls")),
     re_path(
         "^api/v1/auth/registration/account-confirm-email/(?P<key>[-:\w]+)/$",

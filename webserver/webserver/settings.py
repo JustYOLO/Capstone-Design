@@ -125,6 +125,7 @@ SIMPLE_JWT = {
 REST_AUTH = {
     "USE_JWT": True,
     "JWT_AUTH_HTTPONLY": False,  # Makes sure refresh token is sent
+    "PASSWORD_RESET_CONFIRM_URL": "password-reset/confirm?uid={uid}&token={token}",
 }
 
 REST_AUTH_REGISTER_SERIALIZERS = {
