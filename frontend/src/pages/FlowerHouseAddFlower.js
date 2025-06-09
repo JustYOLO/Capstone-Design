@@ -69,7 +69,7 @@ const FlowerHouseAddFlower = () => {
 
       alert("🌸 꽃 재고 저장 완료!");
       
-      navigate(`/flowerhouse/view/${business_id}`);
+      navigate("/");
     } catch (err) {
       console.error("❌ 저장 오류:", err);
       alert("저장 중 문제가 발생했습니다.");

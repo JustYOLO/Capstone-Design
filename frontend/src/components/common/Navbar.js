@@ -8,25 +8,39 @@ const Navbar = ({ user }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const [isFlorist, setIsFlorist] = useState(false);
+  const [businessId, setBusinessId] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     const checkFloristStatus = async () => {
       if (!user) return;
+
       try {
         const token = user.access;
-        const response = await fetch("https://blossompick.duckdns.org/api/v1/florist/housename/", {
+
+        // 내 꽃집 이름 가져오기
+        const res1 = await fetch("https://blossompick.duckdns.org/api/v1/florist/housename/", {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
 
-        if (response.ok) {
-          const data = await response.json();
-          if (data.housename) {
-            setIsFlorist(true);
-          }
+        if (!res1.ok) return;
+        const { housename } = await res1.json();
+        if (!housename) return;
+
+        setIsFlorist(true);
+
+        // 전체 꽃집 목록 가져오기
+        const res2 = await fetch("https://blossompick.duckdns.org/api/v1/florist/stores/");
+        if (!res2.ok) return;
+        const stores = await res2.json();
+
+        // 내 가게 찾기
+        const matchedStore = stores.find((store) => store.housename === housename);
+        if (matchedStore) {
+          setBusinessId(matchedStore.business_id);
         }
       } catch (err) {
         console.error("❌ florist 확인 실패:", err);
@@ -73,19 +87,19 @@ const Navbar = ({ user }) => {
               <div className="dropdown-menu">
                 <Link to="/profile" className="dropdown-item">개인정보 설정</Link>
 
-                {/* 일반 사용자 메뉴 추가 */}
-                {! isFlorist && ( 
-                  <>
-                    <Link to="/orderhistory" className="dropdown-item">주문 내역</Link>
-                  </>
+                {!isFlorist && (
+                  <Link to="/orderhistory" className="dropdown-item">주문 내역</Link>
                 )}
-                
 
-                {/* 꽃집 사장님 메뉴 추가 */}
                 {isFlorist && (
                   <>
                     <Link to="/flowerhouse" className="dropdown-item">꽃집 정보 수정</Link>
-                    <Link to="/flowerhouse/addflower" className="dropdown-item">꽃집 주문 관리</Link>
+                    <Link to="/flowerhouse/addflower" className="dropdown-item">꽃 재고 관리</Link>
+                    {businessId && (
+                      <Link to={`/flowerhouse/view/${businessId}`} className="dropdown-item">
+                        내 꽃집 보기
+                      </Link>
+                    )}
                   </>
                 )}
 
