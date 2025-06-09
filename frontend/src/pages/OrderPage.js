@@ -34,10 +34,50 @@ const OrderPage = () => {
 
   const totalPrice = totalCount * 5000; // 가격은 꽃 1개당 5000원으로 가정
 
-  const handleConfirm = () => {
-    setShowConfirm(false);
-    setConfirmed(true);
-  };
+  const handleConfirm = () => { 
+  const orderedItems = Object.entries(quantities)
+    .filter(([_, qty]) => qty > 0)
+    .map(([name, quantity]) => ({ name, quantity }));
+
+  if (orderedItems.length === 0) {
+    alert("🌸 최소 1개 이상의 꽃을 선택해주세요!");
+    return;
+  }
+  // 주문내역 꽃집 사장님한테 전송
+  axios.post("https://blossompick.duckdns.org/api/v1/florist/order/", {
+    business_id: parseInt(business_id),
+    items: orderedItems,
+  })
+    .then((res) => {
+      console.log("✅ 주문 성공:", res.data);
+      setShowConfirm(false);
+      setConfirmed(true);
+    })
+    .catch((err) => {
+      if (err.response) {
+        const data = err.response.data;
+
+        // business_id 관련 에러 (없는 꽃집)
+        if (data.business_id) {
+          alert("🚫 유효하지 않거나 인증되지 않은 꽃집입니다.");
+        }
+
+        // 품절 에러 (수량이 부족한 꽃 주문했을 때)
+        else if (data.non_field_errors) {
+          alert(`🚫 주문 실패: ${data.non_field_errors.join(", ")}`);
+        }
+
+        // 그 외 에러
+        else {
+          alert("⚠️ 주문 중 알 수 없는 오류가 발생했습니다.");
+          console.error("기타 에러:", data);
+        }
+      } else {
+        alert("서버에 연결할 수 없습니다. 다시 시도해주세요.");
+        console.error("❌ 네트워크 오류:", err);
+      }
+    });
+  }; 
 
   const pickupTime = new Date(Date.now() + readyTime * 60000)
     .toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
