@@ -52,6 +52,7 @@ const Order = () => {
             const rec = withDist.filter(store =>
               store.inventory?.some(item => names.includes(item.name))
             );
+            // store.inventory?.map(f => f.name).join(", ")
             setFilteredStores(rec);
             setRecommendedOnly(true);
           } else {
@@ -68,12 +69,20 @@ const Order = () => {
       });
   }, [location.state]);
 
-  useEffect(() => {
+  // useEffect(() => {
+  //   const filtered = stores.filter(store =>
+  //     store.housename.toLowerCase().includes(search.toLowerCase())
+  //   );
+  //   setFilteredStores(filtered);
+  // }, [search, stores]);
+
+    useEffect(() => {
+    if (recommendedOnly) return;
     const filtered = stores.filter(store =>
       store.housename.toLowerCase().includes(search.toLowerCase())
     );
     setFilteredStores(filtered);
-  }, [search, stores]);
+  }, [search, stores, recommendedOnly]);
 
   const getTodayKoreanDay = () => {
     const days = ["일", "월", "화", "수", "목", "금", "토"];
