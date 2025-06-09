@@ -14,8 +14,6 @@ class CustomUser(AbstractUser):
         max_length=10,
         choices=USER_TYPE_CHOICES,
         default=NORMAL,
-        null=True,        # <--- allow NULL in the database
-        blank=True
     )
 
 class BusinessProfile(models.Model):

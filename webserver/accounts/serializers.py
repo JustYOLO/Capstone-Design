@@ -8,40 +8,30 @@ from .models import BusinessProfile
 from .verify import verify_pdf  # your existing function
 from .models import BusinessImage
 from .models import BusinessProfile, Order
-from allauth.account.adapter import get_adapter
 
 User = get_user_model()
 
-
 class CustomRegisterSerializer(RegisterSerializer):
-    name = serializers.CharField(max_length=150, required=True)
-
-    NORMAL = User.NORMAL
+    NORMAL   = User.NORMAL
     BUSINESS = User.BUSINESS
     USER_TYPE_CHOICES = User.USER_TYPE_CHOICES
+
     user_type = serializers.ChoiceField(choices=USER_TYPE_CHOICES)
 
     def validate_email(self, email):
-        # enforce unique, case-insensitive email
+        # enforce unique, case‐insensitive email
         if User.objects.filter(email__iexact=email).exists():
-            raise serializers.ValidationError("A user with that email already exists.")
+            raise serializers.ValidationError(
+                "A user with that email already exists."
+            )
         return email
 
     def get_cleaned_data(self):
         data = super().get_cleaned_data()
-        data["first_name"] = self.validated_data.get("name", "")
         data["user_type"] = self.validated_data.get("user_type")
         return data
 
-    def save(self, request):
-        adapter = get_adapter()
-        user = adapter.new_user(request)
-        self.cleaned_data = self.get_cleaned_data()
-        adapter.save_user(request, user, self)
-        return user
-
-
-class BusinessRegisterSerializer(CustomRegisterSerializer):
+class BusinessRegisterSerializer(RegisterSerializer):
     file = serializers.FileField(write_only=True)
 
     def validate(self, attrs):
@@ -202,11 +192,3 @@ class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model  = Order
         fields = ["id", "business", "customer_name", "customer_email", "items", "created_at"]
-
-class CurrentUserSerializer(serializers.ModelSerializer):
-    # expose first_name on the User model as “name”
-    name = serializers.CharField(source="first_name", read_only=True)
-
-    class Meta:
-        model  = User
-        fields = ["id", "name", "email"]
