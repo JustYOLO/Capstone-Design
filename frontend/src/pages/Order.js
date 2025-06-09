@@ -66,7 +66,7 @@ const Order = () => {
       .catch(err => {
         console.error("꽃집 리스트 가져오기 실패:", err);
       });
-  }, []);
+  }, [location.state]);
 
   useEffect(() => {
     const filtered = stores.filter(store =>

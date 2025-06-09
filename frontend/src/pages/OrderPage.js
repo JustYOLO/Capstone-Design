@@ -9,6 +9,7 @@ const OrderPage = () => {
   const [showConfirm, setShowConfirm] = useState(false);
   const [confirmed, setConfirmed] = useState(false);
   const [readyTime, setReadyTime] = useState(15);
+  const [loading, setLoading] = useState(false); // ✅ 로딩 상태
 
   useEffect(() => {
     axios
@@ -45,6 +46,7 @@ const OrderPage = () => {
     }
 
     const token = localStorage.getItem("access_token");
+    setLoading(true); // ✅ 로딩 시작
 
     axios
       .post(
@@ -79,7 +81,8 @@ const OrderPage = () => {
           alert("서버에 연결할 수 없습니다. 다시 시도해주세요.");
           console.error("❌ 네트워크 오류:", err);
         }
-      });
+      })
+      .finally(() => setLoading(false)); // ✅ 로딩 종료
   };
 
   const pickupTime = new Date(Date.now() + readyTime * 60000).toLocaleTimeString([], {
@@ -155,9 +158,17 @@ const OrderPage = () => {
             <button
               onClick={handleConfirm}
               className="mt-2 bg-blue-600 text-white px-3 py-1 rounded"
+              disabled={loading} // 버튼 비활성화
             >
-              다 확인했습니다
+              {loading ? "처리 중..." : "다 확인했습니다"}
             </button>
+
+            {loading && (
+              <div className="mt-4 flex items-center justify-center space-x-2 text-blue-600">
+                <div className="w-5 h-5 border-2 border-blue-600 border-t-transparent rounded-full animate-spin" />
+                <p>주문을 처리 중입니다...</p>
+              </div>
+            )}
           </div>
         )}
 
