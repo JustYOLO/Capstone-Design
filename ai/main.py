@@ -148,6 +148,11 @@ def format_recommended_flowers(recommended_flowers_ko):
 
 
 
+def extract_flower_names(flowers):
+    """꽃 목록에서 꽃 이름만 추출하여 리스트로 반환합니다."""
+    flower_names = [flower[0].replace('- ', '') for flower in flowers]
+    return flower_names
+
 
 @app.route("/api/generate", methods=["POST"])
 def recommend():
@@ -164,15 +169,20 @@ def recommend():
     
     flowers = search_flower_ko(situation)
     
-    print("DEBUG:", flowers)
+    print("DEBUG: 꽃과 꽃말 \n", flowers)
+    
+    flower_names = extract_flower_names(flowers)
+    print("DEBUG: 꽃 이름들 \n", flower_names)
 
     result = generate_flower_recommendation_ko(situation, flowers)
-    print("DEBUG:", result)
-    flowers = format_recommended_flowers(flowers)
-    flowers = flowers + "\n" + "\n" + result 
-    print("DEBUG:", flowers)
+    # print("DEBUG:", result)
+    format_flowers = format_recommended_flowers(flowers)
+    # print("DEBUG: 꽃 형식 \n", format_flowers)
+
+    flowers_result = format_flowers + "\n" + "\n" + result 
+    print("DEBUG: 최종 출력 \n", flowers_result)
     return Response(
-        flowers,
+        flowers_result,
         content_type='text/plain'
     ), 200
 

@@ -8,7 +8,7 @@ import AutumnLeaves from "../components/effects/AutumnLeaves";
 const Signup = () => {
   const navigate = useNavigate();
 
-  // 🔹 날짜에 따라 효과 변경
+  // 날짜에 따라 효과 변경
   const today = new Date();
   const month = (today.getMonth() + 1).toString().padStart(2, "0");
   const day = today.getDate().toString().padStart(2, "0");
@@ -28,7 +28,7 @@ const Signup = () => {
 
   return (
     <div className={`relative flex flex-col items-center justify-center min-h-screen px-4 overflow-hidden ${getBackgroundColor()}`}>
-      {/* 🔹 계절별 효과 추가 */}
+      {/* 계절별 효과 추가 */}
       {dateNumber >= 301 && dateNumber <= 430 ? <CherryBlossom /> : null}
       {dateNumber >= 501 && dateNumber <= 915 ? <GreenLeaves /> : null}
       {dateNumber >= 916 && dateNumber <= 1114 ? <AutumnLeaves /> : null}

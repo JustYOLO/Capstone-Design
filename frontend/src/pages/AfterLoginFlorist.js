@@ -38,7 +38,7 @@ const AfterLoginFlorist = () => {
         alert("🎉 꽃집 등록이 완료되었습니다!");
         setConfirmed(true);
 
-        // ✅ 등록 후 floristData 넘기며 이동
+        // 등록 후 floristData 넘기며 이동
         setTimeout(() => {
           navigate("/flowerhouse", { state: floristData });
         }, 1500);

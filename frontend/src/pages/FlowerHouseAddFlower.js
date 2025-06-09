@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 const FlowerHouseAddFlower = () => {
-  const { pk } = useParams();
+  const { business_id } = useParams();
   const [flowerData, setFlowerData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [inventory, setInventory] = useState([]);
@@ -68,18 +68,8 @@ const FlowerHouseAddFlower = () => {
       if (!response.ok) throw new Error("저장 실패");
 
       alert("🌸 꽃 재고 저장 완료!");
-
-      const res2 = await fetch(
-        "https://blossompick.duckdns.org/api/v1/florist/housename/",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-
-      navigate(`/flowerhouse/view/${pk}`);
+      
+      navigate(`/flowerhouse/view/${business_id}`);
     } catch (err) {
       console.error("❌ 저장 오류:", err);
       alert("저장 중 문제가 발생했습니다.");
