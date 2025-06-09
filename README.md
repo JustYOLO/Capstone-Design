@@ -85,6 +85,7 @@ Dankook University Software Major Capstone Design with 김민성, 이용민, 위
 
 ## Directory 구조 
 
+```
 📦Capstone-Design
  ┣ 📂ai 
  ┃ ┣ 📂chromadb_storage_ko
@@ -231,6 +232,7 @@ Dankook University Software Major Capstone Design with 김민성, 이용민, 위
  ┃ ┣ 📜entrypoint.sh
  ┃ ┣ 📜manage.py
  ┃ ┗ 📜requirements.txt
+```
 
 ## 실행 방법
 
