@@ -7,7 +7,7 @@ Dankook University Software Major Capstone Design with 김민성, 이용민, 위
 🤗 김민성
 - 상황에 알맞는 꽃을 추천해주는 챗봇 시스템
 - Locall LLM(Ollama)와 VectorDB(chormaDB)를 연동한 RAG 시스템
-- 
+
 
 ### Backend
 🤭 이용민
@@ -32,8 +32,8 @@ Dankook University Software Major Capstone Design with 김민성, 이용민, 위
 
 ## 🧑‍💻구현 기능 
 1) 사용자의 현재 상황을 input으로 받고 해당 상황을 인지 후 알맞은 꽃과 꽃말 output을 출력해주는 챗봇
-  - Locall LLM(Ollama)와 VectorDB(chormaDB)를 연동한 RAG 시스템
-  - 
+  - Local LLM(Ollama)와 VectorDB(chormaDB)를 연동한 RAG 시스템
+  - Local LLM에게 적절한 Prompt를 주어, input으로 들어온 상황에 알맞는 꽃과 꽃말을 출력하고 해당 이유를 input과 연관지어 간단하게 서술함
 2) 꽃말 사전
   - CRUD 기능을 통해 사전에 꽃과 꽃말을 추가/삭제 가능
   - 검색 기능을 통해 원하는 꽃과 꽃말을 빠르게 얻을 수 있음
