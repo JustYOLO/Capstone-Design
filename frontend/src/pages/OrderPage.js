@@ -46,13 +46,19 @@ const OrderPage = () => {
 
     const token = localStorage.getItem("access_token");
 
-    axios.post("https://blossompick.duckdns.org/api/v1/florist/order/", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-        business_id: parseInt(business_id),
-        items: orderedItems,
-      })
+    axios
+      .post(
+        "https://blossompick.duckdns.org/api/v1/florist/order/",
+        {
+          business_id: parseInt(business_id),
+          items: orderedItems,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
       .then((res) => {
         console.log("✅ 주문 성공:", res.data);
         setShowConfirm(false);

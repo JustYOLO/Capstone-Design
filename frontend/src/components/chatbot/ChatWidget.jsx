@@ -24,7 +24,6 @@ const ChatWidget = () => {
         </div>
       )}
 
-      {!loading && <ChatResponse response={response} />}
       {!loading && response && (
        <>
          <ChatResponse response={response} />
