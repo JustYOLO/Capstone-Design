@@ -8,6 +8,7 @@ from .models import BusinessProfile
 from .verify import verify_pdf  # your existing function
 from .models import BusinessImage
 from .models import BusinessProfile, Order
+from allauth.account.adapter import get_adapter
 
 User = get_user_model()
 
@@ -33,6 +34,17 @@ class CustomRegisterSerializer(RegisterSerializer):
         data["first_name"] = self.validated_data.get("name", "")
         data["user_type"] = self.validated_data.get("user_type")
         return data
+
+    def save(self, request):
+        adapter = get_adapter()
+        user = adapter.new_user(request)
+        self.cleaned_data = self.get_cleaned_data()
+        adapter.save_user(request, user, self)
+        user.first_name = self.cleaned_data.get('first_name')
+        user.user_type = self.cleaned_data.get('user_type')
+        user.save()
+        return user
+
 
 class BusinessRegisterSerializer(CustomRegisterSerializer):
     file = serializers.FileField(write_only=True)
