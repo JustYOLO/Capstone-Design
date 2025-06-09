@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import AdCarousel from "./AdCarousel";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation  } from "react-router-dom";
 import { geocodeAddress } from "../components/map/FlowerShopMarker";
 
 const toRad = deg => (deg * Math.PI) / 180;
@@ -18,8 +18,10 @@ const Order = () => {
   const [stores, setStores] = useState([]);
   const [filteredStores, setFilteredStores] = useState([]);
   const [search, setSearch] = useState("");
+  const [recommendedOnly, setRecommendedOnly] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  
 
   useEffect(() => {
     axios.get("https://blossompick.duckdns.org/api/v1/florist/stores/")
