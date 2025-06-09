@@ -80,14 +80,14 @@ const OrderPage = () => {
   if (!shopData) return <div className="p-8 text-center">꽃집 정보를 불러오는 중...</div>;
 
   return (
-    <div className="min-h-screen bg-gray-50 px-4 py-16">
-      <div className="max-w-xl mx-auto bg-white p-6 rounded-lg shadow">
-        <h1 className="text-3xl font-bold text-purple-800 mb-4 text-center">
+    <div className="min-h-screen bg-gray-50 px-4 py-20 flex justify-center">
+      <div className="w-full max-w-4xl bg-white p-8 rounded-lg shadow">
+        <h1 className="text-4xl font-bold text-purple-800 mb-2 text-center">
           {shopData.housename}
         </h1>
         <p className="text-center text-gray-700 mb-1">💬 {shopData.data.intro || "소개 없음"}</p>
         <p className="text-center text-gray-600">📞 {shopData.data.phone}</p>
-        <p className="text-center text-gray-600 mb-4">
+        <p className="text-center text-gray-600 mb-6">
           📍 {shopData.data.address} {shopData.data.detailAddress}
         </p>
 
