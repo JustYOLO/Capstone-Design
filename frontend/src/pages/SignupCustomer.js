@@ -16,7 +16,7 @@ const SignupCustomer = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          name: name,
+          username: name,
           email: email, // 기존에 존재하는 이메일에 대해서도 처리해줘야 함
           password1: password1,
           password2: password2,

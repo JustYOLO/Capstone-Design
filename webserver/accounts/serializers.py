@@ -12,8 +12,6 @@ from .models import BusinessProfile, Order
 User = get_user_model()
 
 class CustomRegisterSerializer(RegisterSerializer):
-    name = serializers.CharField(max_length=150, required=True)
-
     NORMAL   = User.NORMAL
     BUSINESS = User.BUSINESS
     USER_TYPE_CHOICES = User.USER_TYPE_CHOICES
@@ -30,7 +28,6 @@ class CustomRegisterSerializer(RegisterSerializer):
 
     def get_cleaned_data(self):
         data = super().get_cleaned_data()
-        data["first_name"] = self.validated_data.get("name", "")
         data["user_type"] = self.validated_data.get("user_type")
         return data
 
@@ -196,10 +193,9 @@ class OrderSerializer(serializers.ModelSerializer):
         model  = Order
         fields = ["id", "business", "customer_name", "customer_email", "items", "created_at"]
 
-class CurrentUserSerializer(serializers.ModelSerializer):
-    # expose first_name on the User model as “name”
-    name = serializers.CharField(source="first_name", read_only=True)
-
+class UserDetailsSerializer(serializers.ModelSerializer):
     class Meta:
-        model  = User
-        fields = ["id", "name", "email"]
+        model = User
+        # expose both fields; email is read‐only
+        fields = ['username', 'email']
+        read_only_fields = ['email']

@@ -26,7 +26,7 @@ const SignupFlorist = () => {
     }
 
     const formData = new FormData();
-    formData.append("name", name);
+    formData.append("username", name);
     formData.append("email", email);
     formData.append("password1", password1);
     formData.append("password2", password2);

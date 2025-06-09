@@ -13,7 +13,6 @@ from .serializers import BusinessImageSerializer
 from .serializers import BusinessInventorySerializer
 from .serializers import OrderCreateSerializer, OrderSerializer
 from .models import Order
-from .serializers import CurrentUserSerializer
 
 class BusinessRegisterView(RegisterView):
     serializer_class = BusinessRegisterSerializer
@@ -124,15 +123,4 @@ class MyOrdersView(generics.ListAPIView):
 
     def get_queryset(self):
         return Order.objects.filter(customer=self.request.user).order_by("-created_at")
-
-class CurrentUserView(generics.RetrieveAPIView):
-    """
-    GET /api/v1/auth/user-info/
-    Returns the logged-in user’s id, name, and email.
-    """
-    permission_classes = [permissions.IsAuthenticated]
-    serializer_class   = CurrentUserSerializer
-
-    def get_object(self):
-        # simply return the current user
-        return self.request.user
+ 
