@@ -1,7 +1,4 @@
-import { useParams } from "react-router-dom";
-
-const markAddresses = (map, addressList) => {
-  const { business_id } = useParams();
+export const markAddresses = (map, addressList) => {
   addressList.forEach((address) => {
     console.log("📌 지오코딩 시도 주소:", address);
 
@@ -34,11 +31,10 @@ const markAddresses = (map, addressList) => {
   });
 };
 
-export const FlowerShopMarker = async (map, address) => {
+export const FlowerShopMarker = async (map, business_id) => {
   const userLat = 37.5665;
   const userLng = 126.9780;
 
-  // 사용자 위치 마커
   new window.naver.maps.Marker({
     position: new window.naver.maps.LatLng(userLat, userLng),
     map,
@@ -48,27 +44,24 @@ export const FlowerShopMarker = async (map, address) => {
     },
   });
 
-  let roadAddresses = [
+  const roadAddresses = [
     "경기도 용인시 수지구 죽전로 152",
     "동백죽전대로 1066",
   ];
 
-  // 주소를 API에서 동적으로 불러와서 추가
   try {
-    // const pk = address; // address 인자에 pk가 들어오는 형태로 가정
     const res = await fetch(`https://blossompick.duckdns.org/api/v1/florist/stores/${business_id}/`);
     const json = await res.json();
-
     const fetchedAddress = json.data?.address;
-    console.log("🏠 백엔드에서 받아온 주소:", fetchedAddress);
+
+    console.log("🏠 API에서 받아온 주소:", fetchedAddress);
 
     if (fetchedAddress) {
       roadAddresses.push(fetchedAddress);
     }
   } catch (err) {
-    console.error("❌ 주소 불러오기 실패:", err);
+    console.error("❌ 주소 API 호출 실패:", err);
   }
 
-  // 도로명 주소들을 지도에 마커로 찍기
   markAddresses(map, roadAddresses);
 };
