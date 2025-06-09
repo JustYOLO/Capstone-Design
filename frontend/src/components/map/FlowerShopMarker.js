@@ -48,10 +48,7 @@ export const FlowerShopMarker = async (map) => {
     map,
     title: "내 위치",
     icon: {
-      content: `
-        <div style="background:#2b90d9;color:white;padding:5px 10px;border-radius:5px;font-size:12px;">
-          내 위치
-        </div>`,
+      content: '<div style="background:#2b90d9;color:white;padding:5px 10px;border-radius:5px;font-size:12px;">내 위치</div>',
     },
   });
 
