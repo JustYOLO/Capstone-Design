@@ -50,9 +50,6 @@ const OrderPage = () => {
         {
           business_id: parseInt(business_id),
           items: orderedItems,
-        },
-        {
-          withCredentials: true, // ✅ 인증 쿠키 포함
         }
       )
       .then((res) => {

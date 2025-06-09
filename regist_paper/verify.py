@@ -30,6 +30,8 @@ def extract_business_info_from_pdf(pdf_path):
         "개업연월일": start_date.group(1).strip() if start_date else None,
         "종목": category.group(1).strip() if category else None
     }
+    
+    
 
     return result
 
