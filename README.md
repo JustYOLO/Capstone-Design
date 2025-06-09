@@ -85,7 +85,154 @@ Dankook University Software Major Capstone Design with 김민성, 이용민, 위
 
 ## Directory 구조 
 
-
+```
+📦Capstone-Design
+ ┣ 📂ai 
+ ┃ ┣ 📂chromadb_storage_ko
+ ┃ ┃ ┣ 📂8be9cc09-4636-4b3d-bff8-a44226777b2f
+ ┃ ┃ ┃ ┣ 📜data_level0.bin
+ ┃ ┃ ┃ ┣ 📜header.bin
+ ┃ ┃ ┃ ┣ 📜length.bin
+ ┃ ┃ ┃ ┗ 📜link_lists.bin
+ ┃ ┃ ┗ 📜chroma.sqlite3
+ ┃ ┣ 📂flower_directory
+ ┃ ┃ ┣ 📜flowers_en.txt
+ ┃ ┃ ┣ 📜flowers_ko.txt
+ ┃ ┃ ┗ 📜flowers_ko_formatted.txt
+ ┃ ┣ 📜Dockerfile
+ ┃ ┣ 📜README.md
+ ┃ ┣ 📜docker-compose.yml
+ ┃ ┣ 📜format_flower.py
+ ┃ ┣ 📜main.py
+ ┃ ┗ 📜makeVectorDB_flowers_ko.py
+ ┣ 📂frontend
+ ┃ ┣ 📂ad_image
+ ┃ ┃ ┣ 📜IMG_4330.JPG
+ ┃ ┃ ┣ 📜IMG_4331.JPG
+ ┃ ┃ ┣ 📜IMG_4332.JPG
+ ┃ ┃ ┣ 📜IMG_4333.JPG
+ ┃ ┃ ┗ 📜IMG_4334.JPG
+ ┃ ┃ ┗ 📂css
+ ┃ ┃ ┃ ┗ 📜tailwindcss.css
+ ┃ ┣ 📂src
+ ┃ ┃ ┣ 📂components
+ ┃ ┃ ┃ ┣ 📂chatbot
+ ┃ ┃ ┃ ┃ ┣ 📜ChatButton.jsx
+ ┃ ┃ ┃ ┃ ┣ 📜ChatInput.jsx
+ ┃ ┃ ┃ ┃ ┣ 📜ChatResponse.jsx
+ ┃ ┃ ┃ ┃ ┣ 📜ChatWidget.jsx
+ ┃ ┃ ┃ ┃ ┗ 📜UseChat.js
+ ┃ ┃ ┃ ┣ 📂common
+ ┃ ┃ ┃ ┃ ┣ 📜Footer.js
+ ┃ ┃ ┃ ┃ ┣ 📜HeroSection.js
+ ┃ ┃ ┃ ┃ ┗ 📜Navbar.js
+ ┃ ┃ ┃ ┣ 📂effects
+ ┃ ┃ ┃ ┣ 📂map
+ ┃ ┃ ┃ ┃ ┣ 📜FlowerShopMarker.js
+ ┃ ┃ ┃ ┃ ┣ 📜Map.js
+ ┃ ┃ ┃ ┃ ┣ 📜NaverMapLoader.js
+ ┃ ┃ ┃ ┃ ┗ 📜UserLocationMap.js
+ ┃ ┃ ┃ ┗ 📜AddressInput.js
+ ┃ ┃ ┣ 📂pages
+ ┃ ┃ ┃ ┣ 📜AdCarousel.js
+ ┃ ┃ ┃ ┣ 📜Admin.js
+ ┃ ┃ ┃ ┣ 📜AfterLoginFlorist.js
+ ┃ ┃ ┃ ┣ 📜AfterSignup.js
+ ┃ ┃ ┃ ┣ 📜FlowerDictionary.js
+ ┃ ┃ ┃ ┣ 📜FlowerHouse.js
+ ┃ ┃ ┃ ┣ 📜FlowerHouseAddFlower.js
+ ┃ ┃ ┃ ┣ 📜FlowerHouseView.js
+ ┃ ┃ ┃ ┣ 📜FlowerMBTI.js
+ ┃ ┃ ┃ ┣ 📜Login.js
+ ┃ ┃ ┃ ┣ 📜Order.js
+ ┃ ┃ ┃ ┣ 📜OrderHistoryPage.js
+ ┃ ┃ ┃ ┣ 📜OrderPage.js
+ ┃ ┃ ┃ ┣ 📜Profile.js
+ ┃ ┃ ┃ ┣ 📜ResetPassword.js
+ ┃ ┃ ┃ ┣ 📜Search_Where.js
+ ┃ ┃ ┃ ┣ 📜Signup.js
+ ┃ ┃ ┃ ┣ 📜SignupCustomer.js
+ ┃ ┃ ┃ ┗ 📜SignupFlorist.js
+ ┃ ┃ ┣ 📜App.css
+ ┃ ┃ ┣ 📜App.js
+ ┃ ┃ ┣ 📜App.test.js
+ ┃ ┃ ┣ 📜index.css
+ ┃ ┃ ┣ 📜index.js
+ ┃ ┃ ┣ 📜logo.svg
+ ┃ ┃ ┣ 📜reportWebVitals.js
+ ┃ ┃ ┗ 📜setupTests.js
+ ┃ ┣ 📜package-lock.json
+ ┃ ┣ 📜package.json
+ ┃ ┣ 📜postcss.config.js
+ ┃ ┗ 📜tailwind.config.js
+ ┣ 📂nginx
+ ┃ ┣ 📜Dockerfile.nginx
+ ┃ ┗ 📜default.conf
+ ┣ 📂regist_paper
+ ┃ ┣ 📂__pycache__
+ ┃ ┃ ┣ 📜num2verify.cpython-310.pyc
+ ┃ ┃ ┗ 📜pdf2json.cpython-310.pyc
+ ┃ ┣ 📜verify.py
+ ┃ ┣ 📜사업자정보.json
+ ┃ ┗ 📜산학협력단_사업자등록증.pdf
+ ┣ 📂webserver
+ ┃ ┣ 📂accounts
+ ┃ ┃ ┣ 📂migrations
+ ┃ ┃ ┃ ┣ 📜0001_initial.py
+ ┃ ┃ ┃ ┗ 📜__init__.py
+ ┃ ┃ ┣ 📜__init__.py
+ ┃ ┃ ┣ 📜admin.py
+ ┃ ┃ ┣ 📜apps.py
+ ┃ ┃ ┣ 📜models.py
+ ┃ ┃ ┣ 📜serializers.py
+ ┃ ┃ ┣ 📜tests.py
+ ┃ ┃ ┣ 📜verify.py
+ ┃ ┃ ┗ 📜views.py
+ ┃ ┣ 📂frontend
+ ┃ ┃ ┣ 📂__pycache__
+ ┃ ┃ ┃ ┣ 📜__init__.cpython-310.pyc
+ ┃ ┃ ┃ ┣ 📜admin.cpython-310.pyc
+ ┃ ┃ ┃ ┣ 📜apps.cpython-310.pyc
+ ┃ ┃ ┃ ┣ 📜models.cpython-310.pyc
+ ┃ ┃ ┃ ┗ 📜urls.cpython-310.pyc
+ ┃ ┃ ┣ 📂migrations
+ ┃ ┃ ┃ ┣ 📂__pycache__
+ ┃ ┃ ┃ ┃ ┗ 📜__init__.cpython-310.pyc
+ ┃ ┃ ┃ ┗ 📜__init__.py
+ ┃ ┃ ┣ 📂templates
+ ┃ ┃ ┃ ┗ 📜index.html
+ ┃ ┃ ┣ 📜__init__.py
+ ┃ ┃ ┣ 📜admin.py
+ ┃ ┃ ┣ 📜apps.py
+ ┃ ┃ ┣ 📜models.py
+ ┃ ┃ ┣ 📜tests.py
+ ┃ ┃ ┣ 📜urls.py
+ ┃ ┃ ┗ 📜views.py
+ ┃ ┣ 📂templates
+ ┃ ┃ ┗ 📂account
+ ┃ ┃ ┃ ┗ 📂email
+ ┃ ┃ ┃ ┃ ┣ 📜email_confirmation_signup_message.html
+ ┃ ┃ ┃ ┃ ┣ 📜email_confirmation_signup_message.txt
+ ┃ ┃ ┃ ┃ ┗ 📜email_confirmation_signup_subject.txt
+ ┃ ┣ 📂webserver
+ ┃ ┃ ┣ 📂__pycache__
+ ┃ ┃ ┃ ┣ 📜__init__.cpython-310.pyc
+ ┃ ┃ ┃ ┣ 📜settings.cpython-310.pyc
+ ┃ ┃ ┃ ┣ 📜urls.cpython-310.pyc
+ ┃ ┃ ┃ ┗ 📜wsgi.cpython-310.pyc
+ ┃ ┃ ┣ 📂static
+ ┃ ┃ ┃ ┗ 📂build
+ ┃ ┃ ┃ ┃ ┗ 📜build
+ ┃ ┃ ┣ 📜__init__.py
+ ┃ ┃ ┣ 📜asgi.py
+ ┃ ┃ ┣ 📜settings.py
+ ┃ ┃ ┣ 📜urls.py
+ ┃ ┃ ┗ 📜wsgi.py
+ ┃ ┣ 📜Dockerfile
+ ┃ ┣ 📜entrypoint.sh
+ ┃ ┣ 📜manage.py
+ ┃ ┗ 📜requirements.txt
+```
 
 ## 실행 방법
 
