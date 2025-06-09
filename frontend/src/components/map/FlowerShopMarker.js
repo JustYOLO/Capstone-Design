@@ -1,5 +1,5 @@
-const markAddresses = (map, addressList) => {
-  addressList.forEach((address) => {
+const markAddresses = (map, locationList) => {
+  locationList.forEach(({ address, housename }) => {
     console.log("📌 지오코딩 시도 주소:", address);
 
     window.naver.maps.Service.geocode({ query: address }, (status, response) => {
@@ -17,11 +17,11 @@ const markAddresses = (map, addressList) => {
       const marker = new window.naver.maps.Marker({
         position: new window.naver.maps.LatLng(lat, lng),
         map,
-        title: address,
+        title: housename,
       });
 
       const infoWindow = new window.naver.maps.InfoWindow({
-        content: `<div style="padding:8px;font-size:14px;">${address}</div>`,
+        content: `<div style="padding:8px;font-size:14px;">🏠 ${housename}</div>`,
       });
 
       let isOpen = false;
@@ -39,41 +39,69 @@ const markAddresses = (map, addressList) => {
 };
 
 export const FlowerShopMarker = async (map) => {
-  const userLat = 37.5665;
-  const userLng = 126.9780;
+  // 실제 사용자 위치 가져오기
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      const userLat = position.coords.latitude;
+      const userLng = position.coords.longitude;
 
-  // 사용자 현재 위치 마커
-  new window.naver.maps.Marker({
-    position: new window.naver.maps.LatLng(userLat, userLng),
-    map,
-    title: "내 위치",
-    icon: {
-      content: '<div style="background:#2b90d9;color:white;padding:5px 10px;border-radius:5px;font-size:12px;">내 위치</div>',
+      new window.naver.maps.Marker({
+        position: new window.naver.maps.LatLng(userLat, userLng),
+        map,
+        title: "내 위치",
+        icon: {
+          content: `
+            <div style="
+              background:#2b90d9;
+              color:white;
+              padding:5px 10px;
+              border-radius:5px;
+              font-size:12px;
+            ">내 위치</div>
+          `,
+        },
+      });
     },
-  });
+    (error) => {
+      console.warn("⚠️ 위치 정보 사용 불가. 기본 위치(서울) 사용:", error);
+      const fallbackLat = 37.5665;
+      const fallbackLng = 126.9780;
 
-  window.naver.maps.Event.addListener(userMarker, "click", () => {
-    if (userInfoOpen) {
-      userInfoWindow.close();
-    } else {
-      userInfoWindow.open(map, userMarker);
+      new window.naver.maps.Marker({
+        position: new window.naver.maps.LatLng(fallbackLat, fallbackLng),
+        map,
+        title: "내 위치",
+        icon: {
+          content: `
+            <div style="
+              background:#2b90d9;
+              color:white;
+              padding:5px 10px;
+              border-radius:5px;
+              font-size:12px;
+            ">내 위치</div>
+          `,
+        },
+      });
     }
-    userInfoOpen = !userInfoOpen;
-  });
+  );
 
-  // 꽃집 주소 마커 생성
+  // 꽃집 주소 및 이름 가져오기
   try {
     const res = await fetch("https://blossompick.duckdns.org/api/v1/florist/stores/");
-    const json = await res.json();
+    const stores = await res.json();
 
-    const addressList = json
-      .map((store) => store.data?.address)
-      .filter((addr) => !!addr);
+    const locationList = stores
+      .filter((store) => store.data?.address && store.housename)
+      .map((store) => ({
+        address: store.data.address,
+        housename: store.housename,
+      }));
 
-    console.log("📍 전체 받아온 주소들:", addressList);
+    console.log("📍 전체 꽃집 위치 목록:", locationList);
 
-    markAddresses(map, addressList);
+    markAddresses(map, locationList);
   } catch (err) {
-    console.error("❌ 주소 불러오기 실패:", err);
+    console.error("❌ 꽃집 주소 불러오기 실패:", err);
   }
 };
