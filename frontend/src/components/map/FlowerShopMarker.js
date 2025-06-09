@@ -4,7 +4,7 @@ const markAddresses = (map, locationList) => {
 
     window.naver.maps.Service.geocode({ query: address }, (status, response) => {
       if (status !== window.naver.maps.Service.Status.OK) {
-        console.error("❌ 지오코딩 실패:", address, status);
+        console.error("지오코딩 실패:", address, status);
         return;
       }
 
@@ -12,7 +12,7 @@ const markAddresses = (map, locationList) => {
       const lat = parseFloat(item.y);
       const lng = parseFloat(item.x);
 
-      console.log("✅ 지오코딩 성공:", { address, lat, lng });
+      console.log("지오코딩 성공:", { address, lat, lng });
 
       const marker = new window.naver.maps.Marker({
         position: new window.naver.maps.LatLng(lat, lng),
@@ -114,6 +114,6 @@ export const FlowerShopMarker = async (map) => {
 
     markAddresses(map, locationList);
   } catch (err) {
-    console.error("❌ 꽃집 주소 불러오기 실패:", err);
+    console.error("꽃집 주소 불러오기 실패:", err);
   }
 };

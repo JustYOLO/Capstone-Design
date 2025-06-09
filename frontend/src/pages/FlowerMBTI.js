@@ -60,11 +60,6 @@ const FlowerMBTI = () => {
       (scores.TF >= 2 ? "T" : "F") +
       (scores.PJ >= 2 ? "P" : "J");
   
-    // 🔍 디버깅용 콘솔 출력
-    console.log("MBTI 결과:", mbti);
-    console.log("저장된 MBTI 키:", Object.keys(flowerResults));  // 현재 저장된 꽃 MBTI 키값 확인
-    console.log("매칭 여부:", mbti in flowerResults);
-  
     // 결과 설정 (존재하지 않으면 기본 메시지 출력)
     setResult(flowerResults[mbti] || { name: "알 수 없음", meaning: "정보 없음", description: "결과를 찾을 수 없습니다." });
   };

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import AdCarousel from "./AdCarousel";
 import { useNavigate } from "react-router-dom";
-import { geocodeAddress } from "../components/map/FlowerShopMarker";  // ← 추가
+import { geocodeAddress } from "../components/map/FlowerShopMarker";
 
 const toRad = deg => (deg * Math.PI) / 180;
 const haversine = (lat1, lng1, lat2, lng2) => {
@@ -16,12 +16,13 @@ const haversine = (lat1, lng1, lat2, lng2) => {
 
 const Order = () => {
   const [stores, setStores] = useState([]);
+  const [filteredStores, setFilteredStores] = useState([]);
+  const [search, setSearch] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
     axios.get("https://blossompick.duckdns.org/api/v1/florist/stores/")
       .then(({ data }) => {
-        // 사용자 위치가 허용되면 거리 계산 후 정렬
         navigator.geolocation.getCurrentPosition(async pos => {
           const userLat = pos.coords.latitude;
           const userLng = pos.coords.longitude;
@@ -40,18 +41,25 @@ const Order = () => {
 
           withDist.sort((a, b) => a.distance - b.distance);
           setStores(withDist);
+          setFilteredStores(withDist);
         },
-        // 위치 정보 거부 시 원본 순서
         () => {
           setStores(data.map(s => ({ ...s, distance: undefined })));
+          setFilteredStores(data.map(s => ({ ...s, distance: undefined })));
         });
       })
       .catch(err => {
-        console.error("❌ 꽃집 리스트 가져오기 실패:", err);
+        console.error("꽃집 리스트 가져오기 실패:", err);
       });
   }, []);
 
-  // 오늘 요일을 한글로 반환
+  useEffect(() => {
+    const filtered = stores.filter(store =>
+      store.housename.toLowerCase().includes(search.toLowerCase())
+    );
+    setFilteredStores(filtered);
+  }, [search, stores]);
+
   const getTodayKoreanDay = () => {
     const days = ["일", "월", "화", "수", "목", "금", "토"];
     return days[new Date().getDay()];
@@ -64,13 +72,30 @@ const Order = () => {
         <AdCarousel />
       </div>
 
+      {/* 검색 입력 필드 */}
+      <div className="mb-6 max-w-4xl mx-auto">
+        <input
+          type="text"
+          placeholder="꽃집 이름으로 검색..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="w-full border rounded p-2 shadow-sm"
+          list="shop-suggestions"
+        />
+        <datalist id="shop-suggestions">
+          {stores.map((store, idx) => (
+            <option key={idx} value={store.housename} />
+          ))}
+        </datalist>
+      </div>
+
       <div className="max-w-4xl mx-auto">
-        {stores.length === 0 ? (
+        {filteredStores.length === 0 ? (
           <p className="text-center text-gray-500 mt-8">
             등록된 꽃집이 없습니다.
           </p>
         ) : (
-          stores.map((store, idx) => {
+          filteredStores.map((store, idx) => {
             const isClosedToday = store.data?.hours?.[today]?.closed === true;
             const distKm = store.distance !== undefined && store.distance !== Infinity
               ? (store.distance / 1000).toFixed(2) + " km"
@@ -91,25 +116,17 @@ const Order = () => {
                     <p className="font-bold text-lg">{store.housename}</p>
                     <p>🌍 주소: {store.data?.address || "주소 없음"}</p>
                     <p>
-                      🌸 인기 꽃 종류:{" "}
-                      {store.inventory?.map(f => f.name).join(", ") ||
-                        "정보 없음"}
+                      🌸 인기 꽃 종류: {store.inventory?.map(f => f.name).join(", ") || "정보 없음"}
                     </p>
                     <p>📞 전화번호: {store.data?.phone || "없음"}</p>
-                    {/* 오늘 휴무 여부 */}
                     {isClosedToday && (
                       <p className="text-red-500 font-semibold mt-1">
                         🚫 오늘은 휴무일입니다.
                       </p>
                     )}
-                    {/* 거리 정보 */}
                     <p className="mt-1">📏 거리: {distKm}</p>
                     <button
-                      onClick={() =>
-                        navigate(
-                          `/flowerhouse/view/${store.business_id}`
-                        )
-                      }
+                      onClick={() => navigate(`/flowerhouse/view/${store.business_id}`)}
                       className="mt-2 text-blue-600 hover:underline text-sm"
                     >
                       자세히 보기

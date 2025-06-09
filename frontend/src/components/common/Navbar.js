@@ -7,7 +7,7 @@ import { FaBars } from "react-icons/fa";
 const Navbar = ({ user }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
-  const [isFlorist, setIsFlorist] = useState(false); // 추가
+  const [isFlorist, setIsFlorist] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
