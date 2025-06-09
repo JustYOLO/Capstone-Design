@@ -58,7 +58,7 @@ Dankook University Software Major Capstone Design with 김민성, 이용민, 위
 
 ### AI
 
-|category|vesion|
+|category|version|
 |------|---|
 |React|19.0.0|
 |Tailwind CSS|3.4.17|
@@ -66,15 +66,18 @@ Dankook University Software Major Capstone Design with 김민성, 이용민, 위
 
 ### Backend
 
-|category|vesion|
+|category|version|
 |------|---|
 |React|19.0.0|
 |Tailwind CSS|3.4.17|
 |Axios|1.8.4|
 
 ### Frontend
+<img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black">
+<img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black">
 
-|category|vesion|
+
+|category|version|
 |------|---|
 |React|19.0.0|
 |Tailwind CSS|3.4.17|
