@@ -73,7 +73,15 @@ const Navbar = ({ user }) => {
               <div className="dropdown-menu">
                 <Link to="/profile" className="dropdown-item">개인정보 설정</Link>
 
-                {/* florist용 메뉴 추가 */}
+                {/* 일반 사용자 메뉴 추가 */}
+                {! isFlorist && ( 
+                  <>
+                    <Link to="/orderhistory" className="dropdown-item">주문 내역</Link>
+                  </>
+                )}
+                
+
+                {/* 꽃집 사장님 메뉴 추가 */}
                 {isFlorist && (
                   <>
                     <Link to="/flowerhouse" className="dropdown-item">꽃집 정보 수정</Link>
