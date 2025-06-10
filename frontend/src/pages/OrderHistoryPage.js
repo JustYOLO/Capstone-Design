@@ -6,9 +6,18 @@ const OrderHistoryPage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const token = localStorage.getItem("access_token");
+    if (!token) {
+      alert("로그인이 필요합니다.");
+      setLoading(false);
+      return;
+    }
+
     axios
       .get("https://blossompick.duckdns.org/api/v1/orders/", {
-        withCredentials: true, // 인증 쿠키 전송
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       })
       .then((res) => {
         setOrders(res.data);
