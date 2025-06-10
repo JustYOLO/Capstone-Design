@@ -62,7 +62,7 @@ Dankook University Software Major Capstone Design with 김민성, 이용민, 위
 |------|---|
 |ollama|0.6.1|
 |chromadb|0.6.3|
-|llama3-ko|https://huggingface.co/MLP-KTLim/llama-3-Korean-Bllossom-8B-gguf-Q4_K_M|
+|llama3-ko|https://huggingface.co/teddylee777/Llama-3-Open-Ko-8B-gguf/tree/main|
 |gemma|gemma3:12b|
 |GPU| RTX 3090 |
 
@@ -218,43 +218,32 @@ Dankook University Software Major Capstone Design with 김민성, 이용민, 위
  ┃ ┗ 📜requirements.txt
 ```
 
-## 실행 방법
+
+
+# 시연 영상 링크
 
 
 
-## 시연
+# 실행 방법
+```
+cd ~/capstone/Capstone-Design/ai
+```
+위 디렉토리 경로에서 실행
 
 
-
-
-
-
-# AI run
-올라마 설치
+## Local LLM run
+Local LLM Tool Ollama 설치
 ```
 curl -fsSL https://ollama.com/install.sh | sh
 ```
 
-
-
-## 모든 인터페이스에서 리스닝하도록 실행
-
+Ollama에서 gemma3:12B 모델 설치
 ```
-OLLAMA_HOST=0.0.0.0 ollama serve
-```
-</br>
-
-## 연결 확인
-```
-curl http://localhost:11434/api/tags
+ollama run gemma3:12b
 ```
 
-ollama model 설치
 
-```
-ollama run gemma3
-ollama run llama3
-```
+
 </br>
 
 한글 임베딩 가능한 llama 설치
@@ -284,17 +273,33 @@ PARAMETER stop </s>
 
 ```
 
-그 후 아래 명령어를 입력하면 
+그 후 같은 디렉토리에서 아래 명령어를 입력하면 
+```
+ollama create ollama-ko-0710 -f .\Modelfile
+```
+
+모든 인터페이스에서 리스닝하도록 실행
+```
+OLLAMA_HOST=0.0.0.0 ollama serve
+```
+</br>
+
+연결 확인
+```
+curl http://localhost:11434/api/tags
+```
+
 
 
 ## Docker compose build
+main.py를 도커로 실행 
 ```
 docker-compose down --remove-orphans
 docker-compose up --build
 ```
 
 
-
+---
 
 # Backend Run
 
