@@ -227,8 +227,11 @@ Database는 MySQL을 사용했습니다.
 
 
 # 시연 영상 링크
-
-
+### 사용자 시점
+https://youtu.be/SfTVuSJOGB0
+<br>
+### 꽃집 운영진 시점
+https://youtu.be/rx0kPmVi2yQ
 
 # 실행 방법
 ```
