@@ -54,7 +54,7 @@ const OrderHistoryPage = () => {
                 </span>
               </div>
               <p className="text-sm text-gray-600 mb-1">
-                주문자: {order.customer_name} ({order.customer_email})
+                주문자: {order.customer_email}
               </p>
               <div className="text-sm">
                 <strong>주문한 꽃:</strong>
