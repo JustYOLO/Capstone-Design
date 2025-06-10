@@ -60,9 +60,11 @@ Dankook University Software Major Capstone Design with 김민성, 이용민, 위
 
 |category|version|
 |------|---|
-|React|19.0.0|
-|Tailwind CSS|3.4.17|
-|Axios|1.8.4|
+|ollama|0.6.1|
+|chromadb|0.6.3|
+|llama3-ko|https://huggingface.co/MLP-KTLim/llama-3-Korean-Bllossom-8B-gguf-Q4_K_M|
+|gemma|gemma3:12b|
+|GPU| RTX 3090 |
 
 ### Backend
 
