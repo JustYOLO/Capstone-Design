@@ -43,10 +43,7 @@ const Order = () => {
           );
 
           withDist.sort((a, b) => a.distance - b.distance);
-          // setStores(withDist);
-          // setFilteredStores(withDist);
           setStores(withDist);
-         // state.recommended === true 면 자동 필터링
           if (location.state?.recommended) {
             const names = JSON.parse(localStorage.getItem("flowerNames") || "[]");
             const rec = withDist.filter(store =>
@@ -68,13 +65,6 @@ const Order = () => {
         console.error("꽃집 리스트 가져오기 실패:", err);
       });
   }, [location.state]);
-
-  // useEffect(() => {
-  //   const filtered = stores.filter(store =>
-  //     store.housename.toLowerCase().includes(search.toLowerCase())
-  //   );
-  //   setFilteredStores(filtered);
-  // }, [search, stores]);
 
     useEffect(() => {
     if (recommendedOnly) return;
@@ -140,7 +130,7 @@ const Order = () => {
                     <p className="font-bold text-lg">{store.housename}</p>
                     <p>🌍 주소: {store.data?.address || "주소 없음"}</p>
                     <p>
-                      🌸 인기 꽃 종류: {store.inventory?.map(f => f.name).join(", ") || "정보 없음"}
+                      🌸 꽃 종류: {store.inventory?.map(f => f.name).join(", ") || "정보 없음"}
                     </p>
                     <p>📞 전화번호: {store.data?.phone || "없음"}</p>
                     {isClosedToday && (

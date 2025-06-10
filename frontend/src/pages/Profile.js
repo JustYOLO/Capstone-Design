@@ -6,11 +6,6 @@ const Profile = () => {
   const [isFlorist, setIsFlorist] = useState(false);
 
   useEffect(() => {
-    // const storedUser = localStorage.getItem("user");
-    // if (storedUser) {
-    //   const parsed = JSON.parse(storedUser);
-    //   setUser(parsed.user);
-    // }
 
     const token = localStorage.getItem("access_token");
     if (token) {

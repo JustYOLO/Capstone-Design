@@ -9,7 +9,7 @@ const OrderPage = () => {
   const [showConfirm, setShowConfirm] = useState(false);
   const [confirmed, setConfirmed] = useState(false);
   const [readyTime, setReadyTime] = useState(15);
-  const [loading, setLoading] = useState(false); // ✅ 로딩 상태
+  const [loading, setLoading] = useState(false); // 로딩 상태
 
   useEffect(() => {
     axios
@@ -46,7 +46,7 @@ const OrderPage = () => {
     }
 
     const token = localStorage.getItem("access_token");
-    setLoading(true); // ✅ 로딩 시작
+    setLoading(true); // 로딩 시작
 
     axios
       .post(
@@ -82,7 +82,7 @@ const OrderPage = () => {
           console.error("❌ 네트워크 오류:", err);
         }
       })
-      .finally(() => setLoading(false)); // ✅ 로딩 종료
+      .finally(() => setLoading(false)); // 로딩 종료
   };
 
   const pickupTime = new Date(Date.now() + readyTime * 60000).toLocaleTimeString([], {

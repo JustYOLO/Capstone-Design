@@ -35,7 +35,7 @@ const FlowerHouseAddFlower = () => {
     if (inventory.find((item) => item.name === flower.name)) return;
     setInventory((prev) => [
       ...prev,
-      { name: flower.name, meaning: flower.meaning, quantity: 0 },
+      { name: flower.name, meaning: flower.meaning, quantity: 1 },
     ]);
   };
 
@@ -47,6 +47,10 @@ const FlowerHouseAddFlower = () => {
           : item
       )
     );
+  };
+
+  const handleRemoveFlower = (name) => {
+    setInventory((prev) => prev.filter((item) => item.name !== name));
   };
 
   const handleSave = async () => {
@@ -68,7 +72,6 @@ const FlowerHouseAddFlower = () => {
       if (!response.ok) throw new Error("저장 실패");
 
       alert("🌸 꽃 재고 저장 완료!");
-      
       navigate("/");
     } catch (err) {
       console.error("❌ 저장 오류:", err);
@@ -131,6 +134,12 @@ const FlowerHouseAddFlower = () => {
                     className="px-2 py-1 bg-gray-200 rounded"
                   >
                     +
+                  </button>
+                  <button
+                    onClick={() => handleRemoveFlower(flower.name)}
+                    className="px-2 py-1 bg-red-300 text-white rounded"
+                  >
+                    삭제
                   </button>
                 </div>
               </div>
