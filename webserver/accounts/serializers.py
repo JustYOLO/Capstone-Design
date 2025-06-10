@@ -149,9 +149,9 @@ class OrderCreateSerializer(serializers.Serializer):
         )
 
         # 3) Email the business
-        subject_biz = f"[New Order #{order.id}] {business.company_name}"
+        subject_biz = f"[새로운 꽃 주문 #{order.id}] {business.company_name}"
         body_biz = "\n".join([
-            "You have a new flower order:",
+            "새로운 꽃 주문이 있습니다:",
             *[f"- {it['name']}: {it['quantity']}" for it in items],
             "",
             f"Customer: {order.customer_name}",
@@ -166,14 +166,14 @@ class OrderCreateSerializer(serializers.Serializer):
         )
 
         # 4) Email the customer
-        subject_cust = f"Your Order #{order.id} at {business.company_name}"
+        subject_cust = f"꽃 주문/ 주문 id: #{order.id} 구매처: {business.company_name}"
         body_cust = "\n".join([
-            f"Hi {order.customer_name},",
+            f"{order.customer_name} 님 안녕하세요!",
             "",
-            "Thank you for your order! Here is what we received:",
+            "주문해주셔서 감사합니다! 아래는 주문 내역입니다:",
             *[f"- {it['name']}: {it['quantity']}" for it in items],
             "",
-            f"We will prepare these for you at {business.company_name}.",
+            f"{business.company_name} 에서 주문을 처리하고 있습니다.",
             "",
             "Best regards,",
             business.company_name
