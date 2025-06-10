@@ -11,7 +11,10 @@ Dankook University Software Major Capstone Design with 김민성, 이용민, 위
 
 ### Backend
 🤭 이용민
-
+- Django를 활용한 backend 개발
+- Nginx를 사용한 웹 서버 구현
+- 사용자 관리, 주문 시스템 등
+- Container 관리 및 build 자동화를 위한 Github Action 사용
 
 ### Frontend
 🤭 위다연
