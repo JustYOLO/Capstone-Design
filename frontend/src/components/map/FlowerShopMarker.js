@@ -40,12 +40,13 @@ const markAddresses = (map, locationList) => {
 
 export const geocodeAddress = (address) =>
   new Promise((resolve, reject) => {
+    if (!address) return reject("주소 없음");
     window.naver.maps.Service.geocode({ query: address }, (status, response) => {
-      if (status === window.naver.maps.Service.Status.OK) {
+      if (status === window.naver.maps.Service.Status.OK && response.v2.addresses.length > 0) {
         const item = response.v2.addresses[0];
         resolve({ lat: parseFloat(item.y), lng: parseFloat(item.x) });
       } else {
-        reject(status);
+        reject("지오코딩 실패 or 주소 없음");
       }
     });
   });
