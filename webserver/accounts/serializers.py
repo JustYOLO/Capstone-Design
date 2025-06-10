@@ -170,7 +170,6 @@ class OrderCreateSerializer(serializers.Serializer):
         body_cust = "\n".join([
             f"{order.customer_name} 님 안녕하세요!",
             "",
-            "Thank you for your order! Here is what we received:",
             "주문해주셔서 감사합니다! 아래는 주문 내역입니다:",
             *[f"- {it['name']}: {it['quantity']}" for it in items],
             "",
