@@ -68,9 +68,12 @@ Dankook University Software Major Capstone Design with 김민성, 이용민, 위
 
 |category|version|
 |------|---|
-|React|19.0.0|
-|Tailwind CSS|3.4.17|
-|Axios|1.8.4|
+|Django|5.0.6|
+|MySQL|9.2.0|
+
+
+Backend는 Django를 사용해서 구현했습니다. 회원 관리를 위해 all-auth를 사용했습니다.
+Database는 MySQL을 사용했습니다.
 
 ### Frontend
 <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black"> <img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black"> <img src="https://img.shields.io/badge/tailwindcss-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=black">
