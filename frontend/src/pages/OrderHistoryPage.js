@@ -35,7 +35,7 @@ const OrderHistoryPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 px-6 py-12">
+    <div className="min-h-screen bg-gray-50 px-6 pt-28 pb-12">
       <h1 className="text-3xl font-bold text-purple-800 mb-6">🧾 나의 주문 내역</h1>
 
       {orders.length === 0 ? (
