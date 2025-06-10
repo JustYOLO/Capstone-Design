@@ -4,7 +4,7 @@ const AdCarousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   // 이미지 파일 이름만 작성
-  const imageNames = ["banner1.png", "banner2.png"];
+  const imageNames = ["banner1.jpg", "banner2.jpg"];
 
   // 전체 URL 경로로 변환
   const bannerImages = imageNames.map(name => `https://blossompick.duckdns.org/static/${name}`);
