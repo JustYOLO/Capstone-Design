@@ -1,6 +1,15 @@
 # 🌷BlossomPick🌷
  
-Dankook University Software Major Capstone Design with 김민성, 이용민, 위다연
+안녕하세요!
+단국대학교 소프트웨어학과에 재학 중인 김민성, 위다연, 이용민 입니다.
+
+🌸 저희의 프로젝트를 3줄 요약 해보자면,
+
+1. 사용자의 상황에 맞는 꽃과 꽃말을 챗봇이 추천해줌
+2. 꽃집 운영진이 등록해놓은 사용자의 근처 꽃집으로 이어줌
+3. 해당 꽃집에서 주문까지 끊김 없이 연속적으로 이어주는 플랫폼 개발
+
+이렇게 봐주시면 되겠습니다 🌸
 
 ## 👪팀원 소개
 ### AI
@@ -452,3 +461,10 @@ sudo apt install -y nodejs
 node -v
 npm -v
 ```
+---
+
+Dankook University Major in Software Department with Capstone Design
+
+Kim Minseong (kms0509@dankook.ac.kr)
+Wee Dayeon (wida10@dankook.ac.kr)
+Lee Yongmin (32203349@dankook.ac.kr)
