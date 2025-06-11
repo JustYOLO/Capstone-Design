@@ -11,6 +11,8 @@
 
 이렇게 봐주시면 되겠습니다 🌸
 
+---
+
 ## 👪팀원 소개
 ### AI
 🤗 김민성
@@ -467,4 +469,4 @@ Dankook University Major in Software Department with Capstone Design
 
 Kim Minseong (kms0509@dankook.ac.kr)
 Wee Dayeon (wida10@dankook.ac.kr)
-Lee Yongmin (32203349@dankook.ac.kr)
+Lee Yongmin (nascarf16@dankook.ac.kr)
